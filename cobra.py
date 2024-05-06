@@ -1,5 +1,16 @@
 import requests
 
+class Players:
+
+    def __init__(self, player_dict) -> None:
+        self.player_dict = player_dict
+        
+    # takes a player's cobra id and a side and returns their id for that side
+    def get_identity(self, player_id: int, role: str) -> str:
+        for player in self.player_dict:
+            if player['id'] == player_id:
+                return player[role+'Identity']
+
 def get_cobra_json(url: str):
     # get the results from cobra from a URL of a given tournament
     resp = requests.get(url=url+'.json', params='')
@@ -14,17 +25,13 @@ def create_id_list(players):
         
     return id_list
 
-def get_id_for_player(player_id: int, player_list, role: str):
-    for player in player_list:
-        if player['id'] == player_id:
-            return player[role+'Identity']
 
 def tally_swiss_match(match, players, id_list):
         
-    player1runner = get_id_for_player(player_id=match['player1']['id'], player_list=players, role='runner')
-    player1corp =  get_id_for_player(player_id=match['player1']['id'], player_list=players, role='corp')
-    player2runner =  get_id_for_player(player_id=match['player2']['id'], player_list=players, role='runner')
-    player2corp =  get_id_for_player(player_id=match['player2']['id'], player_list=players, role='corp')
+    player1runner = players.get_identity(player_id=match['player1']['id'], role='runner')
+    player1corp =  players.get_identity(player_id=match['player1']['id'], role='corp')
+    player2runner =  players.get_identity(player_id=match['player1']['id'], role='runner')
+    player2corp =  players.get_identity(player_id=match['player1']['id'], role='corp')
     
     #player 1 wins thier runner game
     if match['player1']['runnerScore'] == 3:
@@ -57,9 +64,10 @@ def tally_swiss_match(match, players, id_list):
         print("error")
 
 # tally results
-def tally_results(rounds, players):
+def tally_results(rounds, players_dict):
     
-    id_list = create_id_list(players)
+    players = Players(players_dict)
+    id_list = create_id_list(players_dict)
     
     for round in rounds:
         for match in round:
@@ -77,8 +85,8 @@ def tally_results(rounds, players):
                     winner = 'player2'
                     loser = 'player2'
                 
-                id_list[get_id_for_player(player_id=match[winner]['id'], player_list=players, role=match[winner]['role'])]['wins'] += 1
-                id_list[get_id_for_player(player_id=match[loser]['id'], player_list=players, role=match[loser]['role'])]['loses'] += 1
+                id_list[players.get_identity(player_id=match[winner]['id'], role=match[winner]['role'])]['wins'] += 1
+                id_list[players.get_identity(player_id=match[loser]['id'], role=match[loser]['role'])]['loses'] += 1
                     
     return id_list                
                 
