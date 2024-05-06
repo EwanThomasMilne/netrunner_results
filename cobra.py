@@ -25,7 +25,6 @@ def create_id_list(players):
         
     return id_list
 
-
 def tally_swiss_match(match, players, id_list):
         
     player1runner = players.get_identity(player_id=match['player1']['id'], role='runner')
@@ -63,7 +62,19 @@ def tally_swiss_match(match, players, id_list):
     else:
         print("error")
 
-# tally results
+def tally_cut_match(match, players, id_list):
+    
+    if match['player1']['winner']:
+        winner = 'player1'
+        loser = 'player2'
+    else:
+        winner = 'player2'
+        loser = 'player2'
+        
+    id_list[players.get_identity(player_id=match[winner]['id'], role=match[winner]['role'])]['wins'] += 1
+    id_list[players.get_identity(player_id=match[loser]['id'], role=match[loser]['role'])]['loses'] += 1
+
+
 def tally_results(rounds, players_dict):
     
     players = Players(players_dict)
@@ -71,23 +82,10 @@ def tally_results(rounds, players_dict):
     
     for round in rounds:
         for match in round:
-            
-            #tally swiss
-            if not match['eliminationGame']: 
-                tally_swiss_match(match=match, players=players, id_list=id_list)
-                    
-            #tally cut
+            if match['eliminationGame']: 
+                tally_cut_match(match=match, players=players, id_list=id_list)
             else:
-                if match['player1']['winner']:
-                   winner = 'player1'
-                   loser = 'player2'
-                else:
-                    winner = 'player2'
-                    loser = 'player2'
-                
-                id_list[players.get_identity(player_id=match[winner]['id'], role=match[winner]['role'])]['wins'] += 1
-                id_list[players.get_identity(player_id=match[loser]['id'], role=match[loser]['role'])]['loses'] += 1
-                    
-    return id_list                
-                
+                tally_swiss_match(match=match, players=players, id_list=id_list)
+
+    return id_list
     
