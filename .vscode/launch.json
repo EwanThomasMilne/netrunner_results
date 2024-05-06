@@ -8,7 +8,14 @@
             "name": "Python Debugger: Current File",
             "type": "debugpy",
             "request": "launch",
-            "program": "main.py",
+            "program": "generate_individual_reports.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "generate_report.py",
             "console": "integratedTerminal"
         }
     ]
