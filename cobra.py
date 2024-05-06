@@ -1,5 +1,7 @@
 import requests
 
+#TODO: think up some better class names
+
 class Players:
 
     def __init__(self, player_dict) -> None:
@@ -17,6 +19,11 @@ class Identities:
     def __init__(self) -> None:
             
         self.identities = {}
+        
+    #TODO: move the for loop into the results class somehow
+    def generate_rows(self):
+        for identity, values in self.identities.items():
+            yield [identity, values["wins"], values["draws"], values["loses"]] 
             
     def add_result(self, identity: str, result: str):
         
@@ -31,6 +38,14 @@ class Results:
     def __init__(self) -> None:
         self.identities = Identities()
         
+    def generate_report(self):
+        
+        result = [['id','wins','draws','loses']]
+        for row in self.identities.generate_rows():
+            result.append(row)
+            
+        return result
+
     def tally_swiss_match(self, match, players):
         
         player1runner = players.get_identity(player_id=match['player1']['id'], role='runner')
