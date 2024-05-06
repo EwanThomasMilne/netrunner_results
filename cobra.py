@@ -29,8 +29,8 @@ def tally_swiss_match(match, players, id_list):
         
     player1runner = players.get_identity(player_id=match['player1']['id'], role='runner')
     player1corp =  players.get_identity(player_id=match['player1']['id'], role='corp')
-    player2runner =  players.get_identity(player_id=match['player1']['id'], role='runner')
-    player2corp =  players.get_identity(player_id=match['player1']['id'], role='corp')
+    player2runner =  players.get_identity(player_id=match['player2']['id'], role='runner')
+    player2corp =  players.get_identity(player_id=match['player2']['id'], role='corp')
     
     #player 1 wins thier runner game
     if match['player1']['runnerScore'] == 3:
