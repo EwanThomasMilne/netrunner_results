@@ -5,6 +5,7 @@ class AesopsResults(g.Results):
 
     #TODO: remove unused argument from base class
     def tally_swiss_table(self, table, players):
+        #TODO: why are these strings?
         match table['runnerScore']:
             case '3':
                 self.identities.add_result(table['runnerIdentity'], 'wins')
