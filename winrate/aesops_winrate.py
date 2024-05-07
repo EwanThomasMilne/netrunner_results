@@ -1,5 +1,5 @@
 import requests
-from winrate.winrate import ResultsByIdentityObject
+from winrate import ResultsByIdentityObject
 
 class AesopsResultsByIdentityObject(ResultsByIdentityObject):
 

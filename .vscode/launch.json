@@ -8,15 +8,23 @@
             "name": "Python Debugger: unified reports",
             "type": "debugpy",
             "request": "launch",
-            "program": "generate_report.py",
+            "program": "winrate/generate_report.py",
             "console": "integratedTerminal"
         },
         {
             "name": "Python Debugger: individual reports",
             "type": "debugpy",
             "request": "launch",
-            "program": "generate_individual_reports.py",
+            "program": "winrate/generate_individual_reports.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python Debugger: match reports",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "matches/generate_match_report.py",
             "console": "integratedTerminal"
         },
     ]
 }
+
