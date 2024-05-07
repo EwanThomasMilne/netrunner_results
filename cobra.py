@@ -5,7 +5,6 @@ import generic as g
 class CobraResults(g.Results):
 
     def tally_swiss_table(self, table, players):
-        
         player1runner = players.get_identity(player_id=table['player1']['id'], role='runner')
         player1corp =  players.get_identity(player_id=table['player1']['id'], role='corp')
         player2runner =  players.get_identity(player_id=table['player2']['id'], role='runner')
@@ -34,7 +33,6 @@ class CobraResults(g.Results):
                 self.identities.add_result(player2runner, 'wins')
 
     def tally_cut_table(self, table, players):
-        
         if table['player1']['winner']:
             winner = 'player1'
             loser = 'player2'
@@ -46,7 +44,6 @@ class CobraResults(g.Results):
         self.identities.add_result(players.get_identity(player_id=table[loser]['id'], role=table[loser]['role']), 'loses')
 
     def tally_results(self, rounds, players_dict):
-        
         players = g.Players(players_dict)
         
         for round in rounds:

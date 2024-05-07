@@ -13,16 +13,13 @@ class Players:
 class Identities:
     
     def __init__(self) -> None:
-            
         self.identities = {}
         
-    #TODO: move the for loop into the results class somehow
     def generate_rows(self):
         for identity, values in self.identities.items():
             yield [identity, values["wins"], values["draws"], values["loses"]] 
             
     def add_result(self, identity: str, result: str):
-        
         if identity not in self.identities:
             self.identities.update({identity: {'wins': 0, 'draws': 0, 'loses': 0}})
             

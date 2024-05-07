@@ -5,7 +5,6 @@ class AesopsResults(g.Results):
 
     #TODO: remove unused argument from base class
     def tally_swiss_table(self, table, players):
-        
         match table['runnerScore']:
             case '3':
                 self.identities.add_result(table['runnerIdentity'], 'wins')
@@ -18,7 +17,6 @@ class AesopsResults(g.Results):
                 self.identities.add_result(table['corpIdentity'], 'wins')
 
     def tally_cut_table(self, table, players):
-        
         if table['winner_id'] == table['runnerPlayer']:
             winner_role = 'runner'
             loser_role = 'corp'
@@ -30,7 +28,6 @@ class AesopsResults(g.Results):
         self.identities.add_result(players.get_identity(player_id=table['loser_id'], role=loser_role), 'loses')
 
     def tally_results(self, rounds, players_dict):
-        
         players = g.Players(players_dict)
         
         for round in rounds:
@@ -40,6 +37,7 @@ class AesopsResults(g.Results):
                         self.tally_cut_table(table=table, players=players)
                     else:
                         self.tally_swiss_table(table=table, players=players)
+
 
 def get_aesops_json(url: str):
     # get the results from aesopstables.net from the URL of a given tournament
