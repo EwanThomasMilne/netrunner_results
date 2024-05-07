@@ -5,8 +5,13 @@ results_by_identity = cobra.Results()
 
 with open('config.txt') as config:
     for url in config:
-        cobra_json = cobra.get_cobra_json(url)
-        results_by_identity.tally_results(cobra_json['rounds'], cobra_json['players'])
+        
+        if 'aesop' in url:
+            json = cobra.get_aesops_json(url)
+        else:
+            json = cobra.get_cobra_json(url)
+
+        results_by_identity.tally_results(json['rounds'], json['players'])
         
         for row in results_by_identity.generate_report():
             print(row)

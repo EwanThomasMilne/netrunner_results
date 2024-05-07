@@ -1,50 +1,8 @@
 import requests
-
-#TODO: think up some better class names
-
-class Players:
-
-    def __init__(self, player_dict) -> None:
-        self.player_dict = player_dict
-        
-    # takes a player's cobra id and a side and returns their id for that side
-    def get_identity(self, player_id: int, role: str) -> str:
-        for player in self.player_dict:
-            if player['id'] == player_id:
-                return player[role+'Identity']
+import generic as g
 
 
-class Identities:
-    
-    def __init__(self) -> None:
-            
-        self.identities = {}
-        
-    #TODO: move the for loop into the results class somehow
-    def generate_rows(self):
-        for identity, values in self.identities.items():
-            yield [identity, values["wins"], values["draws"], values["loses"]] 
-            
-    def add_result(self, identity: str, result: str):
-        
-        if identity not in self.identities:
-            self.identities.update({identity: {'wins': 0, 'draws': 0, 'loses': 0}})
-            
-        self.identities[identity][result] += 1
-
-
-class Results:
-    
-    def __init__(self) -> None:
-        self.identities = Identities()
-        
-    def generate_report(self):
-        
-        result = [['id','wins','draws','loses']]
-        for row in self.identities.generate_rows():
-            result.append(row)
-            
-        return result
+class CobraResults(g.Results):
 
     def tally_swiss_match(self, match, players):
         
@@ -93,7 +51,7 @@ class Results:
 
     def tally_results(self, rounds, players_dict):
         
-        players = Players(players_dict)
+        players = g.Players(players_dict)
         
         for round in rounds:
             for match in round:
@@ -104,6 +62,7 @@ class Results:
 
 
 def get_cobra_json(url: str):
-    # get the results from cobra from a URL of a given tournament
-    resp = requests.get(url=url+'.json', params='')
+    # get the results from tournaments.nullsignal.games from the URL of a given tournament
+    json_url = url.strip() + '.json'
+    resp = requests.get(url=json_url, params='')
     return resp.json()
