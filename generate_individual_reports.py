@@ -17,6 +17,6 @@ with open('config.txt') as config:
 
         results.add_tournament_data(json['rounds'], PlayersWrapper(json['players']))
         
-        with open(json['name']+'.csv','w') as f:
+        with open(json['name']+'.csv','w', newline='') as f:
             w = csv.writer(f)
             w.writerows(results.generate_report())
