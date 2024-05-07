@@ -61,9 +61,10 @@ class ResultsByIdentityObject:
     
     def generate_report(self):
         # generates a flat view of the results suitable for printing or outputting
-        result = [['id','wins','draws','loses']]
+        result = [['id','wins','draws','loses', 'winrate']]
         
         for identity, values in self.identities_dict.items():
-            result.append([identity, values["wins"], values["draws"], values["loses"]])
+            winrate = values["wins"] / (values["wins"] + values["draws"] + values["loses"])
+            result.append([identity, values["wins"], values["draws"], values["loses"], round(winrate, 2)])
         
         return result
