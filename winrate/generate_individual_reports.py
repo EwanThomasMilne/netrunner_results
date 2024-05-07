@@ -1,9 +1,9 @@
 import csv
 
-import cobra
-import aesops
+import cobra_winrate as cobra
+import aesops_winrate as aesops
 
-from generic import PlayersWrapper
+from winrate.winrate import PlayersWrapper
 
 with open('config.txt') as config:
     for url in config:

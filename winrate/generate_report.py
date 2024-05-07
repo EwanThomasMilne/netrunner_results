@@ -1,10 +1,10 @@
 import csv
 
-import cobra
-import aesops
+import cobra_winrate as cobra
+import aesops_winrate as aesops
 
-from generic import ResultsByIdentityObject
-from generic import PlayersWrapper
+from winrate import ResultsByIdentityObject
+from winrate import PlayersWrapper
 
 combined_results = ResultsByIdentityObject()
 
