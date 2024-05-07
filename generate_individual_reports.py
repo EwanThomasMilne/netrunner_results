@@ -1,18 +1,21 @@
+import csv
+
 import cobra
 import aesops
-import csv
+
+from generic import PlayersWrapper
 
 with open('config.txt') as config:
     for url in config:
         
         if 'aesop' in url:
-            results = aesops.AesopsResults()
-            json = aesops.get_aesops_json(url=url)
+            results = aesops.AesopsResultsByIdentityObject()
+            json = aesops.get_json(url)
         else:
-            results = cobra.CobraResults()
-            json = cobra.get_cobra_json(url)
+            results = cobra.CobraResultsByIdentityObject()
+            json = cobra.get_json(url)
 
-        results.tally_results(json['rounds'], json['players'])
+        results.add_tournament_data(json['rounds'], PlayersWrapper(json['players']))
         
         with open(json['name']+'.csv','w') as f:
             w = csv.writer(f)

@@ -1,23 +1,21 @@
 import requests
-import generic as g 
+from generic import ResultsByIdentityObject
 
-class AesopsResults(g.Results):
+class AesopsResultsByIdentityObject(ResultsByIdentityObject):
 
-    #TODO: remove unused argument from base class
-    def tally_swiss_table(self, table, players):
-        #TODO: why are these strings?
+    def add_swiss_table_data(self, table, players):
         match table['runnerScore']:
             case '3':
-                self.identities.add_result(table['runnerIdentity'], 'wins')
-                self.identities.add_result(table['corpIdentity'], 'loses')
+                self.add_result(table['runnerIdentity'], 'wins')
+                self.add_result(table['corpIdentity'], 'loses')
             case '1':
-                self.identities.add_result(table['runnerIdentity'], 'draws')
-                self.identities.add_result(table['corpIdentity'], 'draws')
+                self.add_result(table['runnerIdentity'], 'draws')
+                self.add_result(table['corpIdentity'], 'draws')
             case '0':
-                self.identities.add_result(table['runnerIdentity'], 'loses')
-                self.identities.add_result(table['corpIdentity'], 'wins')
+                self.add_result(table['runnerIdentity'], 'loses')
+                self.add_result(table['corpIdentity'], 'wins')
 
-    def tally_cut_table(self, table, players):
+    def add_cut_table_data(self, table, players):
         if table['winner_id'] == table['runnerPlayer']:
             winner_role = 'runner'
             loser_role = 'corp'
@@ -25,22 +23,18 @@ class AesopsResults(g.Results):
             winner_role = 'corp'
             loser_role = 'runner'
             
-        self.identities.add_result(players.get_identity(player_id=table['winner_id'], role=winner_role), 'wins')
-        self.identities.add_result(players.get_identity(player_id=table['loser_id'], role=loser_role), 'loses')
-
-    def tally_results(self, rounds, players_dict):
-        players = g.Players(players_dict)
-        
-        for round in rounds:
-            for table in round:
-                if table['runnerPlayer'] != '(BYE)' and table['corpPlayer'] != '(BYE)':
-                    if 'eliminationGame' in table: 
-                        self.tally_cut_table(table=table, players=players)
-                    else:
-                        self.tally_swiss_table(table=table, players=players)
+        self.add_result(players.get_identity(player_id=table['winner_id'], role=winner_role), 'wins')
+        self.add_result(players.get_identity(player_id=table['loser_id'], role=loser_role), 'loses')
+                        
+    def add_table_data(self, table, players):
+        if table['runnerPlayer'] != '(BYE)' and table['corpPlayer'] != '(BYE)':
+            if 'eliminationGame' in table: 
+                self.add_cut_table_data(table, players)
+            else:
+                self.add_swiss_table_data(table, players)
 
 
-def get_aesops_json(url: str):
+def get_json(url: str):
     # get the results from aesopstables.net from the URL of a given tournament
     json_url = url.strip() + '/abr_export'
     resp = requests.get(url=json_url, params='')
