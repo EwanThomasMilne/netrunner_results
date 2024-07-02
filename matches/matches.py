@@ -22,10 +22,8 @@ class TablesResultsByIdentity:
         for result in results_object.games:
             self.games.append(result)
         
-    def add_game_data(self, runner_id, corp_id, winner, draw):
-
-        #TODO: some logic for tournament, round, table, etc
-        self.games.append({'runner_id': runner_id, 'corp_id': corp_id, 'winner': winner, 'draw': draw})
+    def add_game_data(self, phase, round, table, corp_player, corp_id, winner, runner_player, runner_id):
+        self.games.append({ 'phase': phase, 'round': round, 'table': table, 'corp_player': corp_player, 'corp_id': corp_id, 'winner': winner, 'runner_player': runner_player, 'runner_id': runner_id })
 
     def add_table_data(self, table, players):
         pass
@@ -42,9 +40,9 @@ class TablesResultsByIdentity:
     
     def generate_report(self):
         # generates a flat view of the results suitable for printing or outputting
-        result = [['runner_id', 'corp_id', 'winner', 'draw']]
+        report = [[ 'phase', 'round', 'table', 'corp_player', 'corp_id', 'result', 'runner_player', 'runner_id' ]]
         
         for game in self.games:
-            result.append([game['runner_id'], game['corp_id'], game['winner'], game['draw']])
+            report.append([game['phase'], game['round'], game['table'], game['corp_player'], game['corp_id'], game['winner'], game['runner_player'], game['runner_id']])
         
-        return result
+        return report

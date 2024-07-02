@@ -8,24 +8,34 @@ class CobraTablesResultsByIdentity(TablesResultsByIdentity):
         player1_corp =  players.get_identity(player_id=table['player1']['id'], role='corp')
         player2_runner =  players.get_identity(player_id=table['player2']['id'], role='runner')
         player2_corp =  players.get_identity(player_id=table['player2']['id'], role='corp')
-        
+
+        phase = 'swiss'
+        result = 'unknown'
+
+        # Game 1 of DSS        
         match table['player1']['runnerScore']: 
             case 3:
-                self.add_game_data(runner_id=player1_runner, corp_id=player2_corp, winner='runner', draw=False)
+                result = 'runner'
             case 1:
-                self.add_game_data(runner_id=player1_runner, corp_id=player2_corp, winner='', draw=True)
+                result = 'draw'
             case 0:
-                self.add_game_data(runner_id=player1_runner, corp_id=player2_corp, winner='corp', draw=False)
-            
+                result = 'corp'
+        self.add_game_data(phase=phase, round='', table='', corp_player='', corp_id=player2_corp, winner=result, runner_player='', runner_id=player1_runner)
+
+        # Game 2 of DSS
         match table['player1']['corpScore']:
             case 3:
-                self.add_game_data(runner_id=player2_runner, corp_id=player1_corp, winner='runner', draw=False)
+                result = 'runner'
             case 1:
-                self.add_game_data(runner_id=player2_runner, corp_id=player1_corp, winner='', draw=True)
+                result = 'draw'
             case 0:
-                self.add_game_data(runner_id=player2_runner, corp_id=player1_corp, winner='corp', draw=False)
+                result = 'corp'
+        self.add_game_data(phase=phase, round='', table='', corp_player='', corp_id=player1_corp, winner=result, runner_player='', runner_id=player2_runner)
 
     def add_cut_table_data(self, table, players):
+
+        phase = 'cut'
+        result = 'unknown'
 
         # ever get the feeling that there must be a simpler way of doing something?
         if table['player1']['role'] == 'runner':
@@ -36,11 +46,11 @@ class CobraTablesResultsByIdentity(TablesResultsByIdentity):
             corp_id = players.get_identity(table['player1']['id'], 'corp')
         
         if table['player1']['winner']:
-            winner = table['player1']['role']
+            result = table['player1']['role']
         else:
-            winner = table['player2']['role']
+            result = table['player2']['role']
             
-        self.add_game_data(runner_id=runner_id, corp_id=corp_id, winner=winner, draw=False)
+        self.add_game_data(phase=phase, round='', table='', corp_player='', corp_id=corp_id, winner=result, runner_player='', runner_id=runner_id)
                         
     def add_table_data(self, table, players):
         if table['eliminationGame']:
