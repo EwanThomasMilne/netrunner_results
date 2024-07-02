@@ -4,40 +4,48 @@ from matches import TablesResultsByIdentity
 class AesopsTablesResultsByIdentity(TablesResultsByIdentity):
 
 
-    def add_swiss_table_data(self, table, players):
-        
+    def add_swiss_table_data(self, table, players, roundNum):
+        phase = 'swiss'
+        tableNum = table['tableNumber']
+        runner_player = players.get_name(table['runnerPlayer'])
+        corp_player = players.get_name(table['corpPlayer'])
         runner_id = players.get_identity(table['runnerPlayer'], 'runner')
         corp_id = players.get_identity(table['corpPlayer'], 'corp')
         
+        result = 'unknown'
         match table['runnerScore']:
             case '3':
-                self.add_game_data(runner_id=runner_id, corp_id=corp_id, winner='runner', draw=False)
-
+                result = 'runner'
             case '1':
-                self.add_game_data(runner_id=runner_id, corp_id=corp_id, winner='', draw=True)
-
+                result = 'draw'
             case '0':
-                self.add_game_data(runner_id=runner_id, corp_id=corp_id, winner='corp', draw=False)
+                result = 'corp'
 
-    def add_cut_table_data(self, table, players):
-        
+        self.add_game_data(phase=phase, round=roundNum, table=tableNum, corp_player=corp_player, corp_id=corp_id, winner=result, runner_player=runner_player, runner_id=runner_id)
+
+    def add_cut_table_data(self, table, players, roundNum):
+        phase = 'cut'
+        tableNum = table['tableNumber']
+        runner_player = players.get_name(table['runnerPlayer'])
+        corp_player = players.get_name(table['corpPlayer'])
+
         runner_id = players.get_identity(table['runnerPlayer'], 'runner')
         corp_id = players.get_identity(table['corpPlayer'], 'corp')
         
         if table['winner_id'] == table['runnerPlayer']:
-            winner = 'runner'
+            result = 'runner'
         else:
-            winner = 'corp'
+            result = 'corp'
             
-        self.add_game_data(runner_id=runner_id, corp_id=corp_id, winner=winner, draw=False)
-        
+        self.add_game_data(phase=phase, round=roundNum, table=tableNum, corp_player=corp_player, corp_id=corp_id, winner=result, runner_player=runner_player, runner_id=runner_id)       
                         
-    def add_table_data(self, table, players):
+    def add_table_data(self, table, players, roundNum):
+
         if table['runnerPlayer'] != '(BYE)' and table['corpPlayer'] != '(BYE)':
             if 'eliminationGame' in table: 
-                self.add_cut_table_data(table, players)
+                self.add_cut_table_data(table, players, roundNum)
             else:
-                self.add_swiss_table_data(table, players)
+                self.add_swiss_table_data(table, players, roundNum)
 
 
 def get_json(url: str):
