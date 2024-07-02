@@ -17,3 +17,5 @@ tournaments:
   - name: emea
     url: "https://tournaments.nullsignal.games/tournaments/3466"
 ```
+
+outputs standings in CSV format to **TOURNAMENT-NAME.standings.csv**
