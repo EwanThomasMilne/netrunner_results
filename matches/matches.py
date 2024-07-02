@@ -10,6 +10,12 @@ class PlayersWrapper:
             if player['id'] == player_id:
                 return player[role+'Identity']
 
+    # takes a player's cobra id and returns their name
+    def get_name(self, player_id: int) -> str:
+        for player in self.player_dict:
+            if player['id'] == player_id:
+                return player['name']
+
 
 class TablesResultsByIdentity:
     #takes in tournament data and sorts it by identity rather than round
