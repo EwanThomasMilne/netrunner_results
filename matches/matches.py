@@ -28,15 +28,18 @@ class TablesResultsByIdentity:
     def add_table_data(self, table, players):
         pass
         
-    def add_round_data(self, round, players):
+    def add_round_data(self, round, players, roundNum):
         # takes a dictionary of data about a round and adds it to the identities_dict
         for table in round:
-            self.add_table_data(table, players)
+            self.add_table_data(table, players, roundNum)
         
     def add_tournament_data(self, tournament, players):
         # takes a dictionary of data about mutliple rounds in a tournament and adds it to the identities_dict
+        roundNum = 1
         for round in tournament:
-            self.add_round_data(round, players)
+            self.add_round_data(round, players, roundNum)
+            roundNum += 1
+
     
     def generate_report(self):
         # generates a flat view of the results suitable for printing or outputting
