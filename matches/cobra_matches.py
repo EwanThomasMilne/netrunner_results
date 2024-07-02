@@ -25,6 +25,10 @@ class CobraTablesResultsByIdentity(TablesResultsByIdentity):
                 result = 'draw'
             case 0:
                 result = 'corp'
+        if table['intentionalDraw']:
+            result = 'ID'
+        if table['twoForOne']:
+            result = '2-for-1'
         self.add_game_data(phase=phase, round=roundNum, table=tableNum, corp_player=player2_name, corp_id=player2_corp, winner=result, runner_player=player1_name, runner_id=player1_runner)
 
         # Game 2 of DSS - player1 plays corp
@@ -36,6 +40,10 @@ class CobraTablesResultsByIdentity(TablesResultsByIdentity):
                 result = 'draw'
             case 0:
                 result = 'runner'
+        if table['intentionalDraw']:
+            result = 'ID'
+        if table['twoForOne']:
+            result = '2-for-1'
         self.add_game_data(phase=phase, round=roundNum, table=tableNum, corp_player=player1_name, corp_id=player1_corp, winner=result, runner_player=player2_name, runner_id=player2_runner)
 
     def add_cut_table_data(self, table, players, roundNum):
