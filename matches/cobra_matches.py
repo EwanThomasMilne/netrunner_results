@@ -10,9 +10,10 @@ class CobraTablesResultsByIdentity(TablesResultsByIdentity):
         player2_corp =  players.get_identity(player_id=table['player2']['id'], role='corp')
 
         phase = 'swiss'
-        result = 'unknown'
+        tableNum = table['table']
 
-        # Game 1 of DSS        
+        # Game 1 of DSS
+        result = 'unknown'        
         match table['player1']['runnerScore']: 
             case 3:
                 result = 'runner'
@@ -20,9 +21,10 @@ class CobraTablesResultsByIdentity(TablesResultsByIdentity):
                 result = 'draw'
             case 0:
                 result = 'corp'
-        self.add_game_data(phase=phase, round='', table='', corp_player='', corp_id=player2_corp, winner=result, runner_player='', runner_id=player1_runner)
+        self.add_game_data(phase=phase, round='', table=tableNum, corp_player='', corp_id=player2_corp, winner=result, runner_player='', runner_id=player1_runner)
 
         # Game 2 of DSS
+        result = 'unknown'
         match table['player1']['corpScore']:
             case 3:
                 result = 'runner'
@@ -30,11 +32,12 @@ class CobraTablesResultsByIdentity(TablesResultsByIdentity):
                 result = 'draw'
             case 0:
                 result = 'corp'
-        self.add_game_data(phase=phase, round='', table='', corp_player='', corp_id=player1_corp, winner=result, runner_player='', runner_id=player2_runner)
+        self.add_game_data(phase=phase, round='', table=tableNum, corp_player='', corp_id=player1_corp, winner=result, runner_player='', runner_id=player2_runner)
 
     def add_cut_table_data(self, table, players):
 
         phase = 'cut'
+        tableNum = table['table']
         result = 'unknown'
 
         # ever get the feeling that there must be a simpler way of doing something?
@@ -50,7 +53,7 @@ class CobraTablesResultsByIdentity(TablesResultsByIdentity):
         else:
             result = table['player2']['role']
             
-        self.add_game_data(phase=phase, round='', table='', corp_player='', corp_id=corp_id, winner=result, runner_player='', runner_id=runner_id)
+        self.add_game_data(phase=phase, round='', table=tableNum, corp_player='', corp_id=corp_id, winner=result, runner_player='', runner_id=runner_id)
                         
     def add_table_data(self, table, players):
         if table['eliminationGame']:
