@@ -16,6 +16,10 @@ class CobraTablesResultsByIdentity(TablesResultsByIdentity):
         player2_runner =  players.get_identity(player_id=table['player2']['id'], role='runner')
         player2_corp =  players.get_identity(player_id=table['player2']['id'], role='corp')
 
+        # if either player_id is null, assume this round was a Bye and do not record the results
+        if player1_cobra_id is None or player2_cobra_id is None:
+            return
+
         # Game 1 of DSS - player1 plays runner
         result = 'unknown'        
         match table['player1']['runnerScore']: 
