@@ -1,8 +1,6 @@
 # netrunner_results
 A collection of tools/scripts for agregating results from tournaments.nullsignal.games and aesopstables.net
 
-<<<<<<< Updated upstream
-=======
 ## Requirements
 * Python 3.10+
 
@@ -11,6 +9,14 @@ A collection of tools/scripts for agregating results from tournaments.nullsignal
 ```
 
 ## Winrate
+
+```
+  python3 ./winrate/generate_report.py
+```
+
+reads config from **config.txt**
+
+outputs win rate report to results.csv
 
 ## Matches
 
@@ -22,7 +28,6 @@ reads config from **config.yml**
 
 outputs all match results in CSV format to results.csv
 
->>>>>>> Stashed changes
 ## Standings
 
 *Cobra only--Aesops is not currently implemented*
@@ -31,13 +36,17 @@ outputs all match results in CSV format to results.csv
   python3 ./standings/generate_standings.py
 ```
 
+outputs standings in CSV format to **TOURNAMENT-NAME.standings.csv**
+
 reads config from **config.yml**
+
+## config.yml
 
 ```
 ---
 tournaments:
-  - name: emea
+  - name: "EMEA"
     url: "https://tournaments.nullsignal.games/tournaments/3466"
+  - name: "ACC"
+    url: "https://www.aesopstables.net/475"
 ```
-
-outputs standings in CSV format to **TOURNAMENT-NAME.standings.csv**

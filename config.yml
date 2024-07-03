@@ -1,4 +1,16 @@
 ---
 tournaments:
-  - name: emea
+  - name: "EMEA"
     url: "https://tournaments.nullsignal.games/tournaments/3466"
+  - name: "ACC"
+    url: "https://www.aesopstables.net/475"
+  - name: "APAC"
+    url: "https://www.aesopstables.net/489"
+  - name: "West Canadian Nats"
+    url: "https://www.aesopstables.net/494"
+  - name: "OTG Midwest"
+    url: "https://www.aesopstables.net/483"
+  - name: "NANPC Boston"
+    url: "https://www.aesopstables.net/470"
+  - name: "FLy to EMEA #3"
+    url: "https://www.aesopstables.net/464"
