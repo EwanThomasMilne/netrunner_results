@@ -4,11 +4,22 @@ class PlayersWrapper:
     def __init__(self, player_dict) -> None:
         self.player_dict = player_dict
         
+    # takes an identity name and standardises it (if necessary)
+    def standardise_identity(self, identity: str) -> str:
+        match identity:
+            case 'Rielle "Kit" Peddler: Transhuman':
+                identity = 'Rielle “Kit” Peddler: Transhuman'
+            case 'Esa Afontov: Eco-Insurrectionist':
+                identity = 'Esâ Afontov: Eco-Insurrectionist'
+            case 'Tao Salonga: Telepresence Magician':
+                identity = 'Tāo Salonga: Telepresence Magician'
+        return identity
+
     # takes a player's cobra id and a side and returns their id for that side
     def get_identity(self, player_id: int, role: str) -> str:
         for player in self.player_dict:
             if player['id'] == player_id:
-                return player[role+'Identity']
+                return self.standardise_identity(player[role+'Identity'])
 
     # takes a player's cobra id and returns their name
     def get_name(self, player_id: int) -> str:
