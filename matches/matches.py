@@ -13,6 +13,8 @@ class PlayersWrapper:
                 identity = 'Esâ Afontov: Eco-Insurrectionist'
             case 'Tao Salonga: Telepresence Magician':
                 identity = 'Tāo Salonga: Telepresence Magician'
+            case 'Ayla "Bios" Rahim: Simulant Specialist':
+                identity ='Ayla “Bios” Rahim: Simulant Specialist'
         return identity
 
     # takes a player's cobra id and a side and returns their id for that side
