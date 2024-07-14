@@ -1,5 +1,7 @@
 ---
 tournaments:
+  - name: "ICC"
+    url: "https://tournaments.nullsignal.games/tournaments/3487"
   - name: "EMEA"
     url: "https://tournaments.nullsignal.games/tournaments/3466"
   - name: "ACC"
