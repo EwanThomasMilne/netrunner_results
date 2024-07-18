@@ -7,6 +7,19 @@ def get_json(url: str):
     resp = requests.get(url=json_url, params='')
     return resp.json()
 
+# takes an identity name and standardises it (if necessary)
+def standardise_identity(identity: str) -> str:
+    match identity:
+        case 'Rielle "Kit" Peddler: Transhuman':
+            identity = 'Rielle “Kit” Peddler: Transhuman'
+        case 'Esa Afontov: Eco-Insurrectionist':
+            identity = 'Esâ Afontov: Eco-Insurrectionist'
+        case 'Tao Salonga: Telepresence Magician':
+            identity = 'Tāo Salonga: Telepresence Magician'
+        case 'Ayla "Bios" Rahim: Simulant Specialist':
+            identity ='Ayla “Bios” Rahim: Simulant Specialist'
+    return identity
+
 def return_standings(json, tournament_sw: str):
     standings = []
     standings.append(['rank','name','corpID','corp_wins','corp_losses','corp_draws','runnerID','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS'])
@@ -17,7 +30,7 @@ def return_standings(json, tournament_sw: str):
                 player_results = return_player_results_cobra(player['id'], json)
             case 'aesops':
                 player_results = return_player_results_aesops(player['id'], json)
-        standing.extend([player['rank'], player['name'], player['corpIdentity'], str(player_results['corp_wins']), str(player_results['corp_losses']), str(player_results['corp_draws']), player['runnerIdentity'], str(player_results['runner_wins']), str(player_results['runner_losses']), str(player_results['runner_draws']), player['matchPoints'], player['strengthOfSchedule'], player['extendedStrengthOfSchedule']])
+        standing.extend([player['rank'], player['name'], player['corpIdentity'], str(player_results['corp_wins']), str(player_results['corp_losses']), str(player_results['corp_draws']), standardise_identity(player['runnerIdentity']), str(player_results['runner_wins']), str(player_results['runner_losses']), str(player_results['runner_draws']), player['matchPoints'], player['strengthOfSchedule'], player['extendedStrengthOfSchedule']])
         standings.append(standing)
     return standings
 
@@ -111,7 +124,7 @@ with open('config.yml', 'r') as configfile:
     for tournament in config['tournaments']:
         filename = tournament['name'] + '.standings.csv'
         json = get_json(tournament['url'])
-        
+
         if 'aesop' in tournament['url']:
             standings = return_standings(json, 'aesops')
         else:
