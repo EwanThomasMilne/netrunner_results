@@ -1,5 +1,7 @@
 ---
 tournaments:
+  - name: "NANPC Philadelphia"
+    url: "https://www.aesopstables.net/550"
   - name: "ICC"
     url: "https://tournaments.nullsignal.games/tournaments/3487"
   - name: "EMEA"
