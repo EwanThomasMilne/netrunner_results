@@ -9,12 +9,11 @@ def get_cobra_json(url: str):
 
 def return_cobra_standings(json):
     standings = []
+    standings.append(['rank','name','corpID','corp_wins','corp_losses','corp_draws','runnerID','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS'])
     for player in json['players']:
         standing = []
-        standing.extend([player['rank'], player['name'], player['corpIdentity'], player['runnerIdentity'], player['matchPoints'], player['strengthOfSchedule'], player['extendedStrengthOfSchedule']])
-        if player['rank'] <= 16:
-            player_results = return_player_results_cobra(player['id'], json)
-            standing.extend([str(player_results['corp_wins']), str(player_results['corp_losses']), str(player_results['corp_draws']), str(player_results['runner_wins']), str(player_results['runner_losses']), str(player_results['runner_draws'])])
+        player_results = return_player_results_cobra(player['id'], json)
+        standing.extend([player['rank'], player['name'], player['corpIdentity'], str(player_results['corp_wins']), str(player_results['corp_losses']), str(player_results['corp_draws']), player['runnerIdentity'], str(player_results['runner_wins']), str(player_results['runner_wins']), str(player_results['runner_losses']), str(player_results['runner_draws']), player['matchPoints'], player['strengthOfSchedule'], player['extendedStrengthOfSchedule']])
         standings.append(standing)
     return standings
 
