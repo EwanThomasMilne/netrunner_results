@@ -21,7 +21,7 @@ class CobraTablesResultsByIdentity(TablesResultsByIdentity):
             return
 
         # Game 1 of DSS - player1 plays runner
-        result = 'unknown'        
+        result = 'unknown'
         match table['player1']['runnerScore']: 
             case 3:
                 result = 'runner'
@@ -29,6 +29,8 @@ class CobraTablesResultsByIdentity(TablesResultsByIdentity):
                 result = 'draw'
             case 0:
                 result = 'corp'
+        if table['player1']['runnerScore'] + table['player2']['corpScore'] == 0:
+            result = 'unknown'
         if table['intentionalDraw']:
             result = 'ID'
         if table['twoForOne']:
@@ -44,6 +46,8 @@ class CobraTablesResultsByIdentity(TablesResultsByIdentity):
                 result = 'draw'
             case 0:
                 result = 'runner'
+        if table['player1']['corpScore'] + table['player2']['runnerScore'] == 0:
+            result = 'unknown'
         if table['intentionalDraw']:
             result = 'ID'
         if table['twoForOne']:
