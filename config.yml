@@ -1,5 +1,7 @@
 ---
 tournaments:
+  - name: "North Australian Nats"
+    url: "https://www.aesopstables.net/558"
   - name: "East Canadian Nats"
     url: "https://tournaments.nullsignal.games/tournaments/3500"
   - name: "NANPC Philadelphia"
