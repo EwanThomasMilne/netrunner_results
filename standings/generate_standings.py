@@ -120,9 +120,10 @@ def return_player_results_cobra(player_id: str, json):
 
 with open('config.yml', 'r') as configfile:
     config = yaml.safe_load(configfile)
+    standings_dir = 'results/standings/'
 
     for tournament in config['tournaments']:
-        filename = tournament['name'] + '.standings.csv'
+        filename = standings_dir + tournament['name'] + '.standings.csv'
         json = get_json(tournament['url'])
 
         if 'aesop' in tournament['url']:
