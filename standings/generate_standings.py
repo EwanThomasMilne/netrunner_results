@@ -20,9 +20,9 @@ def standardise_identity(identity: str) -> str:
             identity ='Ayla “Bios” Rahim: Simulant Specialist'
     return identity
 
-def return_standings(json, tournament_sw: str):
+def return_standings(json, tournament_sw: str, tournament_name: str):
     standings = []
-    standings.append(['rank','name','corpID','corp_wins','corp_losses','corp_draws','runnerID','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS'])
+    standings.append(['tournament','rank','name','corpID','corp_wins','corp_losses','corp_draws','runnerID','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS'])
     for player in json['players']:
         standing = []
         match tournament_sw:
@@ -30,7 +30,7 @@ def return_standings(json, tournament_sw: str):
                 player_results = return_player_results_cobra(player['id'], json)
             case 'aesops':
                 player_results = return_player_results_aesops(player['id'], json)
-        standing.extend([player['rank'], player['name'], player['corpIdentity'], str(player_results['corp_wins']), str(player_results['corp_losses']), str(player_results['corp_draws']), standardise_identity(player['runnerIdentity']), str(player_results['runner_wins']), str(player_results['runner_losses']), str(player_results['runner_draws']), player['matchPoints'], player['strengthOfSchedule'], player['extendedStrengthOfSchedule']])
+        standing.extend([tournament_name, player['rank'], player['name'], player['corpIdentity'], str(player_results['corp_wins']), str(player_results['corp_losses']), str(player_results['corp_draws']), standardise_identity(player['runnerIdentity']), str(player_results['runner_wins']), str(player_results['runner_losses']), str(player_results['runner_draws']), player['matchPoints'], player['strengthOfSchedule'], player['extendedStrengthOfSchedule']])
         standings.append(standing)
     return standings
 
@@ -127,9 +127,9 @@ with open('config.yml', 'r') as configfile:
         json = get_json(tournament['url'])
 
         if 'aesop' in tournament['url']:
-            standings = return_standings(json, 'aesops')
+            standings = return_standings(json, 'aesops', tournament['name'])
         else:
-            standings = return_standings(json, 'cobra')
+            standings = return_standings(json, 'cobra', tournament['name'])
 
         with open(filename,'w',newline='') as f:
             w = csv.writer(f)
