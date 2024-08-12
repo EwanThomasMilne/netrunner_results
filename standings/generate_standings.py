@@ -34,7 +34,7 @@ def get_faction(id_info, identity: str) -> str:
 
 def return_standings(json, tournament_sw: str, tournament_name: str, id_info):
     standings = []
-    standings.append(['tournament','rank','name','corp_ID','corp_faction','corp_wins','corp_losses','corp_draws','runner_ID','runner_faction','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS'])
+    standings.append(['tournament','rank','name','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction'])
     for player in json['players']:
         standing = []
         match tournament_sw:
@@ -45,10 +45,13 @@ def return_standings(json, tournament_sw: str, tournament_name: str, id_info):
         
         runner_id = standardise_identity(player['runnerIdentity'])
         runner_faction = id_info[runner_id].get('faction','unknown')
+        runner_name = id_info[runner_id].get('short_name','unknown')
         corp_id = player['corpIdentity']
         corp_faction = id_info[corp_id].get('faction','unknown')
+        corp_name = id_info[corp_id].get('short_name','unknown')
 
-        standing.extend([tournament_name, player['rank'], player['name'], corp_id, corp_faction, str(player_results['corp_wins']), str(player_results['corp_losses']), str(player_results['corp_draws']), runner_id, runner_faction, str(player_results['runner_wins']), str(player_results['runner_losses']), str(player_results['runner_draws']), player['matchPoints'], player['strengthOfSchedule'], player['extendedStrengthOfSchedule']])
+
+        standing.extend([tournament_name, player['rank'], player['name'], corp_name, str(player_results['corp_wins']), str(player_results['corp_losses']), str(player_results['corp_draws']), runner_name, str(player_results['runner_wins']), str(player_results['runner_losses']), str(player_results['runner_draws']), player['matchPoints'], player['strengthOfSchedule'], player['extendedStrengthOfSchedule'], corp_id, corp_faction, runner_id, runner_faction])
         standings.append(standing)
     return standings
 
