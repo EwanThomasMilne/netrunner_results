@@ -91,7 +91,9 @@
 'René “Loup” Arcemont: Party Animal':
   faction: Anarch
   short_name: Loup
-'Sebastiao Souza Pessoa: Activist Organizer':
+  alt_names:
+    - 'Rene "Loup" Arcemont: Party Animal'
+'Sebastião Souza Pessoa: Activist Organizer':
   faction: Anarch
   short_name: Seb
   alt_names:
@@ -126,9 +128,11 @@
 'Az McCaffrey: Mechanical Prodigy':
   faction: Criminal
   short_name: Az
-'Ken "Express" Tenma: Disappeared Clone':
+'Ken “Express” Tenma: Disappeared Clone':
   faction: Criminal
   short_name: Ken
+  alt_names:
+    - 'Ken "Express" Tenma: Disappeared Clone'
 'Mercury: Chrome Libertador':
   faction: Criminal
   short_name: Mecury

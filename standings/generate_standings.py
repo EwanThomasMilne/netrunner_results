@@ -18,6 +18,12 @@ def standardise_identity(identity: str) -> str:
             identity = 'Tāo Salonga: Telepresence Magician'
         case 'Ayla "Bios" Rahim: Simulant Specialist':
             identity ='Ayla “Bios” Rahim: Simulant Specialist'
+        case 'Sebastiao Souza Pessoa: Activist Organizer':
+            identity = 'Sebastião Souza Pessoa: Activist Organizer'
+        case 'Ken "Express" Tenma: Disappeared Clone':
+            identity = 'Ken “Express” Tenma: Disappeared Clone'
+        case 'Rene "Loup" Arcemont: Party Animal':
+            identity = 'René “Loup” Arcemont: Party Animal'
     return identity
 
 # takes an identity and returns the faction anem of that identity
