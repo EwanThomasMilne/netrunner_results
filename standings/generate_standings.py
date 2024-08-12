@@ -26,12 +26,6 @@ def standardise_identity(identity: str) -> str:
             identity = 'René “Loup” Arcemont: Party Animal'
     return identity
 
-# takes an identity and returns the faction anem of that identity
-def get_faction(id_info, identity: str) -> str:
-    faction = 'unknown'
-
-    return faction
-
 def return_standings(json, tournament_sw: str, tournament_name: str, id_info):
     standings = []
     standings.append(['tournament','rank','name','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction'])
