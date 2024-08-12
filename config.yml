@@ -30,3 +30,7 @@ tournaments:
     url: "https://www.aesopstables.net/572"
   - name: "US West Coast Nats"
     url: "https://www.aesopstables.net/579"
+  - name: "UK Regionals Nottingham"
+    url: "https://www.aesopstables.net/582"
+  - name: "German Nats"
+    url: "https://tournaments.nullsignal.games/tournaments/3520"
