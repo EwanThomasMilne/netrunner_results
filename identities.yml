@@ -1,0 +1,164 @@
+---
+'Azmari EdTech: Shaping the Future':
+  faction: NBN
+  short_name: Azmari
+'NBN: Reality Plus':
+  faction: NBN
+  short_name: 'R+'
+'Near-Earth Hub: Broadcast Center':
+  faction: NBN
+  short_name: 'NEH'
+'Pravdivost Consulting: Political Solutions':
+  faction: NBN
+  short_name: Prav
+'Epiphany Analytica: Nations Undivided':
+  faction: NBN
+  short_name: Epiphany
+'GameNET: Where Dreams are Real':
+  faction: NBN
+  short_name: GameNET
+'Sportsmetal: Go Big or Go Home':
+  faction: HB
+  short_name: Sports
+'Haas-Bioroid: Precision Design':
+  faction: HB
+  short_name: PD
+'Asa Group: Security Through Vigilance':
+  faction: HB
+  short_name: Asa
+'Thule Subsea: Safety Below':
+  faction: HB
+  short_name: Thule
+'Haas-Bioroid: Architects of Tomorrow':
+  faction: HB
+  short_Name: AoT
+'Thunderbolt Armaments: Peace Through Power':
+  faction: HB
+  short_name: Thunderbolt
+'MirrorMorph: Endless Iteration':
+  faction: HB
+  short_name: MirrorMorph
+'AgInfusion: New Miracles for a New World':
+  faction: Jintkei
+  short_name: AgInfusion
+'Jinteki: Personal Evolution':
+  faction: Jinteki
+  short_name: PE
+'Jinteki: Restoring Humanity':
+  faction: Jinteki
+  short_name: RH
+'Issuaq Adaptics: Sustaining Diversity':
+  faction: Jinteki
+  short_name: Issuaq
+'A Teia: IP Recovery':
+  faciton: Jinteki
+  short_name: A Teia
+'Saraswati Mnemonics: Endless Exploration':
+  faction: Jinteki
+  short_name: Saraswati
+'Ob Superheavy Logistics: Extract. Export. Excel.':
+  faction: Weyland
+  short_name: Ob
+'The Outfit: Family Owned and Operated':
+  faction: Weyland
+  short_name: Outfit
+'Nuvem SA: Law of the Land':
+  faction: Weyland
+  short_name: Nuvem
+'Weyland Consortium: Built to Last':
+  faction: Weyland
+  short_name: BtL
+'Weyland Consortium: Building a Better World':
+  faction: Weyland
+  short_name: BaBW
+'Earth Station: SEA Headquarters':
+  faction: Weyland
+  short_name: Earth Station
+'Jemison Astronautics: Sacrifice. Audacity. Success.':
+  faction: Weyland
+  short_name: Jemison
+'Ampère: Cybernetics For Anyone':
+  faction: 'Neutral Corp'
+  short_name: 'Ampère'
+'Hoshiko Shiro: Untold Protagonist':
+  faction: Anarch
+  short_name: Hoshiko
+'Esâ Afontov: Eco-Insurrectionist':
+  faction: Anarch
+  short_name: 'Esâ'
+  alt_names:
+    - 'Esa Afontov: Eco-Insurrectionist'
+'René “Loup” Arcemont: Party Animal':
+  faction: Anarch
+  short_name: Loup
+'Sebastiao Souza Pessoa: Activist Organizer':
+  faction: Anarch
+  short_name: Seb
+  alt_names:
+    - 'Sebastiao Souza Pessoa: Activist Organizer'
+'Freedom Khumalo: Crypto-Anarchist':
+  faction: Anarch
+  short_name: Freedom
+'Reina Roja: Freedom Fighter':
+  faction: Anarch
+  short_name: Reina
+'Alice Merchant: Clan Agitator':
+  faction: Anarch
+  short_name: Alice
+'Quetzal: Free Spirit':
+  faction: Anarch
+  short_name: Quetzal
+'Nyusha "Sable" Sintashta: Symphonic Prodigy':
+  faction: Criminal
+  short_name: Sable
+'Steve Cambridge: Master Grifter':
+  faction: Criminal
+  short_name: Steve
+'Zahya Sadeghi: Versatile Smuggler':
+  faction: Criminal
+  short_name: Zahya
+'419: Amoral Scammer':
+  faction: Criminal
+  short_name: '419'
+'Los: Data Hijacker':
+  faction: Criminal
+  short_name: Los
+'Az McCaffrey: Mechanical Prodigy':
+  faction: Criminal
+  short_name: Az
+'Ken "Express" Tenma: Disappeared Clone':
+  faction: Criminal
+  short_name: Ken
+'Mercury: Chrome Libertador':
+  faction: Criminal
+  short_name: Mecury
+'Arissana Rocha Nahu: Street Artist':
+  faction: Shaper
+  short_name: Arissana
+'Lat: Ethical Freelancer':
+  faction: Shaper
+  short_name: Lat
+'Rielle “Kit” Peddler: Transhuman':
+  faction: Shaper
+  short_name: Kit
+  alt_names:
+    - 'Rielle "Kit" Peddler: Transhuman'
+'Tāo Salonga: Telepresence Magician':
+  faction: Shaper
+  short_name: 'Tāo'
+  alt_names:
+    - 'Tao Salonga: Telepresence Magician'
+'Ayla “Bios” Rahim: Simulant Specialist':
+  faction: Shaper
+  short_name: Ayla
+  alt_names:
+    - 'Ayla "Bios" Rahim: Simulant Specialist'
+'Akiko Nisei: Head Case':
+  faction: Shaper
+  short_name: Akiko
+'Captain Padma Isbister: Intrepid Explorer':
+  faction: Shaper
+  short_name: Padma
+'Nova Initiumia: Catalyst & Impetus':
+  faction: 'Neutral Runner'
+  short_name: Nova

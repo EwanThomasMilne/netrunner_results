@@ -20,9 +20,15 @@ def standardise_identity(identity: str) -> str:
             identity ='Ayla “Bios” Rahim: Simulant Specialist'
     return identity
 
-def return_standings(json, tournament_sw: str, tournament_name: str):
+# takes an identity and returns the faction anem of that identity
+def get_faction(id_info, identity: str) -> str:
+    faction = 'unknown'
+
+    return faction
+
+def return_standings(json, tournament_sw: str, tournament_name: str, id_info):
     standings = []
-    standings.append(['tournament','rank','name','corpID','corp_wins','corp_losses','corp_draws','runnerID','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS'])
+    standings.append(['tournament','rank','name','corp_ID','corp_faction','corp_wins','corp_losses','corp_draws','runner_ID','runner_faction','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS'])
     for player in json['players']:
         standing = []
         match tournament_sw:
@@ -30,7 +36,13 @@ def return_standings(json, tournament_sw: str, tournament_name: str):
                 player_results = return_player_results_cobra(player['id'], json)
             case 'aesops':
                 player_results = return_player_results_aesops(player['id'], json)
-        standing.extend([tournament_name, player['rank'], player['name'], player['corpIdentity'], str(player_results['corp_wins']), str(player_results['corp_losses']), str(player_results['corp_draws']), standardise_identity(player['runnerIdentity']), str(player_results['runner_wins']), str(player_results['runner_losses']), str(player_results['runner_draws']), player['matchPoints'], player['strengthOfSchedule'], player['extendedStrengthOfSchedule']])
+        
+        runner_id = standardise_identity(player['runnerIdentity'])
+        runner_faction = id_info[runner_id].get('faction','unknown')
+        corp_id = player['corpIdentity']
+        corp_faction = id_info[corp_id].get('faction','unknown')
+
+        standing.extend([tournament_name, player['rank'], player['name'], corp_id, corp_faction, str(player_results['corp_wins']), str(player_results['corp_losses']), str(player_results['corp_draws']), runner_id, runner_faction, str(player_results['runner_wins']), str(player_results['runner_losses']), str(player_results['runner_draws']), player['matchPoints'], player['strengthOfSchedule'], player['extendedStrengthOfSchedule']])
         standings.append(standing)
     return standings
 
@@ -118,8 +130,9 @@ def return_player_results_cobra(player_id: str, json):
         
     return player_results
 
-with open('config.yml', 'r') as configfile:
+with open('config.yml', 'r') as configfile, open('identities.yml', 'r') as idFile:
     config = yaml.safe_load(configfile)
+    id_info = yaml.safe_load(idFile)
     standings_dir = 'results/standings/'
 
     for tournament in config['tournaments']:
@@ -127,9 +140,9 @@ with open('config.yml', 'r') as configfile:
         json = get_json(tournament['url'])
 
         if 'aesop' in tournament['url']:
-            standings = return_standings(json, 'aesops', tournament['name'])
+            standings = return_standings(json, 'aesops', tournament['name'], id_info)
         else:
-            standings = return_standings(json, 'cobra', tournament['name'])
+            standings = return_standings(json, 'cobra', tournament['name'], id_info)
 
         with open(filename,'w',newline='') as f:
             w = csv.writer(f)
