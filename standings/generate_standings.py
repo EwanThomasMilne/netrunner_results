@@ -26,27 +26,51 @@ def standardise_identity(identity: str) -> str:
             identity = 'René “Loup” Arcemont: Party Animal'
     return identity
 
+def return_standing(json, player, tournament_sw: str, id_info):
+    standing = []
+    
+    match tournament_sw:
+        case 'cobra':
+            player_results = return_player_results_cobra(player['id'], json)
+        case 'aesops':
+            player_results = return_player_results_aesops(player['id'], json)
+        
+    runner_id = standardise_identity(player['runnerIdentity'])
+    runner_faction = id_info[runner_id].get('faction','unknown')
+    runner_name = id_info[runner_id].get('short_name','unknown')
+    corp_id = player['corpIdentity']
+    corp_faction = id_info[corp_id].get('faction','unknown')
+    corp_name = id_info[corp_id].get('short_name','unknown')
+
+    if is_player_in_top_cut(json['eliminationPlayers'], player['id']):
+        top_cut_rank = find_player_in_top_cut(json['eliminationPlayers'], player['id']).get('rank')
+    else:
+        top_cut_rank = ''
+
+    standing.extend([top_cut_rank, player['rank'], player['name'], corp_name, str(player_results['corp_wins']), str(player_results['corp_losses']), str(player_results['corp_draws']), runner_name, str(player_results['runner_wins']), str(player_results['runner_losses']), str(player_results['runner_draws']), player['matchPoints'], player['strengthOfSchedule'], player['extendedStrengthOfSchedule'], corp_id, corp_faction, runner_id, runner_faction])
+
+    return standing
+
+def is_player_in_top_cut(eliminationPlayers, player_id: str) -> bool:
+    for topcutplayer in eliminationPlayers:
+        if player_id == topcutplayer['id']:
+            return True
+    return False
+
+def find_player_in_top_cut(eliminationPlayers, player_id: str):
+    return next(topcutplayer for topcutplayer in eliminationPlayers if topcutplayer['id'] == player_id)
+
+
 def return_standings(json, tournament_sw: str, tournament_name: str, id_info):
     standings = []
-    standings.append(['tournament','rank','name','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction'])
+    standings.append(['tournament','top_cut_rank','swiss_rank','name','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction'])
+
     for player in json['players']:
         standing = []
-        match tournament_sw:
-            case 'cobra':
-                player_results = return_player_results_cobra(player['id'], json)
-            case 'aesops':
-                player_results = return_player_results_aesops(player['id'], json)
-        
-        runner_id = standardise_identity(player['runnerIdentity'])
-        runner_faction = id_info[runner_id].get('faction','unknown')
-        runner_name = id_info[runner_id].get('short_name','unknown')
-        corp_id = player['corpIdentity']
-        corp_faction = id_info[corp_id].get('faction','unknown')
-        corp_name = id_info[corp_id].get('short_name','unknown')
-
-
-        standing.extend([tournament_name, player['rank'], player['name'], corp_name, str(player_results['corp_wins']), str(player_results['corp_losses']), str(player_results['corp_draws']), runner_name, str(player_results['runner_wins']), str(player_results['runner_losses']), str(player_results['runner_draws']), player['matchPoints'], player['strengthOfSchedule'], player['extendedStrengthOfSchedule'], corp_id, corp_faction, runner_id, runner_faction])
+        standing.append(tournament_name)
+        standing = standing + return_standing(json, player, tournament_sw, id_info)
         standings.append(standing)
+
     return standings
 
 def return_player_results_aesops(player_id: str, json):
