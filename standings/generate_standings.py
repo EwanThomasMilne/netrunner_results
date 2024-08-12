@@ -63,7 +63,6 @@ def find_player_in_top_cut(eliminationPlayers, player_id: str):
 
 def return_standings(json, tournament_sw: str, tournament_name: str, id_info):
     standings = []
-    standings.append(['tournament','top_cut_rank','swiss_rank','name','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction'])
 
     for player in json['players']:
         standing = []
@@ -161,17 +160,26 @@ with open('config.yml', 'r') as configfile, open('identities.yml', 'r') as idFil
     config = yaml.safe_load(configfile)
     id_info = yaml.safe_load(idFile)
     standings_dir = 'results/standings/'
+    standings_header = ['tournament','top_cut_rank','swiss_rank','name','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction']
 
-    for tournament in config['tournaments']:
-        filename = standings_dir + tournament['name'] + '.standings.csv'
-        json = get_json(tournament['url'])
+    allstandings_filename = 'allstandings.csv'
+    with open (allstandings_filename,'w',newline='') as allstandings_file:
+        allstandings_writer = csv.writer(allstandings_file)
+        allstandings_writer.writerow(standings_header)
 
-        if 'aesop' in tournament['url']:
-            standings = return_standings(json, 'aesops', tournament['name'], id_info)
-        else:
-            standings = return_standings(json, 'cobra', tournament['name'], id_info)
+        for tournament in config['tournaments']:
+            json = get_json(tournament['url'])
 
-        with open(filename,'w',newline='') as f:
-            w = csv.writer(f)
-            w.writerows(standings)
+            if 'aesop' in tournament['url']:
+                standings = return_standings(json, 'aesops', tournament['name'], id_info)
+            else:
+                standings = return_standings(json, 'cobra', tournament['name'], id_info)
+
+            allstandings_writer.writerows(standings)
+
+            filename = standings_dir + tournament['name'] + '.standings.csv'
+            with open(filename,'w',newline='') as f:
+                w = csv.writer(f)
+                w.writerow(standings_header)
+                w.writerows(standings)
 
