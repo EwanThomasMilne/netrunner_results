@@ -80,6 +80,8 @@
 'Ampère: Cybernetics For Anyone':
   faction: 'Neutral Corp'
   short_name: 'Ampère'
+  alt_names:
+    - 'Ampere: Cybernetics For Anyone'
 'Hoshiko Shiro: Untold Protagonist':
   faction: Anarch
   short_name: Hoshiko

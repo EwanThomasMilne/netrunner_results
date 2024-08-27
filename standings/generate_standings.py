@@ -24,6 +24,8 @@ def standardise_identity(identity: str) -> str:
             identity = 'Ken “Express” Tenma: Disappeared Clone'
         case 'Rene "Loup" Arcemont: Party Animal':
             identity = 'René “Loup” Arcemont: Party Animal'
+        case 'Ampere: Cybernetics For Anyone':
+            identity = 'Ampère: Cybernetics For Anyone'
     return identity
 
 def return_standing(json, player, tournament_sw: str, id_info):
@@ -38,7 +40,7 @@ def return_standing(json, player, tournament_sw: str, id_info):
     runner_id = standardise_identity(player['runnerIdentity'])
     runner_faction = id_info[runner_id].get('faction','unknown')
     runner_name = id_info[runner_id].get('short_name','unknown')
-    corp_id = player['corpIdentity']
+    corp_id = standardise_identity(player['corpIdentity'])
     corp_faction = id_info[corp_id].get('faction','unknown')
     corp_name = id_info[corp_id].get('short_name','unknown')
 
