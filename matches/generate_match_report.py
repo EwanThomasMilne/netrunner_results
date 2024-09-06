@@ -23,7 +23,7 @@ with open('config.yml', 'r') as configfile:
 
         results.add_tournament_data(json['rounds'], PlayersWrapper(json['players']))
         
-        combined_results.add_results_object(tournament['name'], results)
+        combined_results.add_results_object(str(tournament['date']), tournament['name'], results)
         
     with open('results.csv','w', newline='') as f:
         w = csv.writer(f)

@@ -162,11 +162,11 @@ with open('config.yml', 'r') as configfile, open('identities.yml', 'r') as idFil
     config = yaml.safe_load(configfile)
     id_info = yaml.safe_load(idFile)
     standings_dir = 'results/standings/'
-    standings_header = ['tournament','top_cut_rank','swiss_rank','name','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction']
+    standings_header = ['date','tournament','top_cut_rank','swiss_rank','name','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction']
 
     allstandings_filename = 'allstandings.csv'
     with open (allstandings_filename,'w',newline='') as allstandings_file:
-        allstandings_writer = csv.writer(allstandings_file)
+        allstandings_writer = csv.writer(allstandings_file, escapechar='\\')
         allstandings_writer.writerow(standings_header)
 
         for tournament in config['tournaments']:
@@ -177,9 +177,11 @@ with open('config.yml', 'r') as configfile, open('identities.yml', 'r') as idFil
             else:
                 standings = return_standings(json, 'cobra', tournament['name'], id_info)
 
-            allstandings_writer.writerows(standings)
+            for row in standings:
+                    row.insert(0,str(tournament['date']))
+                    allstandings_writer.writerow(row)
 
-            filename = standings_dir + tournament['name'] + '.standings.csv'
+            filename = standings_dir + str(tournament['date']) + '.' + tournament['name'] + '.standings.csv'
             with open(filename,'w',newline='') as f:
                 w = csv.writer(f)
                 w.writerow(standings_header)
