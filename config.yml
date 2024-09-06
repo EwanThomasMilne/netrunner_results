@@ -2,6 +2,7 @@
 tournaments:
   - name: "Fly to EMEA #3"
     url: "https://www.aesopstables.net/464"
+    date: 20240525
   - name: "NANPC Boston"
     url: "https://www.aesopstables.net/470"
     date: 20240525
@@ -10,11 +11,13 @@ tournaments:
     date: 20240601
   - name: "OTG Midwest"
     url: "https://www.aesopstables.net/483"
+    date: 20240608
   - name: "APAC"
     url: "https://www.aesopstables.net/489"
     date: 20240615
   - name: "West Canadian Nats"
     url: "https://www.aesopstables.net/494"
+    date: 20240615
   - name: "EMEA"
     url: "https://tournaments.nullsignal.games/tournaments/3466"
     date: 20240628
@@ -22,8 +25,8 @@ tournaments:
     url: "https://tournaments.nullsignal.games/tournaments/3487"
     date: 20240713
   - name: "NANPC Philadelphia"
-    date: 20240713
     url: "https://www.aesopstables.net/550"
+    date: 20240713
   - name: "East Canadian Nats"
     url: "https://tournaments.nullsignal.games/tournaments/3500"
     date: 20240720
