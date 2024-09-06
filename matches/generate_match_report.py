@@ -26,5 +26,5 @@ with open('config.yml', 'r') as configfile:
         combined_results.add_results_object(str(tournament['date']), tournament['name'], results)
         
     with open('results.csv','w', newline='') as f:
-        w = csv.writer(f)
+        w = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
         w.writerows(combined_results.generate_report())
