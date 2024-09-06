@@ -2,76 +2,76 @@
 tournaments:
   - name: "Fly to EMEA #3"
     url: "https://www.aesopstables.net/464"
-    date: 20240525
+    date: 2024-05-25
   - name: "NANPC Boston"
     url: "https://www.aesopstables.net/470"
-    date: 20240525
+    date: 2024-05-25
   - name: "ACC"
     url: "https://www.aesopstables.net/475"
-    date: 20240601
+    date: 2024-06-01
   - name: "OTG Midwest"
     url: "https://www.aesopstables.net/483"
-    date: 20240608
+    date: 2024-06-08
   - name: "APAC"
     url: "https://www.aesopstables.net/489"
-    date: 20240615
+    date: 2024-06-15
   - name: "West Canadian Nats"
     url: "https://www.aesopstables.net/494"
-    date: 20240615
+    date: 2024-06-15
   - name: "EMEA"
     url: "https://tournaments.nullsignal.games/tournaments/3466"
-    date: 20240628
+    date: 2024-06-28
   - name: "ICC"
     url: "https://tournaments.nullsignal.games/tournaments/3487"
-    date: 20240713
+    date: 2024-07-13
   - name: "NANPC Philadelphia"
     url: "https://www.aesopstables.net/550"
-    date: 20240713
+    date: 2024-07-13
   - name: "East Canadian Nats"
     url: "https://tournaments.nullsignal.games/tournaments/3500"
-    date: 20240720
+    date: 2024-07-20
   - name: "North Australian Nats"
     url: "https://www.aesopstables.net/558"
-    date: 20240720
+    date: 2024-07-20
   - name: "UK Regionals Bristol"
     url: "https://www.aesopstables.net/565"
-    date: 20240727
+    date: 2024-07-27
   - name: "AMT - July 27th"
     url: "https://www.aesopstables.net/571"
-    date: 20240727
+    date: 2024-07-27
   - name: "US East Coast Nats"
     url: "https://www.aesopstables.net/572"
-    date: 20240727
+    date: 2024-07-27
   - name: "Swedish Nats"
     url: "https://www.aesopstables.net/568"
-    date: 20240727
+    date: 2024-07-27
   - name: "US West Coast Nats"
     url: "https://www.aesopstables.net/579"
-    date: 20240803
+    date: 2024-08-03
   - name: "German Nats"
     url: "https://tournaments.nullsignal.games/tournaments/3520"
-    date: 20240809
+    date: 2024-08-09
   - name: "Russian Nats"
     url: "https://www.aesopstables.net/587"
-    date: 20240810
+    date: 2024-08-10
   - name: "UK Regionals Nottingham"
     url: "https://www.aesopstables.net/582"
-    date: 20240810
+    date: 2024-08-10
   - name: "AMT - Aug 11th"
     url: "https://www.aesopstables.net/590"
-    date: 20240811
+    date: 2024-08-11
   - name: "Swiss Nats"
     url: "https://www.aesopstables.net/604"
-    date: 20240823
+    date: 2024-08-23
   - name: "AMT - Aug 24th"
     url: "https://www.aesopstables.net/606"
-    date: 20240824
+    date: 2024-08-24
   - name: "UK Regionals Aldershot"
     url: "https://tournaments.nullsignal.games/tournaments/3528"
-    date: 20240824
+    date: 2024-08-24
   - name: "French Nats"
     url: "https://www.aesopstables.net/607"
-    date: 20240824
+    date: 2024-08-24
   - name: "Montréal NANPC"
     url: "https://www.aesopstables.net/608"
-    date: 20240824
+    date: 2024-08-24
