@@ -42,11 +42,13 @@ class TablesResultsByIdentity:
     def __init__(self) -> None:
         self.games = []
         
-    def add_results_object(self, dateOfTournament, tournamentName, results_object):
+    def add_results_object(self, dateOfTournament, tournamentRegion, tournamentOnline, tournamentName, results_object):
         # takes another ResultsByIdentityObject (tournament?) and adds those results to this object
         for result in results_object.games:
             result['date'] = dateOfTournament
             result['tournamentName'] = tournamentName
+            result['region'] = tournamentRegion
+            result['online'] = tournamentOnline
             self.games.append(result)
         
     def add_game_data(self, phase, round, table, corp_player, corp_id, winner, runner_player, runner_id):
@@ -70,9 +72,9 @@ class TablesResultsByIdentity:
     
     def generate_report(self):
         # generates a flat view of the results suitable for printing or outputting
-        report = [[ 'date', 'tournament', 'phase', 'round', 'table', 'corp_player', 'corp_id', 'result', 'runner_player', 'runner_id' ]]
+        report = [[ 'date', 'region', 'online', 'tournament', 'phase', 'round', 'table', 'corp_player', 'corp_id', 'result', 'runner_player', 'runner_id' ]]
         
         for game in self.games:
-            report.append([game['date'], game['tournamentName'], game['phase'], game['round'], game['table'], game['corp_player'], game['corp_id'], game['winner'], game['runner_player'], game['runner_id']])
+            report.append([game['date'], game['region'], game['online'], game['tournamentName'], game['phase'], game['round'], game['table'], game['corp_player'], game['corp_id'], game['winner'], game['runner_player'], game['runner_id']])
         
         return report

@@ -13,6 +13,13 @@ with open('config.yml', 'r') as configfile:
     config = yaml.safe_load(configfile)
 
     for tournament in config['tournaments']:
+
+        tournament_date = str(tournament['date'])
+        tournament_region = tournament.get('region', "")
+        if tournament.get('online') is True:
+            tournament_online = "netspace"
+        else:
+            tournament_online = "meatspace"
         
         if 'aesop' in tournament['url']:
             results = aesops.AesopsTablesResultsByIdentity()
@@ -23,7 +30,7 @@ with open('config.yml', 'r') as configfile:
 
         results.add_tournament_data(json['rounds'], PlayersWrapper(json['players']))
         
-        combined_results.add_results_object(str(tournament['date']), tournament['name'], results)
+        combined_results.add_results_object(tournament_date, tournament_region, tournament_online, tournament['name'], results)
         
     with open('results.csv','w', newline='') as f:
         w = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')

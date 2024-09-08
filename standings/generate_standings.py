@@ -162,7 +162,7 @@ with open('config.yml', 'r') as configfile, open('identities.yml', 'r') as idFil
     config = yaml.safe_load(configfile)
     id_info = yaml.safe_load(idFile)
     standings_dir = 'results/standings/'
-    standings_header = ['date','tournament','top_cut_rank','swiss_rank','name','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction']
+    standings_header = ['date','region','online','tournament','top_cut_rank','swiss_rank','name','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction']
 
     allstandings_filename = 'allstandings.csv'
     with open (allstandings_filename,'w',newline='') as allstandings_file:
@@ -172,13 +172,22 @@ with open('config.yml', 'r') as configfile, open('identities.yml', 'r') as idFil
         for tournament in config['tournaments']:
             json = get_json(tournament['url'])
 
+            tournament_date = str(tournament['date'])
+            tournament_region = tournament.get('region', "")
+            if tournament.get('online') is True:
+                tournament_online = "netspace"
+            else:
+                tournament_online = "meatspace"
+
             if 'aesop' in tournament['url']:
                 standings = return_standings(json, 'aesops', tournament['name'], id_info)
             else:
                 standings = return_standings(json, 'cobra', tournament['name'], id_info)
 
             for row in standings:
-                    row.insert(0,str(tournament['date']))
+                    row.insert(0,tournament_date)
+                    row.insert(1,tournament_region)
+                    row.insert(2,tournament_online)
                     allstandings_writer.writerow(row)
 
             filename = standings_dir + str(tournament['date']) + '.' + tournament['name'] + '.standings.csv'
