@@ -11,7 +11,7 @@ A collection of tools/scripts for agregating results from tournaments.nullsignal
 ## Winrate
 
 ```
-  python3 ./winrate/generate_report.py
+  python3 ./src/winrate/generate_report.py
 ```
 
 reads config from **config.txt**
@@ -21,7 +21,7 @@ outputs win rate report to results.csv
 ## Matches
 
 ```
-  python3 ./matches/generate_match_report.py
+  python3 ./src/matches/generate_match_report.py
 ```
 
 reads config from **config.yml**
@@ -33,7 +33,7 @@ outputs all match results in CSV format to results.csv
 *Cobra only--Aesops is not currently implemented*
 
 ```
-  python3 ./standings/generate_standings.py
+  python3 ./src/generate_standings.py
 ```
 
 outputs standings in CSV format to **TOURNAMENT-NAME.standings.csv**
@@ -67,5 +67,3 @@ would give the output
   faction: HB
   short name: PD
 ```
-
-

@@ -14,7 +14,7 @@ def daterange(start_date: datetime.date, end_date: datetime.date):
         yield start_date + datetime.timedelta(n)
 
 start_date = datetime.date(2024,1,1)
-end_date = datetime.date(2024,9,12)
+end_date = datetime.date(2024,1,12)
 nrdb_ids = {}
 
 for date in daterange(start_date, end_date):
@@ -27,7 +27,7 @@ for date in daterange(start_date, end_date):
         userid = decklist.get('user_id')
         nrdb_ids.update({username:userid})
 
-with open ('nrdb_ids.csv','w',newline='') as output_file:
+with open ('OUTPUT/nrdb_ids.csv','w',newline='') as output_file:
     output_writer = csv.writer(output_file, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
     for name, id in nrdb_ids.items():
         output_writer.writerow([name,id])

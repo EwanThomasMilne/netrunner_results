@@ -144,10 +144,10 @@ def return_player_results_cobra(player_id: str, json):
 with open('config.yml', 'r') as configfile:
     config = yaml.safe_load(configfile)
 #    id_info = yaml.safe_load(idFile)
-    standings_dir = 'results/standings/'
+    standings_dir = 'OUTPUT/standings/'
     standings_header = ['date','region','online','tournament','top_cut_rank','swiss_rank','name','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction']
 
-    allstandings_filename = 'allstandings.csv'
+    allstandings_filename = 'OUTPUT/allstandings.csv'
     with open (allstandings_filename,'w',newline='') as allstandings_file:
         allstandings_writer = csv.writer(allstandings_file, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
         allstandings_writer.writerow(standings_header)

@@ -22,6 +22,6 @@ with open('config.txt') as config:
         
         combined_results.add_results_object(results)
         
-    with open('results.csv','w', newline='') as f:
+    with open('OUTPUT/winrate.csv','w', newline='') as f:
         w = csv.writer(f)
         w.writerows(combined_results.generate_report())
