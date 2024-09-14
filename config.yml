@@ -106,3 +106,7 @@ tournaments:
     url: "https://tournaments.nullsignal.games/tournaments/3539"
     date: 2024-09-07
     region: EMEA
+  - name: "NANPC LA"
+    url: "https://www.aesopstables.net/687"
+    date: 2024-09-07
+    region: America
