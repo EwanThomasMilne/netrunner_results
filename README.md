@@ -30,13 +30,11 @@ outputs all match results in CSV format to results.csv
 
 ## Standings
 
-*Cobra only--Aesops is not currently implemented*
-
 ```
-  python3 ./src/generate_standings.py
+  python3 ./src/netrunner_results.py
 ```
 
-outputs standings in CSV format to **TOURNAMENT-NAME.standings.csv**
+outputs standings in CSV format to **OUTPUT/standings/DATE.NAME.standings.csv**
 
 reads config from **config.yml**
 
