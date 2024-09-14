@@ -16,6 +16,16 @@ def find_player_in_top_cut(eliminationPlayers: list, player_id: str):
   return next(topcutplayer for topcutplayer in eliminationPlayers if topcutplayer['id'] == player_id)
 
 class Tournament:
+  """
+  A class representing a netrunner tournament
+
+  Attributes:
+    name (str): tournament name
+    date (str): date of tournament
+    region (str): tournament region
+    online (bool): netspace or meatspace
+    standings (list): a 2d array of player standings
+  """
   def __init__(self, name: str, url: str, date: str = 'unknown', region: str = 'unknown', online: bool = False):
     self.name = name
     self.date = date
@@ -37,10 +47,11 @@ class Tournament:
       self.standings.append(standing)
 
   def return_player_results(self, player_id: str):
+     # dummy method for inheritance
      pass
 
 class AesopsTournament(Tournament):
-   def return_player_results(self, player_id: str):
+   def return_player_results(self, player_id: str) -> dict:
       player_results = { 'corp_wins': 0, 'corp_losses': 0, 'corp_draws': 0, 'runner_wins': 0, 'runner_losses': 0, 'runner_draws': 0 }
       for round in self.json['rounds']:
           for table in round:
@@ -78,7 +89,7 @@ class AesopsTournament(Tournament):
       return player_results     
    
 class CobraTournament(Tournament):
-   def return_player_results(self, player_id: str):
+   def return_player_results(self, player_id: str) -> dict:
       player_results = { 'corp_wins': 0, 'corp_losses': 0, 'corp_draws': 0, 'runner_wins': 0, 'runner_losses': 0, 'runner_draws': 0 }
       for round in self.json['rounds']:
           for table in round:

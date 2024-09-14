@@ -2,7 +2,21 @@ from pathlib import Path
 import yaml
 
 class Identity:
+    """
+    A class representing a netrunner identity
+
+    Attributes:
+        name (str): Full proper name of the identity
+        faction (str): Faction of the identity
+        short_name (str): Short name of the identity
+    """
     def __init__(self, reference):
+        """
+        Initializes a netrunner identity object (using identities.yml)
+
+        Parameters:
+            reference (str): can be the full name, short name, or common alternative spelling of the identity
+        """
         self.name = "unknown"
         self.id_data = {}
 
