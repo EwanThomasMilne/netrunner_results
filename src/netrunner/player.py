@@ -18,6 +18,7 @@ class TournamentPlayer:
         name (str): the name under which the player registered for the tournament
         tournament_id (int): tournament id number of player
         nrdb_id (int): nrdb id number of player
+        results (list): a 2d array of game results (the inner array is a dict)
         corp_id (netrunner.identity): corp identity
         runner_id (netrunner.identity): runner identity
         corp_wins (int): number of wins when playing as corp
@@ -51,8 +52,10 @@ class TournamentPlayer:
         self.SoS = SoS
         self.xSoS = xSoS
         self.side_balance = side_balance
+        self.results = []
 
     def record_corp_result(self, game_data: dict):
+        self.results.append(game_data)
         match game_data['result']:
             case 'corp':
                 self.corp_wins += 1
@@ -62,6 +65,7 @@ class TournamentPlayer:
                 self.corp_draws += 1
 
     def record_runner_result(self, game_data: dict):
+        self.results.append(game_data)
         match game_data['result']:
             case 'runner':
                 self.runner_wins += 1

@@ -1,6 +1,7 @@
 import csv
 import yaml
 from netrunner.tournament import AesopsTournament,CobraTournament
+from netrunner.player import TournamentPlayer
 
 with open('config.yml', 'r') as configfile:
     config = yaml.safe_load(configfile)
@@ -12,6 +13,8 @@ with open('config.yml', 'r') as configfile:
     results_dir = 'OUTPUT/results/'
     results_header = [ 'date','region','online','tournament','phase','round','table','corp_player','corp_id','result','runner_player','runner_id']
     allresults_filename = 'OUTPUT/allresults.csv'
+
+    player_dir = 'OUTPUT/players/'
 
     with open(allstandings_filename,'w',newline='') as allstandings_file, open(allresults_filename,'w',newline='') as allresults_file:
         allstandings_writer = csv.writer(allstandings_file, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
@@ -55,3 +58,13 @@ with open('config.yml', 'r') as configfile:
                     row = [ t.date, t.region, online, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
                     allresults_writer.writerow(row)
                     rw.writerow(row)
+
+            players = t.players
+            for id,player in players.items():
+                player_results_filename = player_dir + player.nrdb_id + '.results.csv'
+                with open(player_results_filename,'a',newline='') as prf:
+                    prw = csv.writer(prf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
+                    for r in player.results:
+                        row = [ t.date, t.region, online, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
+                        allresults_writer.writerow(row)
+                        prw.writerow(row)
