@@ -7,7 +7,7 @@ with open('config.yml', 'r') as configfile:
     config = yaml.safe_load(configfile)
 
     standings_dir = 'OUTPUT/standings/'
-    standings_header = ['date','region','online','tournament','top_cut_rank','swiss_rank','name','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
+    standings_header = ['date','region','online','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
     allstandings_filename = 'OUTPUT/allstandings.csv'
 
     results_dir = 'OUTPUT/results/'
@@ -61,10 +61,11 @@ with open('config.yml', 'r') as configfile:
 
             players = t.players
             for id,player in players.items():
-                player_results_filename = player_dir + player.nrdb_id + '.results.csv'
-                with open(player_results_filename,'a',newline='') as prf:
-                    prw = csv.writer(prf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-                    for r in player.results:
-                        row = [ t.date, t.region, online, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
-                        allresults_writer.writerow(row)
-                        prw.writerow(row)
+                if player.nrdb_id:
+                    player_results_filename = player_dir + str(player.nrdb_id) + '.results.csv'
+                    with open(player_results_filename,'a',newline='') as prf:
+                        prw = csv.writer(prf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
+                        for r in player.results:
+                            row = [ t.date, t.region, online, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
+                            allresults_writer.writerow(row)
+                            prw.writerow(row)

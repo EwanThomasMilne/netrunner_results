@@ -2,13 +2,63 @@ import csv
 from netrunner.identity import Identity
 
 def determine_nrdb_id(name: str) -> int:
+    nrdb_id = None
+    try:
+        nrdb_id = determine_nrdb_id_from_csv(name)
+    except:
+        pass
+    if nrdb_id:
+        return nrdb_id
+    try:
+        nrdb_id = determine_nrdb_id_from_bre(name)
+    except:
+        pass
+    if nrdb_id:
+        return nrdb_id
+    return None
+
+def determine_nrdb_id_from_csv(name: str) -> int:
     # expect csv to be in the format ["nrdb_name","nrdb_id"]
     with open('OUTPUT/nrdb_ids.csv', newline='') as f:
         reader = csv.reader(f)
         for line in reader:
-            if line[0] == name:
-                return line[1]
-    return ''
+            if line[0].lower() == name.lower():
+                try:
+                    return int(line[1])
+                except ValueError:
+                    return None
+    return None
+
+def determine_nrdb_id_from_bre(name: str) -> int:
+    # expect csv to be in the format ["player name","player alias","player alias 2","testing team","team 2","team 3","nrdb_id"]
+    with open('OUTPUT/sync_bre.csv', newline='') as f:
+        reader = csv.reader(f)
+        for line in reader:
+            if name.lower() in (line[0].lower(), line[1].lower(), line[2].lower()):
+                try:
+                    return int(line[6])
+                except ValueError:
+                    return None
+    return None
+
+def determine_teams(name: str) -> list:
+    teams = None
+    try:
+        teams = determine_teams_from_bre(name)
+    except:
+        pass
+    if teams:
+        return teams
+    return ['','','']
+
+def determine_teams_from_bre(name: str) -> list:
+    # expect csv to be in the format ["player name","player alias","player alias 2","testing team","team 2","team 3","nrdb_id"]
+    with open('OUTPUT/sync_bre.csv', newline='') as f:
+        reader = csv.reader(f)
+        for line in reader:
+            if name.lower() in (line[0].lower(), line[1].lower(), line[2].lower()):
+                return [line[3],line[4],line[5]]
+    return None
 
 class TournamentPlayer:
     """
@@ -18,6 +68,7 @@ class TournamentPlayer:
         name (str): the name under which the player registered for the tournament
         tournament_id (int): tournament id number of player
         nrdb_id (int): nrdb id number of player
+        teams (list): a list of (3) teams that the player belongs to
         results (list): a 2d array of game results (the inner array is a dict)
         corp_id (netrunner.identity): corp identity
         runner_id (netrunner.identity): runner identity
@@ -38,6 +89,7 @@ class TournamentPlayer:
         self.tournament_id = tournament_id
         self.name = name
         self.nrdb_id = determine_nrdb_id(self.name)
+        self.teams = determine_teams(self.name)
         self.corp_id = corp_id
         self.runner_id = runner_id
         self.corp_wins = 0

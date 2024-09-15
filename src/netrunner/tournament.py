@@ -62,7 +62,7 @@ class Tournament:
         # build standings array
         self.standings = []
         for id, player in self.players.items():
-            standing = [player.cut_rank, player.swiss_rank, player.name, player.corp_id.short_name, str(player.corp_wins), str(player.corp_losses), str(player.corp_draws), player.runner_id.short_name, str(player.runner_wins), str(player.runner_losses), str(player.runner_draws), player.match_points, player.SoS, player.xSoS, player.corp_id.name, player.corp_id.faction, player.runner_id.name, player.runner_id.faction, player.nrdb_id]
+            standing = [player.cut_rank, player.swiss_rank, player.name, player.teams[0], player.teams[1], player.teams[2], player.corp_id.short_name, str(player.corp_wins), str(player.corp_losses), str(player.corp_draws), player.runner_id.short_name, str(player.runner_wins), str(player.runner_losses), str(player.runner_draws), player.match_points, player.SoS, player.xSoS, player.corp_id.name, player.corp_id.faction, player.runner_id.name, player.runner_id.faction, player.nrdb_id]
             self.standings.append(standing)
 
     def process_swiss_table(self, table: dict):
