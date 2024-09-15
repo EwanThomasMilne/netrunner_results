@@ -11,7 +11,7 @@ with open('config.yml', 'r') as configfile:
     allstandings_filename = 'OUTPUT/allstandings.csv'
 
     results_dir = 'OUTPUT/results/'
-    results_header = [ 'date','region','online','tournament','phase','round','table','corp_player','corp_id','result','runner_player','runner_id']
+    results_header = [ 'date','region','online','software','tournament','phase','round','table','corp_player','corp_id','result','runner_player','runner_id']
     allresults_filename = 'OUTPUT/allresults.csv'
 
     player_dir = 'OUTPUT/players/'
@@ -26,8 +26,10 @@ with open('config.yml', 'r') as configfile:
         for tournament in config['tournaments']:
             print('TOURNAMENT: ' + tournament['name'])
             if 'aesop' in tournament['url']:
+                software = 'aesops'
                 t = AesopsTournament(name=tournament['name'],url=tournament['url'],date=str(tournament['date']),region=tournament.get('region',''),online=tournament.get('online',False))
             else:
+                software = 'cobra'
                 t = CobraTournament(name=tournament['name'],url=tournament['url'],date=str(tournament['date']),region=tournament.get('region',''),online=tournament.get('online',False))
 
             if t.online is True:
@@ -55,7 +57,7 @@ with open('config.yml', 'r') as configfile:
                 rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
                 rw.writerow(results_header)
                 for r in results:
-                    row = [ t.date, t.region, online, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
+                    row = [ t.date, t.region, online, software, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
                     allresults_writer.writerow(row)
                     rw.writerow(row)
 
@@ -66,6 +68,5 @@ with open('config.yml', 'r') as configfile:
                     with open(player_results_filename,'a',newline='') as prf:
                         prw = csv.writer(prf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
                         for r in player.results:
-                            row = [ t.date, t.region, online, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
-                            allresults_writer.writerow(row)
+                            row = [ t.date, t.region, online, software, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
                             prw.writerow(row)
