@@ -8,33 +8,15 @@ A collection of tools/scripts for agregating results from tournaments.nullsignal
   pip install -r requirements.txt
 ```
 
-## Winrate
-
-```
-  python3 ./src/winrate/generate_report.py
-```
-
-reads config from **config.txt**
-
-outputs win rate report to results.csv
-
-## Matches
-
-```
-  python3 ./src/matches/generate_match_report.py
-```
-
-reads config from **config.yml**
-
-outputs all match results in CSV format to results.csv
-
-## Standings
+## How To
 
 ```
   python3 ./src/netrunner_results.py
 ```
 
 outputs standings in CSV format to **OUTPUT/standings/DATE.NAME.standings.csv**
+
+outputs results in CSV format to **OUTPUT/results/DATE.NAME.results.csv**
 
 reads config from **config.yml**
 
