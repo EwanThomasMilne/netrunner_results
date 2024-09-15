@@ -4,33 +4,54 @@ from netrunner.tournament import AesopsTournament,CobraTournament
 
 with open('config.yml', 'r') as configfile:
     config = yaml.safe_load(configfile)
-    standings_dir = 'OUTPUT/standings/'
-    standings_header = ['date','region','online','tournament','top_cut_rank','swiss_rank','name','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction']
 
+    standings_dir = 'OUTPUT/standings/'
+    standings_header = ['date','region','online','tournament','top_cut_rank','swiss_rank','name','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
     allstandings_filename = 'OUTPUT/allstandings.csv'
-    with open (allstandings_filename,'w',newline='') as allstandings_file:
+
+    results_dir = 'OUTPUT/results/'
+    results_header = [ 'date','region','online','tournament','phase','round','table','corp_player','corp_id','result','runner_player','runner_id']
+    allresults_filename = 'OUTPUT/allresults.csv'
+
+    with open(allstandings_filename,'w',newline='') as allstandings_file, open(allresults_filename,'w',newline='') as allresults_file:
         allstandings_writer = csv.writer(allstandings_file, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
         allstandings_writer.writerow(standings_header)
 
+        allresults_writer = csv.writer(allresults_file, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
+        allresults_writer.writerow(results_header)
+
         for tournament in config['tournaments']:
+            print('TOURNAMENT: ' + tournament['name'])
             if 'aesop' in tournament['url']:
-                t = AesopsTournament(tournament['name'],tournament['url'],str(tournament['date']),tournament.get('online'))
+                t = AesopsTournament(name=tournament['name'],url=tournament['url'],date=str(tournament['date']),region=tournament.get('region',''),online=tournament.get('online',False))
             else:
-                t = CobraTournament(tournament['name'],tournament['url'],str(tournament['date']),tournament.get('online'))                
+                t = CobraTournament(name=tournament['name'],url=tournament['url'],date=str(tournament['date']),region=tournament.get('region',''),online=tournament.get('online',False))
+
+            if t.online is True:
+                online = "netspace"
+            else:
+                online = "meatspace"
 
             standings = t.standings
             for row in standings:
                 row.insert(0,t.date)
                 row.insert(1,t.region)
-                if t.online is True:
-                    row.insert(2,"netspace")
-                else:
-                    row.insert(2,"meatspace")
+                row.insert(2,online)
                 row.insert(3,t.name)
                 allstandings_writer.writerow(row)
 
-            filename = standings_dir + str(tournament['date']) + '.' + tournament['name'] + '.standings.csv'
-            with open(filename,'w',newline='') as f:
-                w = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-                w.writerow(standings_header)
-                w.writerows(standings)
+            standings_filename = standings_dir + str(tournament['date']) + '.' + tournament['name'] + '.standings.csv'
+            with open(standings_filename,'w',newline='') as sf:
+                sw = csv.writer(sf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
+                sw.writerow(standings_header)
+                sw.writerows(standings)
+
+            results = t.results
+            results_filename = results_dir + str(tournament['date']) + '.' + tournament['name'] + '.results.csv'
+            with open(results_filename,'w',newline='') as rf:
+                rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
+                rw.writerow(results_header)
+                for r in results:
+                    row = [ t.date, t.region, online, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
+                    allresults_writer.writerow(row)
+                    rw.writerow(row)

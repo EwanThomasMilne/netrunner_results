@@ -1,7 +1,8 @@
 import requests
 from netrunner.identity import Identity
+from netrunner.player import TournamentPlayer
 
-def get_json(url: str):
+def get_json(url: str) -> dict:
     json_url = url.strip() + '.json'
     resp = requests.get(url=json_url, params='')
     return resp.json()
@@ -12,123 +13,167 @@ def is_player_in_top_cut(eliminationPlayers: list, player_id: str) -> bool:
           return True
   return False
 
-def find_player_in_top_cut(eliminationPlayers: list, player_id: str):
-  return next(topcutplayer for topcutplayer in eliminationPlayers if topcutplayer['id'] == player_id)
+def find_player_in_top_cut(eliminationPlayers: list, player_id: str) -> dict:
+    return next(topcutplayer for topcutplayer in eliminationPlayers if topcutplayer['id'] == player_id)
 
 class Tournament:
-  """
-  A class representing a netrunner tournament
+    """
+    A class representing a netrunner tournament
 
-  Attributes:
-    name (str): tournament name
-    date (str): date of tournament
-    region (str): tournament region
-    online (bool): netspace or meatspace
-    standings (list): a 2d array of player standings
-  """
-  def __init__(self, name: str, url: str, date: str = 'unknown', region: str = 'unknown', online: bool = False):
-    self.name = name
-    self.date = date
-    self.region = region
-    self.online = online
-    self.json = get_json(url)
+    Attributes:
+        name (str): tournament name
+        date (str): date of tournament
+        region (str): tournament region
+        online (bool): netspace or meatspace
+        json (dict): raw tournament data
+        players (dict): a dictionary of Player objects,  keyed by each players tournament_id
+        results (list): a 2d array of game results
+        standings (list): a 2d array of player standings
+    """
+    def __init__(self, name: str, url: str, date: str = 'unknown', region: str = 'unknown', online: bool = False):
+        self.name = name
+        self.date = date
+        self.region = region
+        self.online = online
+        self.json = get_json(url)
+        
+        # build player objects
+        self.players = {}
+        for player in self.json['players']:
+            corp_id = Identity(player['corpIdentity'])
+            runner_id = Identity(player['runnerIdentity'])
+            if is_player_in_top_cut(self.json['eliminationPlayers'], player['id']):
+                top_cut_rank = find_player_in_top_cut(self.json['eliminationPlayers'], player['id']).get('rank')
+            else:
+                top_cut_rank = ''
+            self.players[player['id']] = TournamentPlayer(tournament_id = player['id'], name = player['name'], corp_id = corp_id, runner_id = runner_id, swiss_rank = player['rank'], match_points = player['matchPoints'], SoS = player['strengthOfSchedule'], xSoS = player['extendedStrengthOfSchedule'], side_balance = player.get('sideBalance',0), cut_rank = top_cut_rank)
 
-    self.standings = []
-    for player in self.json['players']:
-      standing = [] # this would probably be improved by being a dictionary tbh
-      player_results = self.return_player_results(player['id'])
-      runner_id = Identity(player['runnerIdentity'])
-      corp_id = Identity(player['corpIdentity'])
-      if is_player_in_top_cut(self.json['eliminationPlayers'], player['id']):
-        top_cut_rank = find_player_in_top_cut(self.json['eliminationPlayers'], player['id']).get('rank')
-      else:
-        top_cut_rank = ''
-      standing.extend([top_cut_rank, player['rank'], player['name'], corp_id.short_name, str(player_results['corp_wins']), str(player_results['corp_losses']), str(player_results['corp_draws']), runner_id.short_name, str(player_results['runner_wins']), str(player_results['runner_losses']), str(player_results['runner_draws']), player['matchPoints'], player['strengthOfSchedule'], player['extendedStrengthOfSchedule'], corp_id.name, corp_id.faction, runner_id.name, runner_id.faction])
-      self.standings.append(standing)
+        # process tables
+        self.results = []
+        round_num = 1
+        for round in self.json['rounds']:
+            for table in round:
+                if table.get('eliminationGame',False):
+                    self.process_cut_table(round_num, table)
+                else:
+                    self.process_swiss_table(round_num, table)
+            round_num += 1
 
-  def return_player_results(self, player_id: str):
-     # dummy method for inheritance
-     pass
+        # build standings array
+        self.standings = []
+        for id, player in self.players.items():
+            standing = [player.cut_rank, player.swiss_rank, player.name, player.corp_id.short_name, str(player.corp_wins), str(player.corp_losses), str(player.corp_draws), player.runner_id.short_name, str(player.runner_wins), str(player.runner_losses), str(player.runner_draws), player.match_points, player.SoS, player.xSoS, player.corp_id.name, player.corp_id.faction, player.runner_id.name, player.runner_id.faction, player.nrdb_id]
+            self.standings.append(standing)
+
+    def process_swiss_table(self, table: dict):
+        # dummy method for inheritance
+        pass
+    def process_cut_table(self, table: dict):
+        # dummy method for inheritance
+        pass
 
 class AesopsTournament(Tournament):
-   def return_player_results(self, player_id: str) -> dict:
-      player_results = { 'corp_wins': 0, 'corp_losses': 0, 'corp_draws': 0, 'runner_wins': 0, 'runner_losses': 0, 'runner_draws': 0 }
-      for round in self.json['rounds']:
-          for table in round:
-              # did player play at this table?
-              if player_id == table['corpPlayer']:
-                  if 'eliminationGame' in table and table['eliminationGame']:
-                      if player_id == table['winner_id']:
-                          player_results['corp_wins'] += 1
-                      else:
-                          player_results['corp_losses'] += 1
-                  else:
-                      match table['corpScore']:
-                          case "3":
-                              player_results['corp_wins'] += 1
-                          case "1":
-                              player_results['corp_draws'] += 1
-                          case "0":
-                              player_results['corp_losses'] += 1
-              elif player_id == table['runnerPlayer']:
-                  if 'eliminationGame' in table and table['eliminationGame']:
-                      if player_id == table['winner_id']:
-                          player_results['runner_wins'] += 1
-                      else:
-                          player_results['runner_losses'] += 1
-                  else:
-                      match table['runnerScore']:
-                          case "3":
-                              player_results['runner_wins'] += 1
-                          case "1":
-                              player_results['runner_draws'] += 1
-                          case "0":
-                              player_results['runner_losses'] += 1
-                          case _:
-                              player_results['runner_draws'] += 1
-      return player_results     
+    def process_swiss_table(self, round_num: int, table: dict):
+        phase = 'swiss'
+        # if either player_id is '(BYE)', assume this round was a Bye and do not record the results
+        if table['runnerPlayer'] == '(BYE)' or table['corpPlayer'] == '(BYE)':
+            return
+
+        runner_player = self.players[table['runnerPlayer']]
+        corp_player = self.players[table['corpPlayer']]
+        result = 'unknown'
+        match table['runnerScore']:
+            case '3':
+                result = 'runner'
+            case '1':
+                result = 'draw'
+            case '0':
+                result = 'corp'
+        game_data = { 'phase': phase, 'round': round_num, 'table': table['tableNumber'], 'corp_player': corp_player.name, 'corp_id': corp_player.corp_id.name, 'result': result, 'runner_player': runner_player.name, 'runner_id': runner_player.runner_id.name }
+        self.results.append(game_data)
+        runner_player.record_runner_result(game_data)
+        corp_player.record_corp_result(game_data)
+
+    def process_cut_table(self, round_num: int, table: dict):
+        phase = 'cut'
+        runner_player = self.players[table['runnerPlayer']]
+        corp_player = self.players[table['corpPlayer']]
+        result = 'unknown'
+        if table['winner_id'] == table['runnerPlayer']:
+            result = 'runner'
+        else:
+            result = 'corp'
+        game_data = { 'phase': phase, 'round': round_num, 'table': table['tableNumber'], 'corp_player': corp_player.name, 'corp_id': corp_player.corp_id.name, 'result': result, 'runner_player': runner_player.name, 'runner_id': runner_player.runner_id.name }
+        self.results.append(game_data)
+        runner_player.record_runner_result(game_data)
+        corp_player.record_corp_result(game_data)    
    
 class CobraTournament(Tournament):
-   def return_player_results(self, player_id: str) -> dict:
-      player_results = { 'corp_wins': 0, 'corp_losses': 0, 'corp_draws': 0, 'runner_wins': 0, 'runner_losses': 0, 'runner_draws': 0 }
-      for round in self.json['rounds']:
-          for table in round:
-              # did player play at this table?
-              if table['intentionalDraw'] or table['twoForOne']:
-                  continue
-              elif player_id == table['player1']['id']:
-                  scores = table['player1']
-              elif player_id == table['player2']['id']:
-                  scores = table['player2']
-              else:
-                  continue
-              # add cut result
-              if table['eliminationGame']:
-                  match scores['role']:
-                      case 'corp':
-                          if scores['winner']:
-                              player_results['corp_wins'] += 1
-                          else:
-                              player_results['corp_losses'] += 1
-                      case 'runner':
-                          if scores['winner']:
-                              player_results['runner_wins'] += 1
-                          else:
-                              player_results['runner_losses'] += 1
-              # add swiss results
-              else:
-                  match scores['runnerScore']:
-                      case 3:
-                          player_results['runner_wins'] += 1
-                      case 1:
-                          player_results['runner_draws'] += 1
-                      case 0:
-                          player_results['runner_losses'] += 1
-                  match scores['corpScore']:
-                      case 3:
-                          player_results['corp_wins'] += 1
-                      case 1:
-                          player_results['corp_draws'] += 1
-                      case 0:
-                          player_results['corp_losses'] += 1
-      return player_results
+    def process_swiss_table(self, round_num: int, table: dict):
+        phase = 'swiss'
+
+        # if either player_id is null, assume this round was a Bye and do not record the results
+        if table['player1']['id'] is None or table['player2']['id'] is None:
+            return
+
+        # Game 1 of DSS - player1 plays runner
+        runner_player = self.players[table['player1']['id']]
+        corp_player = self.players[table['player2']['id']]
+        result = 'unknown'
+        match table['player1']['runnerScore']: 
+            case 3:
+                result = 'runner'
+            case 1:
+                result = 'draw'
+            case 0:
+                result = 'corp'
+        if table['player1']['runnerScore'] + table['player2']['corpScore'] == 0:
+            result = 'unknown'
+        if table['intentionalDraw']:
+            result = 'ID'
+        if table['twoForOne']:
+            result = '2-for-1'
+        game_data = { 'phase': phase, 'round': round_num, 'table': table['table'], 'corp_player': corp_player.name, 'corp_id': corp_player.corp_id.name, 'result': result, 'runner_player': runner_player.name, 'runner_id': runner_player.runner_id.name }
+        self.results.append(game_data)
+        runner_player.record_runner_result(game_data)
+        corp_player.record_corp_result(game_data)
+        
+        # Game 2 of DSS - player1 plays corp
+        runner_player = self.players[table['player2']['id']]
+        corp_player = self.players[table['player1']['id']]
+        result = 'unknown'
+        match table['player1']['corpScore']: 
+            case 3:
+                result = 'corp'
+            case 1:
+                result = 'draw'
+            case 0:
+                result = 'runner'
+        if table['player2']['runnerScore'] + table['player1']['corpScore'] == 0:
+            result = 'unknown'
+        if table['intentionalDraw']:
+            result = 'ID'
+        if table['twoForOne']:
+            result = '2-for-1'
+        game_data = { 'phase': phase, 'round': round_num, 'table': table['table'], 'corp_player': corp_player.name, 'corp_id': corp_player.corp_id.name, 'result': result, 'runner_player': runner_player.name, 'runner_id': runner_player.runner_id.name }
+        self.results.append(game_data)
+        runner_player.record_runner_result(game_data)
+        corp_player.record_corp_result(game_data)
+
+    def process_cut_table(self, round_num: int, table: dict):
+        phase = 'cut'
+        if table['player1']['role'] == 'runner':
+            runner_player = self.players[table['player1']['id']]
+            corp_player = self.players[table['player2']['id']]
+        else:
+            runner_player = self.players[table['player2']['id']]
+            corp_player = self.players[table['player1']['id']]
+        result = 'unknown'
+        if table['player1']['winner']:
+            result = table['player1']['role']
+        else:
+            result = table['player2']['role']
+        game_data = { 'phase': phase, 'round': round_num, 'table': table['table'], 'corp_player': corp_player.name, 'corp_id': corp_player.corp_id.name, 'result': result, 'runner_player': runner_player.name, 'runner_id': runner_player.runner_id.name }
+        self.results.append(game_data)
+        runner_player.record_runner_result(game_data)
+        corp_player.record_corp_result(game_data)
