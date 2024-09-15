@@ -14,7 +14,7 @@ def daterange(start_date: datetime.date, end_date: datetime.date):
         yield start_date + datetime.timedelta(n)
 
 start_date = datetime.date(2024,1,1)
-end_date = datetime.date(2024,1,12)
+end_date = datetime.date(2024,9,12)
 nrdb_ids = {}
 
 for date in daterange(start_date, end_date):
