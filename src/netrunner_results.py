@@ -23,15 +23,17 @@ with open('config.yml', 'r') as configfile:
 
     standings_dir = 'OUTPUT/standings/'
     standings_header = ['date','region','online','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
-    allstandings_filename = 'OUTPUT/allstandings.csv'
+    allstandings_filepath = Path('OUTPUT/allstandings.csv')
 
     results_dir = 'OUTPUT/results/'
     results_header = [ 'date','meta','region','online','software','tournament','phase','round','table','corp_player','corp_id','result','runner_player','runner_id']
-    allresults_filename = 'OUTPUT/allresults.csv'
+    allresults_filepath = Path('OUTPUT/allresults.csv')
 
     player_dir = 'OUTPUT/players/'
 
-    with open(allstandings_filename,'w',newline='') as allstandings_file, open(allresults_filename,'w',newline='') as allresults_file:
+    allstandings_filepath.parent.mkdir(exist_ok=True, parents=True)
+    allresults_filepath.parent.mkdir(exist_ok=True, parents=True)
+    with allstandings_filepath.open(mode='w',newline='') as allstandings_file, allresults_filepath.open(mode='w',newline='') as allresults_file:
         allstandings_writer = csv.writer(allstandings_file, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
         allstandings_writer.writerow(standings_header)
 
@@ -63,8 +65,9 @@ with open('config.yml', 'r') as configfile:
                     row.insert(3,t.name)
                     allstandings_writer.writerow(row)
 
-                standings_filename = standings_dir + str(t.date) + '.' + t.name + '.standings.csv'
-                with open(standings_filename,'w',newline='') as sf:
+                standings_filepath = Path(standings_dir + str(t.date) + '.' + t.name + '.standings.csv')
+                standings_filepath.parent.mkdir(exist_ok=True, parents=True)
+                with standings_filepath.open(mode='w',newline='') as sf:
                     sw = csv.writer(sf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
                     sw.writerow(standings_header)
                     sw.writerows(standings)
@@ -82,8 +85,9 @@ with open('config.yml', 'r') as configfile:
                 players = t.players
                 for id,player in players.items():
                     if player.nrdb_id:
-                        player_results_filename = player_dir + str(player.nrdb_id) + '.results.csv'
-                        with open(player_results_filename,'a',newline='') as prf:
+                        player_results_filepath = Path(player_dir + str(player.nrdb_id) + '.results.csv')
+                        player_results_filepath.parent.mkdir(exist_ok=True, parents=True)
+                        with player_results_filepath.open(mode='a',newline='') as prf:
                             prw = csv.writer(prf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
                             for r in player.results:
                                 row = [ t.date, meta, t.region, online, software, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
