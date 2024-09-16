@@ -1,11 +1,5 @@
-import requests
 from netrunner.identity import Identity
 from netrunner.player import TournamentPlayer
-
-def get_json(url: str) -> dict:
-    json_url = url.strip() + '.json'
-    resp = requests.get(url=json_url, params='')
-    return resp.json()
 
 def is_player_in_top_cut(eliminationPlayers: list, player_id: str) -> bool:
   for topcutplayer in eliminationPlayers:
@@ -30,12 +24,12 @@ class Tournament:
         results (list): a 2d array of game results
         standings (list): a 2d array of player standings
     """
-    def __init__(self, url: str, name: str = None, date: str = None, region: str = None, online: bool = False):
+    def __init__(self, json: dict, name: str = None, date: str = None, region: str = None, online: bool = False):
         self.name = name
         self.date = date
         self.region = region
         self.online = online
-        self.json = get_json(url)
+        self.json = json
 
         if self.date is None:
             self.date = self.json['date']

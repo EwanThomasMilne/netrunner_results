@@ -1,7 +1,22 @@
 import csv
 import yaml
+import requests
+import json
+from pathlib import Path
 from netrunner.tournament import AesopsTournament,CobraTournament
 from netrunner.player import TournamentPlayer
+
+def get_json(url: str, force: bool = False) -> dict:
+    """ gets tournament json from local JSON cache (will download if missing or if force is true) """
+    json_url = url.strip() + '.json'
+    json_filepath = Path('JSON/' + json_url.replace("https://","").replace("http://",""))
+    if force or not json_filepath.is_file():
+        json_filepath.parent.mkdir(exist_ok=True, parents=True)
+        resp = requests.get(url=json_url, params='')
+        with json_filepath.open(mode='w') as json_file:
+            json.dump(resp.json(), json_file)
+    with json_filepath.open(mode='r') as json_file:
+        return json.load(json_file)
 
 with open('config.yml', 'r') as configfile:
     config = yaml.safe_load(configfile)
@@ -26,12 +41,13 @@ with open('config.yml', 'r') as configfile:
         for meta,tournaments in config['meta'].items():
             print('META: ' + meta)
             for tournament in tournaments:
+                tournament_json = get_json(tournament['url'])
                 if 'aesop' in tournament['url']:
                     software = 'aesops'
-                    t = AesopsTournament(name=tournament.get('name',None),url=tournament['url'],date=tournament.get('date',None),region=tournament.get('region',None),online=tournament.get('online',False))
+                    t = AesopsTournament(name=tournament.get('name',None),json=tournament_json,date=tournament.get('date',None),region=tournament.get('region',None),online=tournament.get('online',False))
                 else:
                     software = 'cobra'
-                    t = CobraTournament(name=tournament.get('name',None),url=tournament['url'],date=tournament.get('date',None),region=tournament.get('region',None),online=tournament.get('online',False))
+                    t = CobraTournament(name=tournament.get('name',None),json=tournament_json,date=tournament.get('date',None),region=tournament.get('region',None),online=tournament.get('online',False))
                 print('TOURNAMENT: ' + t.name + ' [' + tournament['url'] + ']' )
 
                 if t.online is True:
