@@ -23,50 +23,52 @@ with open('config.yml', 'r') as configfile:
         allresults_writer = csv.writer(allresults_file, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
         allresults_writer.writerow(results_header)
 
-        for tournament in config['tournaments']:
-            print('TOURNAMENT: ' + tournament['name'])
-            if 'aesop' in tournament['url']:
-                software = 'aesops'
-                t = AesopsTournament(name=tournament['name'],url=tournament['url'],date=str(tournament['date']),region=tournament.get('region',''),online=tournament.get('online',False))
-            else:
-                software = 'cobra'
-                t = CobraTournament(name=tournament['name'],url=tournament['url'],date=str(tournament['date']),region=tournament.get('region',''),online=tournament.get('online',False))
+        for meta,tournaments in config['meta'].items():
+            print('META: ' + meta)
+            for tournament in tournaments:
+                if 'aesop' in tournament['url']:
+                    software = 'aesops'
+                    t = AesopsTournament(name=tournament.get('name',None),url=tournament['url'],date=tournament.get('date',None),region=tournament.get('region',None),online=tournament.get('online',False))
+                else:
+                    software = 'cobra'
+                    t = CobraTournament(name=tournament.get('name',None),url=tournament['url'],date=tournament.get('date',None),region=tournament.get('region',None),online=tournament.get('online',False))
+                print('TOURNAMENT: ' + t.name + ' [' + tournament['url'] + ']' )
 
-            if t.online is True:
-                online = "netspace"
-            else:
-                online = "meatspace"
+                if t.online is True:
+                    online = "netspace"
+                else:
+                    online = "meatspace"
 
-            standings = t.standings
-            for row in standings:
-                row.insert(0,t.date)
-                row.insert(1,t.region)
-                row.insert(2,online)
-                row.insert(3,t.name)
-                allstandings_writer.writerow(row)
+                standings = t.standings
+                for row in standings:
+                    row.insert(0,t.date)
+                    row.insert(1,t.region)
+                    row.insert(2,online)
+                    row.insert(3,t.name)
+                    allstandings_writer.writerow(row)
 
-            standings_filename = standings_dir + str(tournament['date']) + '.' + tournament['name'] + '.standings.csv'
-            with open(standings_filename,'w',newline='') as sf:
-                sw = csv.writer(sf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-                sw.writerow(standings_header)
-                sw.writerows(standings)
+                standings_filename = standings_dir + str(t.date) + '.' + t.name + '.standings.csv'
+                with open(standings_filename,'w',newline='') as sf:
+                    sw = csv.writer(sf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
+                    sw.writerow(standings_header)
+                    sw.writerows(standings)
 
-            results = t.results
-            results_filename = results_dir + str(tournament['date']) + '.' + tournament['name'] + '.results.csv'
-            with open(results_filename,'w',newline='') as rf:
-                rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-                rw.writerow(results_header)
-                for r in results:
-                    row = [ t.date, t.region, online, software, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
-                    allresults_writer.writerow(row)
-                    rw.writerow(row)
+                results = t.results
+                results_filename = results_dir + str(t.date) + '.' + t.name + '.results.csv'
+                with open(results_filename,'w',newline='') as rf:
+                    rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
+                    rw.writerow(results_header)
+                    for r in results:
+                        row = [ t.date, t.region, online, software, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
+                        allresults_writer.writerow(row)
+                        rw.writerow(row)
 
-            players = t.players
-            for id,player in players.items():
-                if player.nrdb_id:
-                    player_results_filename = player_dir + str(player.nrdb_id) + '.results.csv'
-                    with open(player_results_filename,'a',newline='') as prf:
-                        prw = csv.writer(prf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-                        for r in player.results:
-                            row = [ t.date, t.region, online, software, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
-                            prw.writerow(row)
+                players = t.players
+                for id,player in players.items():
+                    if player.nrdb_id:
+                        player_results_filename = player_dir + str(player.nrdb_id) + '.results.csv'
+                        with open(player_results_filename,'a',newline='') as prf:
+                            prw = csv.writer(prf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
+                            for r in player.results:
+                                row = [ t.date, t.region, online, software, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
+                                prw.writerow(row)

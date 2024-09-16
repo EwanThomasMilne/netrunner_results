@@ -30,12 +30,17 @@ class Tournament:
         results (list): a 2d array of game results
         standings (list): a 2d array of player standings
     """
-    def __init__(self, name: str, url: str, date: str = 'unknown', region: str = 'unknown', online: bool = False):
+    def __init__(self, url: str, name: str = None, date: str = None, region: str = None, online: bool = False):
         self.name = name
         self.date = date
         self.region = region
         self.online = online
         self.json = get_json(url)
+
+        if self.date is None:
+            self.date = self.json['date']
+        if self.name is None:
+            self.name = self.json['name']
         
         # build player objects
         self.players = {}
