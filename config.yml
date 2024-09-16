@@ -15,6 +15,8 @@ meta:
       name: 'Emerald City Grid 2024-H1 CO'
     - url: https://www.aesopstables.net/440
       online: True
+    - url: https://tournaments.nullsignal.games/tournaments/3419
+      region: EMEA
   '24.05':
     - name: "Fly to EMEA #3"
       url: "https://www.aesopstables.net/464"
