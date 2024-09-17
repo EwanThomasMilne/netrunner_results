@@ -74,7 +74,7 @@ def get_player_aliases(id: int) -> list:
     with open('OUTPUT/sync_bre.csv', newline='') as f:
         reader = csv.reader(f)
         for line in reader:
-            if id == line[6]:
+            if str(id) == line[6]:
                 return [line[0],line[1],line[2]]
     return None
 
