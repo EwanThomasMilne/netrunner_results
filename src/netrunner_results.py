@@ -22,11 +22,11 @@ with open('config.yml', 'r') as configfile:
     config = yaml.safe_load(configfile)
 
     standings_dir = 'OUTPUT/standings/'
-    standings_header = ['date','region','online','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
+    standings_header = ['date','region','online','tournament_id','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
     allstandings_filepath = Path('OUTPUT/allstandings.csv')
 
     results_dir = 'OUTPUT/results/'
-    results_header = [ 'date','meta','region','online','software','tournament','phase','round','table','corp_player','corp_id','result','runner_player','runner_id']
+    results_header = [ 'date','meta','region','online','tournament_id','tournament','phase','round','table','corp_player','corp_id','result','runner_player','runner_id']
     allresults_filepath = Path('OUTPUT/allresults.csv')
 
     player_dir = 'OUTPUT/players/'
@@ -45,7 +45,7 @@ with open('config.yml', 'r') as configfile:
             for tournament in tournaments:
                 tournament_json = get_json(tournament['url'])
                 if 'aesop' in tournament['url']:
-                    software = 'aesops'
+                    software = 'aesop'
                     t = AesopsTournament(name=tournament.get('name',None),json=tournament_json,date=tournament.get('date',None),region=tournament.get('region',None),online=tournament.get('online',False))
                 else:
                     software = 'cobra'
@@ -57,12 +57,16 @@ with open('config.yml', 'r') as configfile:
                 else:
                     online = "meatspace"
 
+                tournament_number = tournament['url'].rsplit('/', 1)[-1]
+                tournament_id = software + '-' + tournament_number
+
                 standings = t.standings
                 for row in standings:
                     row.insert(0,t.date)
                     row.insert(1,t.region)
                     row.insert(2,online)
-                    row.insert(3,t.name)
+                    row.insert(3,tournament_id)
+                    row.insert(4,t.name)
                     allstandings_writer.writerow(row)
 
                 standings_filepath = Path(standings_dir + str(t.date) + '.' + t.name + '.standings.csv')
@@ -78,7 +82,7 @@ with open('config.yml', 'r') as configfile:
                     rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
                     rw.writerow(results_header)
                     for r in results:
-                        row = [ t.date, meta, t.region, online, software, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
+                        row = [ t.date, meta, t.region, online, tournament_id, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
                         allresults_writer.writerow(row)
                         rw.writerow(row)
 
@@ -90,5 +94,5 @@ with open('config.yml', 'r') as configfile:
                         with player_results_filepath.open(mode='a',newline='') as prf:
                             prw = csv.writer(prf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
                             for r in player.results:
-                                row = [ t.date, meta, t.region, online, software, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
+                                row = [ t.date, meta, t.region, online, tournament_id, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
                                 prw.writerow(row)
