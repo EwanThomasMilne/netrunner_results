@@ -95,17 +95,9 @@ with open('config.yml', 'r') as configfile:
 
                 for id,t_player in t.players.items():
                     if t_player.nrdb_id:
-                        player_results_filepath = Path(player_dir + str(t_player.nrdb_id) + '.results.csv')
-                        player_results_filepath.parent.mkdir(exist_ok=True, parents=True)
-                        with player_results_filepath.open(mode='a',newline='') as prf:
-                            prw = csv.writer(prf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-                            for r in t_player.results:
-                                row = [ t.date, meta, t.region, online, tournament_id, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
-                                prw.writerow(row)
-                        # json
                         if not players.get(t_player.nrdb_id):
                             players[t_player.nrdb_id] = Player(nrdb_id=t_player.nrdb_id)
-                        players[t_player.nrdb_id].add_placement(tournament_id=tournament_id, t_player=t_player, date=str(t.date), region=t.region, online=online, tournament_name=t.name, meta=meta)
+                        players[t_player.nrdb_id].add_tournament_results(tournament_id=tournament_id, t_player=t_player, date=str(t.date), region=t.region, online=online, tournament_name=t.name, meta=meta)
 
     for id,player in players.items():
         write_player_json_to_file(player=player, filepath=Path('OUTPUT/players/' + str(id) + '.json'))
