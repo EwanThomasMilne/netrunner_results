@@ -20,7 +20,7 @@ class Tournament:
         region (str): tournament region
         online (bool): netspace or meatspace
         json (dict): raw tournament data
-        players (dict): a dictionary of Player objects,  keyed by each players tournament_id
+        players (dict): a dictionary of Player objects,  keyed by each players tournament_player_id
         results (list): a 2d array of game results
         standings (list): a 2d array of player standings
     """
@@ -45,7 +45,7 @@ class Tournament:
                 top_cut_rank = find_player_in_top_cut(self.json['eliminationPlayers'], player['id']).get('rank')
             else:
                 top_cut_rank = ''
-            self.players[player['id']] = TournamentPlayer(tournament_id = player['id'], name = player['name'], corp_id = corp_id, runner_id = runner_id, swiss_rank = player['rank'], match_points = player['matchPoints'], SoS = player['strengthOfSchedule'], xSoS = player['extendedStrengthOfSchedule'], side_balance = player.get('sideBalance',0), cut_rank = top_cut_rank)
+            self.players[player['id']] = TournamentPlayer(tournament_player_id = player['id'], name = player['name'], corp_id = corp_id, runner_id = runner_id, swiss_rank = player['rank'], match_points = player['matchPoints'], SoS = player['strengthOfSchedule'], xSoS = player['extendedStrengthOfSchedule'], side_balance = player.get('sideBalance',0), cut_rank = top_cut_rank)
 
         # process tables
         self.results = []

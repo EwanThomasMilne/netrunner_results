@@ -60,13 +60,31 @@ def determine_teams_from_bre(name: str) -> list:
                 return [line[3],line[4],line[5]]
     return None
 
+def determine_nrdb_name_from_csv(id: int) -> str:
+    # expect csv to be in the format ["nrdb_name","nrdb_id"]
+    with open('OUTPUT/nrdb_ids.csv', newline='') as f:
+        reader = csv.reader(f)
+        for line in reader:
+            if int(line[1]) == int(id):
+                return line[0]
+    return None
+
+def get_player_aliases(id: int) -> list:
+    # expect csv to be in the format ["player name","player alias","player alias 2","testing team","team 2","team 3","nrdb_id"]
+    with open('OUTPUT/sync_bre.csv', newline='') as f:
+        reader = csv.reader(f)
+        for line in reader:
+            if id == line[6]:
+                return [line[0],line[1],line[2]]
+    return None
+
 class TournamentPlayer:
     """
     A class representing a netrunner player at a tournament
     
     Attributes:
         name (str): the name under which the player registered for the tournament
-        tournament_id (int): tournament id number of player
+        tournament_player_id (int): tournament id number of player
         nrdb_id (int): nrdb id number of player
         teams (list): a list of (3) teams that the player belongs to
         results (list): a 2d array of game results (the inner array is a dict)
@@ -85,8 +103,8 @@ class TournamentPlayer:
         xSoS (float): extended strength of schedule
         side_balance (int): how many more corp games has the player played than runner (a negative value means a runner bias)
     """
-    def __init__(self, tournament_id: int, name: str, corp_id: Identity, runner_id: Identity, swiss_rank: int, match_points: int, SoS: float, xSoS: float, side_balance: int = 0, cut_rank: int = ''):
-        self.tournament_id = tournament_id
+    def __init__(self, tournament_player_id: int, name: str, corp_id: Identity, runner_id: Identity, swiss_rank: int, match_points: int, SoS: float, xSoS: float, side_balance: int = 0, cut_rank: int = ''):
+        self.tournament_player_id = tournament_player_id
         self.name = name
         self.nrdb_id = determine_nrdb_id(self.name)
         self.teams = determine_teams(self.name)
@@ -125,3 +143,33 @@ class TournamentPlayer:
                 self.runner_losses += 1
             case 'draw':
                 self.runner_draws += 1
+
+class Player:
+    """
+    A class representing a netrunner player (across multiple tournaments)
+    
+    Attributes:
+        nrdb_id (int): nrdb id number of the player
+        nrdb_name (str): the nrdb name of the player
+        aliases (list): a list of (3) aliases by which the player is known        
+        teams (list): a list of (3) teams to which the player belongs
+        placements (dict): a 2d dictionary of tournament placements (keyed by tournament_id)
+        results (dict): a 3d array of game results (the outer array is a dict keyed by tournament_id)
+    """
+    def __init__(self, nrdb_id: int, player_data: dict = None):
+        self.nrdb_id = nrdb_id
+        self.nrdb_name = determine_nrdb_name_from_csv(self.nrdb_id)
+        self.aliases = get_player_aliases(self.nrdb_id)
+        self.teams = determine_teams(self.nrdb_name)
+        if player_data:
+            self.placements = player_data.placements
+            self.results = player_data.results
+        else:
+            self.placements = {}
+            self.results = {}
+        
+    def add_placement(self, tournament_id: str, t_player: TournamentPlayer, date: str = None, region: str = None, online: str = None, tournament_name: str = None, meta: str = None, force: bool = False):
+        """ adds a tournament placement to the player """
+        if not self.placements.get(tournament_id) or force:
+            placement = {'meta': meta, 'date': date, 'region': region, 'online': online, 'tournament_name': tournament_name, 'cut_rank': t_player.cut_rank, 'swiss_rank': t_player.swiss_rank, 'corp_id': t_player.corp_id.short_name, 'runner_id': t_player.runner_id.short_name, 'corp_faction': t_player.corp_id.faction, 'runner_faction': t_player.runner_id.faction, 'corp_wins': t_player.corp_wins, 'corp_losses': t_player.corp_losses, 'corp_draws': t_player.corp_draws, 'runner_wins': t_player.runner_wins, 'runner_loses': t_player.runner_losses, 'runner_draws': t_player.runner_draws}
+            self.placements[tournament_id] = placement

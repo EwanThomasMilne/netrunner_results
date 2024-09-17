@@ -4,7 +4,7 @@ import requests
 import json
 from pathlib import Path
 from netrunner.tournament import AesopsTournament,CobraTournament
-from netrunner.player import TournamentPlayer
+from netrunner.player import TournamentPlayer,Player
 
 def get_json(url: str, force: bool = False) -> dict:
     """ gets tournament json from local JSON cache (will download if missing or if force is true) """
@@ -17,6 +17,12 @@ def get_json(url: str, force: bool = False) -> dict:
             json.dump(resp.json(), json_file)
     with json_filepath.open(mode='r') as json_file:
         return json.load(json_file)
+    
+def write_player_json_to_file(player: Player, filepath: Path):
+    json_data = {'nrdb_id': player.nrdb_id, 'nrdb_name': player.nrdb_name, 'aliases': player.aliases, 'teams': player.teams, 'placements': player.placements, 'results': player.results}
+    filepath.parent.mkdir(exist_ok=True, parents=True)
+    with filepath.open(mode='w') as json_file:
+        json.dump(json_data,json_file)
 
 with open('config.yml', 'r') as configfile:
     config = yaml.safe_load(configfile)
@@ -30,6 +36,7 @@ with open('config.yml', 'r') as configfile:
     allresults_filepath = Path('OUTPUT/allresults.csv')
 
     player_dir = 'OUTPUT/players/'
+    players = {}
 
     allstandings_filepath.parent.mkdir(exist_ok=True, parents=True)
     allresults_filepath.parent.mkdir(exist_ok=True, parents=True)
@@ -86,13 +93,19 @@ with open('config.yml', 'r') as configfile:
                         allresults_writer.writerow(row)
                         rw.writerow(row)
 
-                players = t.players
-                for id,player in players.items():
-                    if player.nrdb_id:
-                        player_results_filepath = Path(player_dir + str(player.nrdb_id) + '.results.csv')
+                for id,t_player in t.players.items():
+                    if t_player.nrdb_id:
+                        player_results_filepath = Path(player_dir + str(t_player.nrdb_id) + '.results.csv')
                         player_results_filepath.parent.mkdir(exist_ok=True, parents=True)
                         with player_results_filepath.open(mode='a',newline='') as prf:
                             prw = csv.writer(prf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-                            for r in player.results:
+                            for r in t_player.results:
                                 row = [ t.date, meta, t.region, online, tournament_id, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
                                 prw.writerow(row)
+                        # json
+                        if not players.get(t_player.nrdb_id):
+                            players[t_player.nrdb_id] = Player(nrdb_id=t_player.nrdb_id)
+                        players[t_player.nrdb_id].add_placement(tournament_id=tournament_id, t_player=t_player, date=str(t.date), region=t.region, online=online, tournament_name=t.name, meta=meta)
+
+    for id,player in players.items():
+        write_player_json_to_file(player=player, filepath=Path('OUTPUT/players/' + str(id) + '.json'))
