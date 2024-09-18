@@ -35,6 +35,8 @@ meta:
       url: "https://www.aesopstables.net/483"
       date: 2024-06-08
       region: America
+      players:
+        "dongyroge": 40924
     - name: "APAC"
       url: "https://www.aesopstables.net/489"
       date: 2024-06-15

@@ -5,7 +5,7 @@ from netrunner.identity import Identity
 def get_player_details_by_id(nrdb_id: int) -> dict:
     with open('players.yml') as f:
         players = yaml.load(f, Loader=yaml.CBaseLoader)
-        return players[nrdb_id]
+        return players[str(nrdb_id)]
 
 def get_player_details_by_name(name: str) -> dict:
     with open('players.yml') as f:
@@ -44,11 +44,15 @@ class TournamentPlayer:
         xSoS (float): extended strength of schedule
         side_balance (int): how many more corp games has the player played than runner (a negative value means a runner bias)
     """
-    def __init__(self, tournament_player_id: int, name: str, corp_id: Identity, runner_id: Identity, swiss_rank: int, match_points: int, SoS: float, xSoS: float, side_balance: int = 0, cut_rank: int = ''):
+    def __init__(self, tournament_player_id: int, name: str, corp_id: Identity, runner_id: Identity, swiss_rank: int, match_points: int, SoS: float, xSoS: float, side_balance: int = 0, cut_rank: int = '', nrdb_id: int = None):
         self.tournament_player_id = tournament_player_id
         self.name = name
-        player_details = get_player_details_by_name(self.name)
-        self.nrdb_id = player_details.get('nrdb_id',None)
+        if nrdb_id:
+            self.nrdb_id = int(nrdb_id)
+            player_details = get_player_details_by_id(self.nrdb_id)
+        else:
+            player_details = get_player_details_by_name(self.name)
+            self.nrdb_id = player_details.get('nrdb_id',None)
         self.teams = player_details.get('teams',[])
         self.corp_id = corp_id
         self.runner_id = runner_id

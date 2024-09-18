@@ -53,10 +53,10 @@ with open('tournaments.yml', 'r') as tournaments_file:
                 tournament_json = get_json(tournament['url'])
                 if 'aesop' in tournament['url']:
                     software = 'aesop'
-                    t = AesopsTournament(name=tournament.get('name',None),json=tournament_json,date=tournament.get('date',None),region=tournament.get('region',None),online=tournament.get('online',False))
+                    t = AesopsTournament(name=tournament.get('name',None),json=tournament_json,date=tournament.get('date',None),region=tournament.get('region',None),online=tournament.get('online',False),player_mappings=tournament.get('players',None))
                 else:
                     software = 'cobra'
-                    t = CobraTournament(name=tournament.get('name',None),json=tournament_json,date=tournament.get('date',None),region=tournament.get('region',None),online=tournament.get('online',False))
+                    t = CobraTournament(name=tournament.get('name',None),json=tournament_json,date=tournament.get('date',None),region=tournament.get('region',None),online=tournament.get('online',False),player_mappings=tournament.get('players',None))
                 print('TOURNAMENT: ' + t.name + ' [' + tournament['url'] + ']' )
 
                 if t.online is True:

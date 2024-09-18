@@ -30,6 +30,7 @@ outputs player data in JSON format to `OUTPUT/players/NRDB_ID.json`
 |date|*optional*|date (ISO 8601)|tournament date|taken from tournament page|
 |region|*optional*|string|EMEA/America/APAC||
 |online|*optional*|boolean|online or offline tournament?|False|
+|players|*optional*|dict|a dictionary of player to nrdb_id mappings for the tournament||
 
 
 ```yaml
