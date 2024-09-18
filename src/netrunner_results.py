@@ -19,7 +19,7 @@ def get_json(url: str, force: bool = False) -> dict:
         return json.load(json_file)
     
 def write_player_json_to_file(player: Player, filepath: Path):
-    json_data = {'nrdb_id': player.nrdb_id, 'nrdb_name': player.nrdb_name, 'aliases': player.aliases, 'teams': player.teams, 'placements': player.placements, 'results': player.results}
+    json_data = {'nrdb_id': player.nrdb_id, 'nrdb_name': player.nrdb_name, 'aliases': player.aliases, 'teams': player.teams, 'tournaments': player.tournaments}
     filepath.parent.mkdir(exist_ok=True, parents=True)
     with filepath.open(mode='w') as json_file:
         json.dump(json_data,json_file)

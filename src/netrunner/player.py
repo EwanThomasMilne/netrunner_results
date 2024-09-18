@@ -153,8 +153,8 @@ class Player:
         nrdb_name (str): the nrdb name of the player
         aliases (list): a list of (3) aliases by which the player is known        
         teams (list): a list of (3) teams to which the player belongs
-        placements (dict): a 2d dictionary of tournament placements (keyed by tournament_id)
-        results (dict): a 3d array of game results (the outer array is a dict keyed by tournament_id)
+        tournaments (dict): a dictionary of tournament attendance (keyed by tournament_id)
+            results (list): an array of game results from the tournament
     """
     def __init__(self, nrdb_id: int, player_data: dict = None):
         self.nrdb_id = nrdb_id
@@ -162,17 +162,13 @@ class Player:
         self.aliases = get_player_aliases(self.nrdb_id)
         self.teams = determine_teams(self.nrdb_name)
         if player_data:
-            self.placements = player_data.placements
-            self.results = player_data.results
+            self.tournaments = player_data.tournaments
         else:
-            self.placements = {}
-            self.results = {}
+            self.tournaments = {}
         
     def add_tournament_results(self, tournament_id: str, t_player: TournamentPlayer, date: str = None, region: str = None, online: str = None, tournament_name: str = None, meta: str = None, force: bool = False):
         """ adds the results and final placement from a tournemnt to the player object """
-        if not self.placements.get(tournament_id) or force:
+        if not self.tournaments.get(tournament_id) or force:
             placement = {'meta': meta, 'date': date, 'region': region, 'online': online, 'tournament_name': tournament_name, 'cut_rank': t_player.cut_rank, 'swiss_rank': t_player.swiss_rank, 'corp_id': t_player.corp_id.name, 'runner_id': t_player.runner_id.name, 'corp_faction': t_player.corp_id.faction, 'runner_faction': t_player.runner_id.faction, 'corp_wins': t_player.corp_wins, 'corp_losses': t_player.corp_losses, 'corp_draws': t_player.corp_draws, 'runner_wins': t_player.runner_wins, 'runner_loses': t_player.runner_losses, 'runner_draws': t_player.runner_draws}
-            self.placements[tournament_id] = placement
-
-        if not self.results.get(tournament_id) or force:
-            self.results[tournament_id] = t_player.results
+            self.tournaments[tournament_id] = placement
+            self.tournaments[tournament_id]['games'] = t_player.results
