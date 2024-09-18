@@ -98,7 +98,7 @@ class Player:
         aliases (list): a list of (3) aliases by which the player is known        
         teams (list): a list of (3) teams to which the player belongs
         tournaments (dict): a dictionary of tournament attendance (keyed by tournament_id)
-            results (list): an array of game results from the tournament
+            games (list): an array of game results from the tournament
     """
     def __init__(self, nrdb_id: int, player_data: dict = None):
         self.nrdb_id = nrdb_id

@@ -24,8 +24,8 @@ def write_player_json_to_file(player: Player, filepath: Path):
     with filepath.open(mode='w') as json_file:
         json.dump(json_data,json_file)
 
-with open('config.yml', 'r') as configfile:
-    config = yaml.safe_load(configfile)
+with open('tournaments.yml', 'r') as tournaments_file:
+    config = yaml.safe_load(tournaments_file)
 
     standings_dir = 'OUTPUT/standings/'
     standings_header = ['date','region','online','tournament_id','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
