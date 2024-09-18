@@ -1,6 +1,7 @@
 import requests
 import datetime
 import csv
+from pathlib import Path
 
 def get_decklists_by_date(date: datetime.date):
     date_string = date.isoformat()
@@ -27,7 +28,9 @@ for date in daterange(start_date, end_date):
         userid = decklist.get('user_id')
         nrdb_ids.update({username:userid})
 
-with open ('OUTPUT/nrdb_ids.csv','w',newline='') as output_file:
-    output_writer = csv.writer(output_file, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
+csv_filepath = Path('OUTPUT/nrdb_ids.csv')
+csv_filepath.parent.mkdir(exist_ok=True, parents=True)
+with csv_filepath.open(mode='w') as csv_file:
+    csv_writer = csv.writer(csv_file, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
     for name, id in nrdb_ids.items():
-        output_writer.writerow([name,id])
+        csv_writer.writerow([name,id])
