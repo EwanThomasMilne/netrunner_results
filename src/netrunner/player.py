@@ -1,82 +1,23 @@
 import csv
+import yaml
 from netrunner.identity import Identity
 
-def determine_nrdb_id(name: str) -> int:
-    nrdb_id = None
-    try:
-        nrdb_id = determine_nrdb_id_from_csv(name)
-    except:
-        pass
-    if nrdb_id:
-        return nrdb_id
-    try:
-        nrdb_id = determine_nrdb_id_from_bre(name)
-    except:
-        pass
-    if nrdb_id:
-        return nrdb_id
-    return None
+def get_player_details_by_id(nrdb_id: int) -> dict:
+    with open('players.yml') as f:
+        players = yaml.load(f, Loader=yaml.CBaseLoader)
+        return players[nrdb_id]
 
-def determine_nrdb_id_from_csv(name: str) -> int:
-    # expect csv to be in the format ["nrdb_name","nrdb_id"]
-    with open('OUTPUT/nrdb_ids.csv', newline='') as f:
-        reader = csv.reader(f)
-        for line in reader:
-            if line[0].lower() == name.lower():
-                try:
-                    return int(line[1])
-                except ValueError:
-                    return None
-    return None
-
-def determine_nrdb_id_from_bre(name: str) -> int:
-    # expect csv to be in the format ["player name","player alias","player alias 2","testing team","team 2","team 3","nrdb_id"]
-    with open('OUTPUT/sync_bre.csv', newline='') as f:
-        reader = csv.reader(f)
-        for line in reader:
-            if name.lower() in (line[0].lower(), line[1].lower(), line[2].lower()):
-                try:
-                    return int(line[6])
-                except ValueError:
-                    return None
-    return None
-
-def determine_teams(name: str) -> list:
-    teams = None
-    try:
-        teams = determine_teams_from_bre(name)
-    except:
-        pass
-    if teams:
-        return teams
-    return ['','','']
-
-def determine_teams_from_bre(name: str) -> list:
-    # expect csv to be in the format ["player name","player alias","player alias 2","testing team","team 2","team 3","nrdb_id"]
-    with open('OUTPUT/sync_bre.csv', newline='') as f:
-        reader = csv.reader(f)
-        for line in reader:
-            if name.lower() in (line[0].lower(), line[1].lower(), line[2].lower()):
-                return [line[3],line[4],line[5]]
-    return None
-
-def determine_nrdb_name_from_csv(id: int) -> str:
-    # expect csv to be in the format ["nrdb_name","nrdb_id"]
-    with open('OUTPUT/nrdb_ids.csv', newline='') as f:
-        reader = csv.reader(f)
-        for line in reader:
-            if int(line[1]) == int(id):
-                return line[0]
-    return None
-
-def get_player_aliases(id: int) -> list:
-    # expect csv to be in the format ["player name","player alias","player alias 2","testing team","team 2","team 3","nrdb_id"]
-    with open('OUTPUT/sync_bre.csv', newline='') as f:
-        reader = csv.reader(f)
-        for line in reader:
-            if str(id) == line[6]:
-                return [line[0],line[1],line[2]]
-    return None
+def get_player_details_by_name(name: str) -> dict:
+    with open('players.yml') as f:
+        players = yaml.load(f, Loader=yaml.CBaseLoader)
+        for id,player in players.items():
+            if name == player.get('nrdb_name',None):
+                player['nrdb_id'] = id
+                return player
+            if name in player.get('aliases',[]):
+                player['nrdb_id'] = id
+                return player
+        return {}
 
 class TournamentPlayer:
     """
@@ -106,8 +47,9 @@ class TournamentPlayer:
     def __init__(self, tournament_player_id: int, name: str, corp_id: Identity, runner_id: Identity, swiss_rank: int, match_points: int, SoS: float, xSoS: float, side_balance: int = 0, cut_rank: int = ''):
         self.tournament_player_id = tournament_player_id
         self.name = name
-        self.nrdb_id = determine_nrdb_id(self.name)
-        self.teams = determine_teams(self.name)
+        player_details = get_player_details_by_name(self.name)
+        self.nrdb_id = player_details.get('nrdb_id',None)
+        self.teams = player_details.get('teams',[])
         self.corp_id = corp_id
         self.runner_id = runner_id
         self.corp_wins = 0
@@ -147,6 +89,8 @@ class TournamentPlayer:
 class Player:
     """
     A class representing a netrunner player (across multiple tournaments)
+    Parameters:
+        nrdb_id (int): nrdb id number of the player
     
     Attributes:
         nrdb_id (int): nrdb id number of the player
@@ -158,9 +102,10 @@ class Player:
     """
     def __init__(self, nrdb_id: int, player_data: dict = None):
         self.nrdb_id = nrdb_id
-        self.nrdb_name = determine_nrdb_name_from_csv(self.nrdb_id)
-        self.aliases = get_player_aliases(self.nrdb_id)
-        self.teams = determine_teams(self.nrdb_name)
+        player_details = get_player_details_by_id(self.nrdb_id)
+        self.nrdb_name = player_details.get('nrdb_name',None)
+        self.aliases = player_details.get('aliases',None)
+        self.teams = player_details.get('teams',None)
         if player_data:
             self.tournaments = player_data.tournaments
         else:
