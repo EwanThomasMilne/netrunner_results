@@ -13,6 +13,12 @@ meta:
     - url: https://tournaments.nullsignal.games/tournaments/1852
       online: True
   '21.04':
+    - url: https://tournaments.nullsignal.games/tournaments/1998
+      online: True
+      region: EMEA
+    - url: https://tournaments.nullsignal.games/tournaments/2009
+      online: True
+      region: EMEA
   '21.05':
     - url: https://tournaments.nullsignal.games/tournaments/2038
       online: True
@@ -114,6 +120,8 @@ meta:
       region: America
     - url: https://www.aesopstables.net/361
       online: True
+    - url: https://tournaments.nullsignal.games/tournaments/3207
+      online: True
   '24.03':
     - url: https://www.aesopstables.net/368
       online: True
@@ -122,6 +130,8 @@ meta:
       name: 'AMT - April 6th'
     - url: https://www.aesopstables.net/393
       region: America
+    - url: https://www.aesopstables.net/394
+      online: True
     - url: https://www.aesopstables.net/395
       online: True
     - url: https://www.aesopstables.net/304
