@@ -10,7 +10,7 @@ class Identity:
         faction (str): Faction of the identity
         short_name (str): Short name of the identity
     """
-    def __init__(self, reference):
+    def __init__(self, reference: str = "no reference"):
         """
         Initializes a netrunner identity object (using identities.yml)
 
@@ -22,7 +22,7 @@ class Identity:
 
         p = Path(__file__).with_name('identities.yml')
         with p.open('r') as identities_file:
-            identities = yaml.safe_load(identities_file)
+            identities = yaml.load(identities_file, Loader=yaml.CBaseLoader)
 
         if reference in identities.keys():
             self.name = reference
@@ -40,3 +40,6 @@ class Identity:
 
         self.faction = self.id_data.get('faction','unknown')
         self.short_name = self.id_data.get('short_name','unknown')
+
+        if self.name == "unknown":
+            print("could not find identity: "+str(reference))

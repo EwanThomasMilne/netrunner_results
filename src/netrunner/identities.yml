@@ -1,4 +1,22 @@
 ---
+"Harishchandra Ent.: Where You're the Star":
+  faction: NBN
+  short_name: Harishchandra
+'Haarpsichord Studios: Entertainment Unleashed':
+  faction: NBN
+  short_name: Haarpsichord
+'Acme Consulting: The Truth You Need':
+  faction: NBN
+  short_name: Acme
+'NBN: Controlling the Message':
+  faction: NBN
+  short_name: CtM
+'Spark Agency: Worldswide Reach':
+  faction: NBN
+  short_name: Spark
+'SYNC: Everything, Everywhere':
+  faction: NBN
+  short_name: SYNC
 'Azmari EdTech: Shaping the Future':
   faction: NBN
   short_name: Azmari
@@ -38,6 +56,26 @@
 'MirrorMorph: Endless Iteration':
   faction: HB
   short_name: MirrorMorph
+'Jinteki Biotech: Life Imagined':
+  faction: Jinteki
+  short_name: Biotech
+'Hyoubu Institute: Absolute Clarity':
+  faction: Jinteki
+  short_name: Hyoubu
+'Tennin Institute: The Secrets Within':
+  faction: Jinteki
+  short_name: Tennin
+'Chronos Protocol: Selective Mind-mapping':
+  faction: Jinteki
+  short_name: 'Chronos Protocol'
+'Jinteki: Replicating Perfection':
+  faction: Jinteki
+  short_name: RP
+'Pālanā Foods: Sustainable Growth':
+  faction: Jinteki
+  short_name: 'Pālanā'
+  alt_names:
+    - 'Palana Foods: Sustainable Growth'
 'AgInfusion: New Miracles for a New World':
   faction: Jinteki
   short_name: AgInfusion
@@ -56,6 +94,24 @@
 'Saraswati Mnemonics: Endless Exploration':
   faction: Jinteki
   short_name: Saraswati
+'Titan Transnational: Investing In Your Future':
+  faction: Weyland
+  short_name: Titan
+'SSO Industries: Fueling Innovation':
+  faction: Weyland
+  short_name: SSO
+'Weyland Consortium: Builder of Nations':
+  faction: Weyland
+  short_name: BoN
+'Argus Security: Protection Guaranteed':
+  faction: Weyland
+  short_name: Argus
+'Blue Sun: Powering the Future':
+  faction: Weyland
+  short_name: 'Blue Sun'
+'Gagarin Deep Space: Expanding the Horizon':
+  faction: Weyland
+  short_name: 'Gagarin'
 'Ob Superheavy Logistics: Extract. Export. Excel.':
   faction: Weyland
   short_name: Ob
@@ -82,6 +138,24 @@
   short_name: 'Ampère'
   alt_names:
     - 'Ampere: Cybernetics For Anyone'
+'Nathaniel "Gnat" Hall: One-of-a-Kind':
+  faction: Anarch
+  short_name: Gnat
+"Edward Kim: Humanity's Hammer":
+  faction: Anarch
+  short_name: 'Ed Kim'
+'MaxX: Maximum Punk Rock':
+  faction: Anarch
+  short_name: 'MaxX'
+'Null: Whistleblower':
+  faction: Anarch
+  short_name: 'Null'
+'Omar Keung: Conspiracy Theorist':
+  faction: Anarch
+  short_name: Omar
+'Valencia Estevez: The Angel of Cayambe':
+  faction: Anarch
+  short_name: Val
 'Hoshiko Shiro: Untold Protagonist':
   faction: Anarch
   short_name: Hoshiko
@@ -94,6 +168,7 @@
   faction: Anarch
   short_name: Loup
   alt_names:
+    - 'René "Loup" Arcemont: Party Animal'
     - 'Rene "Loup" Arcemont: Party Animal'
 'Sebastião Souza Pessoa: Activist Organizer':
   faction: Anarch
@@ -112,6 +187,23 @@
 'Quetzal: Free Spirit':
   faction: Anarch
   short_name: Quetzal
+'Iain Stirling: Retired Spook':
+  faction: Criminal
+  short_name: 'Iain Stirling'
+'Laramy Fisk: Savvy Investor':
+  faction: Criminal
+  short_name: Fisk
+'Armand "Geist" Walker: Tech Lord':
+  faction: Criminal
+  short_name: Geist
+  alt_names:
+    - 'Armand “Geist” Walker: Tech Lord'
+'Gabriel Santiago: Consummate Professional':
+  faction: Criminal
+  short_name: Gabe
+'Leela Patel: Trained Pragmatist':
+  faction: Criminal
+  short_name: Leela
 'Nyusha "Sable" Sintashta: Symphonic Prodigy':
   faction: Criminal
   short_name: Sable
@@ -138,6 +230,21 @@
 'Mercury: Chrome Libertador':
   faction: Criminal
   short_name: Mecury
+'Jesminder Sareen: Girl Behind the Curtain':
+  faction: Shaper
+  short_name: Jesminder
+'Chaos Theory: Wünderkind':
+  faction: Shaper
+  short_name: 'Chaos Theory'
+'Ele "Smoke" Scovak: Cynosure of the Net':
+  faction: Shaper
+  short_name: Smoke
+'Kabonesa Wu: Netspace Thrillseeker':
+  faction: Shaper
+  short_name: Wu
+'Hayley Kaplan: Universal Scholar':
+  faction: Shaper
+  short_name: Hayley
 'Arissana Rocha Nahu: Street Artist':
   faction: Shaper
   short_name: Arissana
@@ -168,3 +275,12 @@
 'Nova Initiumia: Catalyst & Impetus':
   faction: 'Neutral Runner'
   short_name: Nova
+'Adam: Compulsive Hacker':
+  faction: 'Mini-faction'
+  short_name: Adam
+'Apex: Invasive Predator':
+  faction: 'Mini-faction'
+  short_name: Apex
+'Sunny Lebeau: Security Specialist':
+  faction: 'Mini-faction'
+  short_name: Sunny
