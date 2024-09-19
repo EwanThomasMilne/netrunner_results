@@ -76,7 +76,7 @@ with open('tournaments.yml', 'r') as tournaments_file:
                     row.insert(4,t.name)
                     allstandings_writer.writerow(row)
 
-                standings_filepath = Path(standings_dir + str(t.date) + '.' + t.name + '.standings.csv')
+                standings_filepath = Path(standings_dir + str(t.date) + '.' + tournament_id + '.standings.csv')
                 standings_filepath.parent.mkdir(exist_ok=True, parents=True)
                 with standings_filepath.open(mode='w',newline='') as sf:
                     sw = csv.writer(sf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
@@ -84,7 +84,7 @@ with open('tournaments.yml', 'r') as tournaments_file:
                     sw.writerows(standings)
 
                 results = t.results
-                results_filename = results_dir + str(t.date) + '.' + t.name + '.results.csv'
+                results_filename = results_dir + str(t.date) + '.' + tournament_id + '.results.csv'
                 with open(results_filename,'w',newline='') as rf:
                     rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
                     rw.writerow(results_header)
