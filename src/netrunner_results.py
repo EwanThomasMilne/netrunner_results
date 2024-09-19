@@ -49,6 +49,8 @@ with open('tournaments.yml', 'r') as tournaments_file:
 
         for meta,tournaments in config['meta'].items():
             print('META: ' + meta)
+            if not tournaments:
+                continue
             for tournament in tournaments:
                 tournament_json = get_json(tournament['url'])
                 if 'aesop' in tournament['url']:

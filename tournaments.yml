@@ -1,5 +1,54 @@
 ---
 meta:
+  '20.06':
+    - url: https://tournaments.nullsignal.games/tournaments/1807
+      region: APAC
+      online: True
+    - url: https://tournaments.nullsignal.games/tournaments/1820
+      region: America
+      online: True
+  '20.09':
+    - url: https://tournaments.nullsignal.games/tournaments/1851
+      online: True
+    - url: https://tournaments.nullsignal.games/tournaments/1852
+      online: True
+  '21.04':
+  '21.05':
+    - url: https://tournaments.nullsignal.games/tournaments/2038
+      online: True
+  '21.06':
+    - url: https://tournaments.nullsignal.games/tournaments/2118
+      region: APAC
+      online: True
+    - url: https://tournaments.nullsignal.games/tournaments/2122
+      region: EMEA
+      online: True
+    - url: https://tournaments.nullsignal.games/tournaments/2128
+      region: America
+      online: True
+  '21.10':
+    - url: https://tournaments.nullsignal.games/tournaments/2201
+      online: True
+    - url: https://tournaments.nullsignal.games/tournaments/2207
+      online: True
+    - url: https://tournaments.nullsignal.games/tournaments/2227
+      online: True
+  '22.08':
+    - url: https://tournaments.nullsignal.games/tournaments/2497
+      region: APAC
+      online: True
+    - url: https://tournaments.nullsignal.games/tournaments/2498
+      region: America
+      online: True
+    - url: https://tournaments.nullsignal.games/tournaments/2499
+      region: EMEA
+      online: True
+  '22.09':
+    - url: https://tournaments.nullsignal.games/tournaments/2639
+    - url: https://tournaments.nullsignal.games/tournaments/2718
+      region: EMEA
+    - url: https://tournaments.nullsignal.games/tournaments/2756
+      online: True
   '23.03':
     - url: https://www.aesopstables.net/53
       region: America
