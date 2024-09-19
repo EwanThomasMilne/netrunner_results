@@ -1,6 +1,10 @@
 ---
 meta:
   '23.03':
+    - url: https://www.aesopstables.net/53
+      region: America
+    - url: https://www.aesopstables.net/60
+      region: America
     - url: https://tournaments.nullsignal.games/tournaments/3001
       online: True
     - url: https://tournaments.nullsignal.games/tournaments/3012
@@ -11,6 +15,12 @@ meta:
       region: APAC
       online: True
   '23.08':
+    - url: https://www.aesopstables.net/64
+      region: America
+    - url: https://www.aesopstables.net/104
+      region: America
+    - url: https://www.aesopstables.net/114
+      region: EMEA
     - url: https://tournaments.nullsignal.games/tournaments/3102
       region: EMEA
       online: True
@@ -23,6 +33,8 @@ meta:
     - url: https://tournaments.nullsignal.games/tournaments/3138
       region: EMEA
   '23.09':
+    - url: https://www.aesopstables.net/118
+      region: APAC
     - url: https://tournaments.nullsignal.games/tournaments/3132
       region: EMEA
     - url: https://tournaments.nullsignal.games/tournaments/3148
@@ -44,6 +56,14 @@ meta:
     - url: https://tournaments.nullsignal.games/tournaments/3260
       region: America
     - url: https://tournaments.nullsignal.games/tournaments/3254
+      online: True
+    - url: https://www.aesopstables.net/231
+      online: True
+    - url: https://www.aesopstables.net/245
+      online: True
+    - url: https://www.aesopstables.net/360
+      region: America
+    - url: https://www.aesopstables.net/361
       online: True
   '24.03':
     - url: https://www.aesopstables.net/368
