@@ -4109,3 +4109,14 @@
   aliases:
   - DumbleJum
   nrdb_name: DumbleJum
+27839:
+  nrdb_name: Havvy
+  teams:
+    - EA Sports
+    - NWE
+6889:
+  nrdb_name: Bartimaeus
+  teams:
+    - EA Sports
+  aliases:
+    - bartman
