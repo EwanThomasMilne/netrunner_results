@@ -254,3 +254,12 @@ meta:
       url: "https://www.aesopstables.net/687"
       date: 2024-09-07
       region: America
+  '24.09':
+    - url: 'https://www.aesopstables.net/885'
+      region: APAC
+    - url: 'https://www.aesopstables.net/1117'
+      region: EMEA
+    - url: 'https://www.aesopstables.net/1050'
+      region: APAC
+    - url: 'https://www.aesopstables.net/1116'
+      online: True
