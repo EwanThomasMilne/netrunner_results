@@ -115,7 +115,7 @@ class Player:
         else:
             self.tournaments = {}
         
-    def add_tournament_results(self, tournament_id: str, t_player: TournamentPlayer, date: str = None, region: str = None, online: str = None, tournament_name: str = None, meta: str = None, force: bool = False):
+    def add_tournament_results(self, tournament_id: str, t_player: TournamentPlayer, date: str = None, region: str = None, online: str = None, tournament_name: str = None, tournament_url: str = None, meta: str = None, force: bool = False):
         """ adds the results and final placement from a tournemnt to the player object """
         if not self.tournaments.get(tournament_id) or force:
             placement = {'meta': meta, 'date': date, 'region': region, 'online': online, 'tournament_name': tournament_name, 'cut_rank': t_player.cut_rank, 'swiss_rank': t_player.swiss_rank, 'corp_id': t_player.corp_id.name, 'runner_id': t_player.runner_id.name, 'corp_faction': t_player.corp_id.faction, 'runner_faction': t_player.runner_id.faction, 'corp_wins': t_player.corp_wins, 'corp_losses': t_player.corp_losses, 'corp_draws': t_player.corp_draws, 'runner_wins': t_player.runner_wins, 'runner_loses': t_player.runner_losses, 'runner_draws': t_player.runner_draws}
