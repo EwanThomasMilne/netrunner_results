@@ -44,6 +44,36 @@ def get_abr_tournament_id(date: datetime.date, name: str, size: int) -> int:
     # or give up
     print("could not find tournament in abr (consider adding the abr_id to tournaments.yml)")
     return None
+
+def get_abr_player_mappings(abr_id: int) -> dict:
+    """ use abr claims to match registration name to nrdb_id """
+    api_url = "https://alwaysberunning.net/api/entries"
+    api_params = {
+        'id': abr_id
+    }
+    resp = requests.get(url=api_url, params=api_params)
+    player_map = {}
+    # add new players to players.yml
+    yaml_filepath=Path('players.yml')
+    with yaml_filepath.open(mode='r') as players_file:
+        known_players = yaml.safe_load(players_file)
+    for player in resp.json():
+        if player['user_id']:
+            if int(player['user_id']) not in known_players:
+                add_to_players_yaml(nrdb_id=int(player['user_id']), nrdb_name=player['user_name']) # this takes forever
+            player_map.update( { player['user_import_name'] : player['user_id'] } )
+    return player_map
+
+def add_to_players_yaml(nrdb_id: int, nrdb_name: str):
+    yaml_filepath=Path('players.yml')
+    with yaml_filepath.open(mode='r+') as players_file:
+        players = yaml.safe_load(players_file)
+        if nrdb_id not in players:
+            print("found new nrdb_id: "+ nrdb_name + "["+str(nrdb_id)+"]")
+            players[nrdb_id] = { 'nrdb_name': nrdb_name }
+            players_file.seek(0)
+            yaml.dump(players, players_file, default_style='')
+            players_file.truncate()
  
 def write_standings_to_csv(standings: list, standings_filepath: Path):
     standings_filepath.parent.mkdir(exist_ok=True, parents=True)
@@ -51,7 +81,6 @@ def write_standings_to_csv(standings: list, standings_filepath: Path):
         sw = csv.writer(sf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
         sw.writerow(standings_header)
         sw.writerows(standings)
-
     
 def write_player_json_to_file(player: Player, filepath: Path):
     json_data = {'nrdb_id': player.nrdb_id, 'nrdb_name': player.nrdb_name, 'aliases': player.aliases, 'teams': player.teams, 'tournaments': player.tournaments}
@@ -93,13 +122,18 @@ with open('tournaments.yml', 'r') as tournaments_file:
                 tournament_size = len(tournament_json['players'])
                 print('TOURNAMENT: ' + tournament_name + ' [' + tournament['url'] + ']' )
                 tournament_abr_id = tournament.get('abr_id', get_abr_tournament_id(date=tournament_date, name=tournament_name, size=tournament_size))
+                # build a mapping of registration names to nrbd ids if possible
+                tournament_player_map = {}
+                if tournament_abr_id:
+                    tournament_player_map.update(get_abr_player_mappings(tournament_abr_id))
+                tournament_player_map.update(tournament.get('players',{}))
 
                 if 'aesop' in tournament['url']:
                     software = 'aesop'
-                    t = AesopsTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),online=tournament.get('online',False),player_mappings=tournament.get('players',None),abr_id=tournament_abr_id)
+                    t = AesopsTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),online=tournament.get('online',False),player_mappings=tournament_player_map,abr_id=tournament_abr_id)
                 else:
                     software = 'cobra'
-                    t = CobraTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),online=tournament.get('online',False),player_mappings=tournament.get('players',None), abr_id=tournament_abr_id)
+                    t = CobraTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),online=tournament.get('online',False),player_mappings=tournament_player_map, abr_id=tournament_abr_id)
                 
                 # useful variables
                 if t.online is True:
