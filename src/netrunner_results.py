@@ -19,60 +19,72 @@ def get_json(url: str, force: bool = False) -> dict:
     with json_filepath.open(mode='r') as json_file:
         return json.load(json_file)
     
-def get_abr_tournament_id(date: datetime.date, name: str, size: int) -> int:
+def get_abr_tournament_id(date: datetime.date, name: str, size: int, force: bool = False) -> int:
     """ use the abr API to find the tournament abr ID (if there is one)"""
     # get all abr concluded tournaments that happened on that day
-    date_string = date.strftime("%Y.%m.%d.")
-    api_url = "https://alwaysberunning.net/api/tournaments"
-    api_params = {
-        'concluded':1,
-        'start':date_string,
-        'end':date_string
-    }
-    resp = requests.get(url=api_url, params=api_params)
+    json_filepath = Path('JSON/alwaysberunning.net/api/tournaments/' + date.isoformat() + '.json')
+    if force or not json_filepath.is_file():
+        date_string = date.strftime("%Y.%m.%d.")
+        api_url = "https://alwaysberunning.net/api/tournaments"
+        api_params = {
+            'concluded':1,
+            'start':date_string,
+            'end':date_string
+        }
+        resp = requests.get(url=api_url, params=api_params)
+        json_filepath.parent.mkdir(exist_ok=True, parents=True)
+        with json_filepath.open(mode='w') as json_file:
+            json.dump(resp.json(), json_file)
+    with json_filepath.open(mode='r') as json_file:
+        json_data = json.load(json_file)
 
     # look for a tournament with a matching name
-    for tournament in resp.json():
+    for tournament in json_data:
         if tournament['title'] == name:
-            return tournament['id']
-        
+            return tournament['id'] 
     # look for a tournament with a matching size
-    for tournament in resp.json():
+    for tournament in json_data:
         if tournament['players_count'] == size:
             return tournament['id']
-        
     # or give up
     print("could not find tournament in abr (consider adding the abr_id to tournaments.yml)")
     return None
 
-def get_abr_player_mappings(abr_id: int) -> dict:
+def get_abr_player_mappings(abr_id: int, force: bool = False) -> dict:
     """ use abr claims to match registration name to nrdb_id """
-    api_url = "https://alwaysberunning.net/api/entries"
-    api_params = {
-        'id': abr_id
-    }
-    resp = requests.get(url=api_url, params=api_params)
+    json_filepath = Path('JSON/alwaysberunning.net/api/entries/' + str(abr_id) + '.json')
+    if force or not json_filepath.is_file():
+        api_url = "https://alwaysberunning.net/api/entries"
+        api_params = {
+            'id': abr_id
+        }
+        resp = requests.get(url=api_url, params=api_params)
+        json_filepath.parent.mkdir(exist_ok=True, parents=True)
+        with json_filepath.open(mode='w') as json_file:
+            json.dump(resp.json(), json_file)
+    with json_filepath.open(mode='r') as json_file:
+        json_data = json.load(json_file)
+
     player_map = {}
-    # add new players to players.yml
-    yaml_filepath=Path('players.yml')
-    with yaml_filepath.open(mode='r') as players_file:
-        known_players = yaml.safe_load(players_file)
-    for player in resp.json():
+    json_filepath=Path('players.json')
+    with json_filepath.open(mode='r') as players_file:
+        known_players = json.load(players_file)
+    for player in json_data:
         if player['user_id']:
-            if int(player['user_id']) not in known_players:
-                add_to_players_yaml(nrdb_id=int(player['user_id']), nrdb_name=player['user_name']) # this takes forever
+            if str(player['user_id']) not in known_players:
+                add_to_players_json(nrdb_id=int(player['user_id']), nrdb_name=player['user_name'])
             player_map.update( { player['user_import_name'] : player['user_id'] } )
     return player_map
 
-def add_to_players_yaml(nrdb_id: int, nrdb_name: str):
-    yaml_filepath=Path('players.yml')
-    with yaml_filepath.open(mode='r+') as players_file:
-        players = yaml.safe_load(players_file)
+def add_to_players_json(nrdb_id: int, nrdb_name: str):
+    json_filepath=Path('players.json')
+    with json_filepath.open(mode='r+') as players_file:
+        players = json.load(players_file)
         if nrdb_id not in players:
             print("found new nrdb_id: "+ nrdb_name + "["+str(nrdb_id)+"]")
             players[nrdb_id] = { 'nrdb_name': nrdb_name }
             players_file.seek(0)
-            yaml.dump(players, players_file, default_style='')
+            json.dump(players, players_file)
             players_file.truncate()
  
 def write_standings_to_csv(standings: list, standings_filepath: Path):
@@ -173,6 +185,8 @@ with open('tournaments.yml', 'r') as tournaments_file:
                         if not players.get(t_player.nrdb_id):
                             players[t_player.nrdb_id] = Player(nrdb_id=t_player.nrdb_id)
                         players[t_player.nrdb_id].add_tournament_results(tournament_id=tournament_id, t_player=t_player, date=str(t.date), region=t.region, online=online, tournament_name=t.name, tournament_url=tournament['url'], tournament_level=tournament.get('level',None), meta=meta, abr_id=t.abr_id, size=len(t.players))
+                    #else:
+                        # print("nrdb_id not found for "+t_player.name)
 
     for id,player in players.items():
         write_player_json_to_file(player=player, filepath=Path('OUTPUT/players/' + str(id) + '.json'))

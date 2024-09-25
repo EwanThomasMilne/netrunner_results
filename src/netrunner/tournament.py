@@ -24,7 +24,7 @@ class Tournament:
         results (list): a 2d array of game results
         standings (list): a 2d array of player standings
     """
-    def __init__(self, json: dict, name: str = None, date: str = None, region: str = None, online: bool = False, player_mappings: dict = None, abr_id: int = None):
+    def __init__(self, json: dict, name: str = None, date: str = None, region: str = None, online: bool = False, player_mappings: dict = {}, abr_id: int = None):
         self.name = name
         self.date = date
         self.region = region
@@ -46,9 +46,7 @@ class Tournament:
                 top_cut_rank = find_player_in_top_cut(self.json['eliminationPlayers'], player['id']).get('rank')
             else:
                 top_cut_rank = ''
-            nrdb_id = None
-            if player_mappings:
-                nrdb_id = player_mappings.get(player['name'],None)
+            nrdb_id = player_mappings.get(player['name'],None)
             self.players[player['id']] = TournamentPlayer(tournament_player_id=player['id'], name=player['name'], corp_id=corp_id, runner_id=runner_id, swiss_rank=player['rank'], match_points=player['matchPoints'], SoS=player['strengthOfSchedule'], xSoS=player['extendedStrengthOfSchedule'], side_balance=player.get('sideBalance',0), cut_rank=top_cut_rank, nrdb_id=nrdb_id)
 
         # process tables

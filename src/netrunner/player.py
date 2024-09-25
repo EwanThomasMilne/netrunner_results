@@ -1,22 +1,24 @@
-import csv
-import yaml
+import json
 from netrunner.identity import Identity
 
 def get_player_details_by_id(nrdb_id: int) -> dict:
-    with open('players.yml') as f:
-        players = yaml.load(f, Loader=yaml.CBaseLoader)
+    with open('players.json') as f:
+        players = json.load(f)
         return players[str(nrdb_id)]
+    print("could not find "+nrdb_id+" in players.json")
 
 def get_player_details_by_name(name: str) -> dict:
-    with open('players.yml') as f:
-        players = yaml.load(f, Loader=yaml.CBaseLoader)
+    with open('players.json') as f:
+        players = json.load(f)
         for id,player in players.items():
-            if name == player.get('nrdb_name',None):
+            if name.lower() == player.get('nrdb_name','').lower():
                 player['nrdb_id'] = id
                 return player
-            if name in player.get('aliases',[]):
-                player['nrdb_id'] = id
-                return player
+            for alias in player.get('aliases',[]):
+                if name.lower() == alias.lower():
+                    player['nrdb_id'] = id
+                    return player
+        print("could not find "+name+" in players.json")
         return {}
 
 class TournamentPlayer:
