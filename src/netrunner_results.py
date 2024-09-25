@@ -2,6 +2,7 @@ import csv
 import yaml
 import requests
 import json
+import datetime
 from pathlib import Path
 from netrunner.tournament import AesopsTournament,CobraTournament
 from netrunner.player import TournamentPlayer,Player
@@ -18,6 +19,32 @@ def get_json(url: str, force: bool = False) -> dict:
     with json_filepath.open(mode='r') as json_file:
         return json.load(json_file)
     
+def get_abr_tournament_id(date: datetime.date, name: str, size: int) -> int:
+    """ use the abr API to find the tournament abr ID (if there is one)"""
+    # get all abr concluded tournaments that happened on that day
+    date_string = date.strftime("%Y.%m.%d.")
+    api_url = "https://alwaysberunning.net/api/tournaments"
+    api_params = {
+        'concluded':1,
+        'start':date_string,
+        'end':date_string
+    }
+    resp = requests.get(url=api_url, params=api_params)
+
+    # look for a tournament with a matching name
+    for tournament in resp.json():
+        if tournament['title'] == name:
+            return tournament['id']
+        
+    # look for a tournament with a matching size
+    for tournament in resp.json():
+        if tournament['players_count'] == size:
+            return tournament['id']
+        
+    # or give up
+    print("could not find tournament in abr (consider adding the abr_id to tournaments.yml)")
+    return None
+ 
 def write_standings_to_csv(standings: list, standings_filepath: Path):
     standings_filepath.parent.mkdir(exist_ok=True, parents=True)
     with standings_filepath.open(mode='w',newline='') as sf:
@@ -62,14 +89,17 @@ with open('tournaments.yml', 'r') as tournaments_file:
             for tournament in tournaments:
                 tournament_json = get_json(tournament['url'])
                 tournament_name = tournament.get('name',tournament_json['name'])
+                tournament_date = tournament.get('date',datetime.date.fromisoformat(tournament_json['date']))
+                tournament_size = len(tournament_json['players'])
                 print('TOURNAMENT: ' + tournament_name + ' [' + tournament['url'] + ']' )
+                tournament_abr_id = tournament.get('abr_id', get_abr_tournament_id(date=tournament_date, name=tournament_name, size=tournament_size))
 
                 if 'aesop' in tournament['url']:
                     software = 'aesop'
-                    t = AesopsTournament(name=tournament_name,json=tournament_json,date=tournament.get('date',None),region=tournament.get('region',None),online=tournament.get('online',False),player_mappings=tournament.get('players',None))
+                    t = AesopsTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),online=tournament.get('online',False),player_mappings=tournament.get('players',None),abr_id=tournament_abr_id)
                 else:
                     software = 'cobra'
-                    t = CobraTournament(name=tournament_name,json=tournament_json,date=tournament.get('date',None),region=tournament.get('region',None),online=tournament.get('online',False),player_mappings=tournament.get('players',None))
+                    t = CobraTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),online=tournament.get('online',False),player_mappings=tournament.get('players',None), abr_id=tournament_abr_id)
                 
                 # useful variables
                 if t.online is True:
@@ -108,7 +138,7 @@ with open('tournaments.yml', 'r') as tournaments_file:
                     if t_player.nrdb_id:
                         if not players.get(t_player.nrdb_id):
                             players[t_player.nrdb_id] = Player(nrdb_id=t_player.nrdb_id)
-                        players[t_player.nrdb_id].add_tournament_results(tournament_id=tournament_id, t_player=t_player, date=str(t.date), region=t.region, online=online, tournament_name=t.name, tournament_url=tournament['url'], tournament_level=tournament.get('level',None), meta=meta, size=len(t.players))
+                        players[t_player.nrdb_id].add_tournament_results(tournament_id=tournament_id, t_player=t_player, date=str(t.date), region=t.region, online=online, tournament_name=t.name, tournament_url=tournament['url'], tournament_level=tournament.get('level',None), meta=meta, abr_id=t.abr_id, size=len(t.players))
 
     for id,player in players.items():
         write_player_json_to_file(player=player, filepath=Path('OUTPUT/players/' + str(id) + '.json'))

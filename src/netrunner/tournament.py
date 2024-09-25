@@ -24,11 +24,12 @@ class Tournament:
         results (list): a 2d array of game results
         standings (list): a 2d array of player standings
     """
-    def __init__(self, json: dict, name: str = None, date: str = None, region: str = None, online: bool = False, player_mappings: dict = None):
+    def __init__(self, json: dict, name: str = None, date: str = None, region: str = None, online: bool = False, player_mappings: dict = None, abr_id: int = None):
         self.name = name
         self.date = date
         self.region = region
         self.online = online
+        self.abr_id = abr_id
         self.json = json
 
         if self.date is None:

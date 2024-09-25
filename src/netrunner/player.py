@@ -115,9 +115,9 @@ class Player:
         else:
             self.tournaments = {}
         
-    def add_tournament_results(self, tournament_id: str, t_player: TournamentPlayer, date: str = None, region: str = None, online: str = None, tournament_name: str = None, tournament_url: str = None, tournament_level: str = None, meta: str = None, size: int = None, force: bool = False):
+    def add_tournament_results(self, tournament_id: str, t_player: TournamentPlayer, date: str = None, region: str = None, online: str = None, tournament_name: str = None, tournament_url: str = None, tournament_level: str = None, meta: str = None, size: int = None, abr_id: str = None, force: bool = False):
         """ adds the results and final placement from a tournemnt to the player object """
         if not self.tournaments.get(tournament_id) or force:
-            placement = {'meta': meta, 'date': date, 'region': region, 'online': online, 'tournament_name': tournament_name, 'tournament_url': tournament_url, 'tournament_size': size, 'tournament_level': tournament_level, 'cut_rank': t_player.cut_rank, 'swiss_rank': t_player.swiss_rank, 'corp_id': t_player.corp_id.name, 'runner_id': t_player.runner_id.name, 'corp_faction': t_player.corp_id.faction, 'runner_faction': t_player.runner_id.faction, 'corp_wins': t_player.corp_wins, 'corp_losses': t_player.corp_losses, 'corp_draws': t_player.corp_draws, 'runner_wins': t_player.runner_wins, 'runner_loses': t_player.runner_losses, 'runner_draws': t_player.runner_draws}
+            placement = {'meta': meta, 'date': date, 'region': region, 'online': online, 'tournament_name': tournament_name, 'tournament_url': tournament_url, 'tournament_size': size, 'tournament_level': tournament_level, 'abr_id': abr_id, 'cut_rank': t_player.cut_rank, 'swiss_rank': t_player.swiss_rank, 'corp_id': t_player.corp_id.name, 'runner_id': t_player.runner_id.name, 'corp_faction': t_player.corp_id.faction, 'runner_faction': t_player.runner_id.faction, 'corp_wins': t_player.corp_wins, 'corp_losses': t_player.corp_losses, 'corp_draws': t_player.corp_draws, 'runner_wins': t_player.runner_wins, 'runner_loses': t_player.runner_losses, 'runner_draws': t_player.runner_draws}
             self.tournaments[tournament_id] = placement
             self.tournaments[tournament_id]['games'] = t_player.results
