@@ -374,6 +374,7 @@
 5479:
   nrdb_name: jimmycorrigan
 5521:
+  nrdb_name: JackMade
   aliases:
   - JackMade
   teams:
@@ -479,6 +480,7 @@
   - zombiak
   nrdb_name: zombiak
 7016:
+  nrdb_name: Chromatically
   aliases:
   - Chromatically
   teams:
@@ -569,6 +571,7 @@
 7806:
   nrdb_name: Inactivist
 7865:
+  nrdb_name: MrStyx
   aliases:
   - Styx
   - MrStyx
@@ -623,6 +626,7 @@
   - Grtll
   nrdb_name: Grtll
 8431:
+  nrdb_name: profwacko
   aliases:
   - profwacko
   teams:
@@ -714,6 +718,7 @@
   - gorick2002
   nrdb_name: gorick2002
 9796:
+  nrdb_name: IonFox
   aliases:
   - IonFox
   teams:
@@ -775,6 +780,7 @@
 10988:
   nrdb_name: Swiftie
 10993:
+  nrdb_name: osclate
   aliases:
   - osclate
   teams:
@@ -920,6 +926,7 @@
   - hasuta
   nrdb_name: hasuta
 13348:
+  nrdb_name: percomis
   aliases:
   - percomis
   teams:
@@ -971,6 +978,7 @@
   - volande
   nrdb_name: volande
 14017:
+  nrdb_name: Seamus
   aliases:
   - seamus
   teams:
@@ -1014,6 +1022,7 @@
 14584:
   nrdb_name: just_rob
 14781:
+  nrdb_name: chordgang
   aliases:
   - chord gang
   - chordgang
@@ -1100,6 +1109,7 @@
   - "\uC18C\uB9AC\uD654\uB791"
   nrdb_name: "\uC18C\uB9AC\uD654\uB791"
 16789:
+  nrdb_name: Icecreamcollege
   aliases:
   - Icereamcollege
   teams:
@@ -1111,6 +1121,7 @@
   - MaruXV
   nrdb_name: MaruXV
 16968:
+  nrdb_name: Kysra
   aliases:
   - kysra
   teams:
@@ -1136,6 +1147,7 @@
   - debraken21
   nrdb_name: debraken21
 17393:
+  nrdb_name: binarydogs
   aliases:
   - binarydogs
   teams:
@@ -1161,6 +1173,7 @@
   - inniscor
   nrdb_name: inniscor
 17901:
+  nrdb_name: Ollie
   aliases:
   - ollie
   - steaknfries
@@ -1214,6 +1227,7 @@
   - nukes
   nrdb_name: nukes
 19049:
+  nrdb_name: ChrisFerg
   aliases:
   - chrisferg
   teams:
@@ -1295,11 +1309,13 @@
   - asphyxia
   nrdb_name: asphyxia
 20744:
+  nrdb_name: skry
   aliases:
   - skry
   teams:
   - SnareBears
 21556:
+  nrdb_name: Zerothmaxima
   aliases:
   - 0thmxma
   - zerothmaxima
@@ -1418,6 +1434,7 @@
   - swabl
   nrdb_name: swabl
 23848:
+  nrdb_name: paulyg
   aliases:
   - paulyg
   teams:
@@ -1473,6 +1490,7 @@
   teams:
   - NWE
 24757:
+  nrdb_name: vinegarymink
   aliases:
   - vinegarymink
   - Alex White
@@ -2094,6 +2112,7 @@
   - mitro
   nrdb_name: mitro
 35219:
+  nrdb_name: Vale
   aliases:
   - Vale
   teams:
@@ -2109,6 +2128,7 @@
 35462:
   nrdb_name: Dave976
 35479:
+  nrdb_name: belazor
   aliases:
   - belazor
 35677:
@@ -2134,8 +2154,11 @@
   - Mistfader
   nrdb_name: Mistfader
 36093:
+  nrdb_name: DeeR
   aliases:
-  - DeeR - SnareBears
+  - DeeR 
+  teams:
+  - SnareBears
   - QtM
 36094:
   nrdb_name: Dyzthar
