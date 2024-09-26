@@ -4,9 +4,15 @@ meta:
     - url: https://tournaments.nullsignal.games/tournaments/1807
       region: APAC
       online: True
+      abr_id: 2809
+#    - url: ???
+#      region: EMEA
+#      online: True
+#      abr_id: 2810
     - url: https://tournaments.nullsignal.games/tournaments/1820
       region: America
       online: True
+      abr_id: 2811
   '20.09':
     - url: https://tournaments.nullsignal.games/tournaments/1851
       online: True
@@ -29,6 +35,7 @@ meta:
     - url: https://tournaments.nullsignal.games/tournaments/2122
       region: EMEA
       online: True
+      abr_id: 3014
     - url: https://tournaments.nullsignal.games/tournaments/2128
       region: America
       online: True
@@ -49,6 +56,7 @@ meta:
     - url: https://tournaments.nullsignal.games/tournaments/2499
       region: EMEA
       online: True
+      abr_id: 3342
   '22.09':
     - url: https://tournaments.nullsignal.games/tournaments/2639
     - url: https://tournaments.nullsignal.games/tournaments/2718
@@ -76,27 +84,35 @@ meta:
       region: America
     - url: https://www.aesopstables.net/114
       region: EMEA
+      abr_id: 3772
     - url: https://tournaments.nullsignal.games/tournaments/3102
       region: EMEA
       online: True
+      abr_id: 3779
     - url: https://tournaments.nullsignal.games/tournaments/3109
       region: APAC
     - url: https://tournaments.nullsignal.games/tournaments/3135
       region: America
     - url: https://tournaments.nullsignal.games/tournaments/3137
       region: APAC
+      abr_id: 3807
     - url: https://tournaments.nullsignal.games/tournaments/3138
       region: EMEA
+      abr_id: 3829
   '23.09':
     - url: https://www.aesopstables.net/118
       region: APAC
     - url: https://tournaments.nullsignal.games/tournaments/3132
       region: EMEA
+      abr_id: 3704
+      level: 'national championship'
     - url: https://tournaments.nullsignal.games/tournaments/3148
       region: EMEA
     - url: https://tournaments.nullsignal.games/tournaments/3157
       online: True
     - url: https://tournaments.nullsignal.games/tournaments/3181
+      abr_id: 3811
+      level: 'world championship'
     - url: https://tournaments.nullsignal.games/tournaments/3197
       online: True
     - url: https://tournaments.nullsignal.games/tournaments/3209
@@ -108,6 +124,7 @@ meta:
       region: APAC
     - url: https://tournaments.nullsignal.games/tournaments/3247
       region: EMEA
+      abr_id: 3926
     - url: https://tournaments.nullsignal.games/tournaments/3260
       region: America
     - url: https://tournaments.nullsignal.games/tournaments/3254
@@ -137,7 +154,6 @@ meta:
     - url: https://www.aesopstables.net/304
       region: America
       name: 'Emerald City Grid 2024-H1 CO'
-      level: CO
     - url: https://www.aesopstables.net/440
       online: True
     - url: https://tournaments.nullsignal.games/tournaments/3419
@@ -151,36 +167,30 @@ meta:
       url: "https://www.aesopstables.net/470"
       date: 2024-05-25
       region: America
-      level: Regional
     - name: "ACC"
       url: "https://www.aesopstables.net/475"
       date: 2024-06-01
       region: America
       online: True
-      level: Continental
     - name: "OTG Midwest"
       url: "https://www.aesopstables.net/483"
       date: 2024-06-08
       region: America
       players:
         "dongyroge": 40924
-      level: Regional
     - name: "APAC"
       url: "https://www.aesopstables.net/489"
       date: 2024-06-15
       region: APAC
       online: True
-      level: Continental
     - name: "West Canadian Nats"
       url: "https://www.aesopstables.net/494"
       date: 2024-06-15
       region: Amercia
-      level: National
     - name: "EMEA"
       url: "https://tournaments.nullsignal.games/tournaments/3466"
       date: 2024-06-28
       region: EMEA
-      level: Continental
     - name: "ICC"
       url: "https://tournaments.nullsignal.games/tournaments/3487"
       date: 2024-07-13
@@ -189,22 +199,18 @@ meta:
       url: "https://www.aesopstables.net/550"
       date: 2024-07-13
       region: America
-      level: Regional
     - name: "East Canadian Nats"
       url: "https://tournaments.nullsignal.games/tournaments/3500"
       date: 2024-07-20
       region: America
-      level: National
     - name: "North Australian Nats"
       url: "https://www.aesopstables.net/558"
       date: 2024-07-20
       region: APAC
-      level: National
     - name: "UK Regionals Bristol"
       url: "https://www.aesopstables.net/565"
       date: 2024-07-27
       region: EMEA
-      level: Regional
     - name: "AMT - July 27th"
       url: "https://www.aesopstables.net/571"
       date: 2024-07-27
@@ -213,32 +219,26 @@ meta:
       url: "https://www.aesopstables.net/572"
       date: 2024-07-27
       region: America
-      level: National
     - name: "Swedish Nats"
       url: "https://www.aesopstables.net/568"
       date: 2024-07-27
       region: EMEA
-      level: National
     - name: "US West Coast Nats"
       url: "https://www.aesopstables.net/579"
       date: 2024-08-03
       region: America
-      level: National
     - name: "German Nats"
       url: "https://tournaments.nullsignal.games/tournaments/3520"
       date: 2024-08-09
       region: EMEA
-      level: National
     - name: "Russian Nats"
       url: "https://www.aesopstables.net/587"
       date: 2024-08-10
       region: EMEA
-      level: National
     - name: "UK Regionals Nottingham"
       url: "https://www.aesopstables.net/582"
       date: 2024-08-10
       region: EMEA
-      level: Regional
     - name: "AMT - Aug 11th"
       url: "https://www.aesopstables.net/590"
       date: 2024-08-11
@@ -247,7 +247,6 @@ meta:
       url: "https://www.aesopstables.net/604"
       date: 2024-08-23
       region: EMEA
-      level: National
     - name: "AMT - Aug 24th"
       url: "https://www.aesopstables.net/606"
       date: 2024-08-24
@@ -256,33 +255,27 @@ meta:
       url: "https://tournaments.nullsignal.games/tournaments/3528"
       date: 2024-08-24
       region: EMEA
-      level: Regional
     - name: "French Nats"
       url: "https://www.aesopstables.net/607"
       date: 2024-08-24
       region: EMEA
-      level: National
     - name: "NANPC Montréal"
       url: "https://www.aesopstables.net/608"
       date: 2024-08-24
       region: Amercia
-      level: Regional
     - name: "UK Regionals Scotland"
       url: "https://tournaments.nullsignal.games/tournaments/3539"
       date: 2024-09-07
       region: EMEA
-      level: Regional
     - name: "NANPC LA"
       url: "https://www.aesopstables.net/687"
       date: 2024-09-07
       region: America
-      level: Regional
   '24.09':
     - url: 'https://www.aesopstables.net/885'
       region: APAC
     - url: 'https://www.aesopstables.net/1117'
       region: EMEA
-      level: Regional
     - url: 'https://www.aesopstables.net/1050'
       region: APAC
     - url: 'https://www.aesopstables.net/1116'
