@@ -4,22 +4,21 @@ from netrunner.identity import Identity
 def get_player_details_by_id(nrdb_id: int) -> dict:
     with open('players.json') as f:
         players = json.load(f)
-        return players[str(nrdb_id)]
-    print("could not find "+nrdb_id+" in players.json")
+    return players[str(nrdb_id)]
 
 def get_player_details_by_name(name: str) -> dict:
     with open('players.json') as f:
         players = json.load(f)
-        for id,player in players.items():
-            if name.lower() == player.get('nrdb_name','').lower():
-                player['nrdb_id'] = id
+    for id,player in players.items():
+        if name.lower() == player.get('nrdb_name','').lower():
+            player['nrdb_id'] = int(id)
+            return player
+        for alias in player.get('aliases',[]):
+            if name.lower() == alias.lower():
+                player['nrdb_id'] = int(id)
                 return player
-            for alias in player.get('aliases',[]):
-                if name.lower() == alias.lower():
-                    player['nrdb_id'] = id
-                    return player
-        print("could not find "+name+" in players.json")
-        return {}
+    #print("could not find "+name+" in players.json")
+    return {}
 
 class TournamentPlayer:
     """

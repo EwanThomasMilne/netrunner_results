@@ -182,6 +182,8 @@ with open('tournaments.yml', 'r') as tournaments_file:
                 # players
                 for id,t_player in t.players.items():
                     if t_player.nrdb_id:
+                        if (type(t_player.nrdb_id)) != int:
+                            print("WARNING! nrdb_id for "+t_player.name+"is "+type(t_player.nrdb_id)+" (expected int)")
                         if not players.get(t_player.nrdb_id):
                             players[t_player.nrdb_id] = Player(nrdb_id=t_player.nrdb_id)
                         players[t_player.nrdb_id].add_tournament_results(tournament_id=tournament_id, t_player=t_player, date=str(t.date), region=t.region, online=online, tournament_name=t.name, tournament_url=tournament['url'], tournament_level=tournament.get('level',None), meta=meta, abr_id=t.abr_id, size=len(t.players))
