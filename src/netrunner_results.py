@@ -192,8 +192,9 @@ with open('tournaments.yml', 'r') as tournaments_file:
                         if not players.get(t_player.nrdb_id):
                             players[t_player.nrdb_id] = Player(nrdb_id=t_player.nrdb_id)
                         players[t_player.nrdb_id].add_tournament_results(tournament_id=tournament_id, t_player=t_player, date=str(t.date), region=t.region, online=online, tournament_name=t.name, tournament_url=tournament['url'], tournament_level=tournament_level, meta=meta, abr_id=t.abr_id, size=len(t.players))
-                    #else:
-                        # print("nrdb_id not found for "+t_player.name)
+                    else:
+                        if t_player.cut_rank:
+                            print("nrdb_id not found for "+t_player.name+" ["+str(t_player.cut_rank)+"]")
 
     for id,player in players.items():
         write_player_json_to_file(player=player, filepath=Path('OUTPUT/players/' + str(id) + '.json'))

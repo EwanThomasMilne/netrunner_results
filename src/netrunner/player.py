@@ -10,11 +10,11 @@ def get_player_details_by_name(name: str) -> dict:
     with open('players.json') as f:
         players = json.load(f)
     for id,player in players.items():
-        if name.lower() == player.get('nrdb_name','').lower():
+        if name.strip().lower() == player.get('nrdb_name','').lower():
             player['nrdb_id'] = int(id)
             return player
         for alias in player.get('aliases',[]):
-            if name.lower() == alias.lower():
+            if name.strip().lower() == alias.lower():
                 player['nrdb_id'] = int(id)
                 return player
     #print("could not find "+name+" in players.json")

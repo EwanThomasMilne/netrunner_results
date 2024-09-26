@@ -287,6 +287,9 @@
     ],
     "nrdb_name": "shadowhawk"
   },
+  "2515": {
+    "nrdb_name": "RTsa"
+  },
   "2670": {
     "aliases": [
       "Medic_gbg"
@@ -555,6 +558,9 @@
       "bluestar"
     ],
     "nrdb_name": "bluestar"
+  },
+  "5428": {
+    "nrdb_name": "tf34"
   },
   "5479": {
     "nrdb_name": "jimmycorrigan"
@@ -1252,6 +1258,9 @@
     ],
     "nrdb_name": "The Calamity"
   },
+  "11928": {
+    "nrdb_name": "hotelfoxtrot"
+  },
   "11958": {
     "aliases": [
       "Shockwave"
@@ -1537,6 +1546,9 @@
       "QtM"
     ]
   },
+  "14806": {
+    "nrdb_name": "SimonMoon"
+  },
   "14901": {
     "aliases": [
       "countzer0"
@@ -1731,9 +1743,11 @@
   },
   "17463": {
     "aliases": [
-      "leachrode"
+      "leachrode",
+      "mjp"
     ],
     "nrdb_name": "leachrode"
+
   },
   "17557": {
     "aliases": [
@@ -1836,7 +1850,8 @@
   "19049": {
     "nrdb_name": "ChrisFerg",
     "aliases": [
-      "chrisferg"
+      "chrisferg",
+      "Chris Ferg"
     ],
     "teams": [
       "The Process"
@@ -1920,7 +1935,8 @@
   },
   "20247": {
     "aliases": [
-      "AnalyzeChris"
+      "AnalyzeChris",
+      "AnalyzeChris 👑"
     ],
     "nrdb_name": "analyzechris",
     "teams": [
@@ -2101,6 +2117,9 @@
   },
   "23513": {
     "nrdb_name": "Zarbba"
+  },
+  "23559": {
+    "nrdb_name": "steffmonkey"
   },
   "23605": {
     "nrdb_name": "Terje"
@@ -2469,13 +2488,17 @@
   "28308": {
     "nrdb_name": "Dan (grombatmole)"
   },
+  "28321": {
+    "nrdb_name": "rustryder"
+  },
   "28366": {
     "nrdb_name": "jonkey bong"
   },
   "28443": {
     "aliases": [
       "Council",
-      "tempest"
+      "tempest",
+      "Jinsei"
     ],
     "nrdb_name": "Council"
   },
@@ -2779,6 +2802,16 @@
       "Berzelius"
     ],
     "nrdb_name": "Berzelius"
+  },
+  "31796": {
+    "nrdb_name": "bking",
+    "teams": [
+      "TAI Breakers"
+    ],
+    "aliases": [
+      "The King",
+      "Brandon \"The King\""
+    ]
   },
   "31944": {
     "nrdb_name": "Cahuita"

@@ -15,6 +15,8 @@ meta:
       online: True
       abr_id: 2811
       level: 'continental championship'
+      players:
+        'Ysengin': 4859
   '20.09':
     - url: https://tournaments.nullsignal.games/tournaments/1851
       online: True
@@ -69,6 +71,8 @@ meta:
     - url: https://tournaments.nullsignal.games/tournaments/2639
     - url: https://tournaments.nullsignal.games/tournaments/2718
       region: EMEA
+      players:
+        "Eric": 11664
     - url: https://tournaments.nullsignal.games/tournaments/2756
       online: True
   '23.03':
@@ -146,10 +150,14 @@ meta:
       online: True
     - url: https://www.aesopstables.net/245
       online: True
+      players:
+        The King (utati oracling): 31796
     - url: https://www.aesopstables.net/360
       region: America
     - url: https://www.aesopstables.net/361
       online: True
+      players:
+        "The King (kelly)": 31796
     - url: https://tournaments.nullsignal.games/tournaments/3207
       online: True
   '24.03':
@@ -180,7 +188,7 @@ meta:
       url: "https://www.aesopstables.net/470"
       date: 2024-05-25
       region: America
-    - name: "ACC"
+    - name: "Amercia Continental Championship 2024"
       url: "https://www.aesopstables.net/475"
       date: 2024-06-01
       region: America
@@ -191,7 +199,7 @@ meta:
       region: America
       players:
         "dongyroge": 40924
-    - name: "APAC"
+    - name: "APAC Continental Championship 2024"
       url: "https://www.aesopstables.net/489"
       date: 2024-06-15
       region: APAC
@@ -200,10 +208,12 @@ meta:
       url: "https://www.aesopstables.net/494"
       date: 2024-06-15
       region: Amercia
-    - name: "EMEA"
+    - name: "EMEA Continental Championship 2024"
       url: "https://tournaments.nullsignal.games/tournaments/3466"
       date: 2024-06-28
       region: EMEA
+      players:
+        "Bridgeman ": 23764
     - name: "ICC"
       url: "https://tournaments.nullsignal.games/tournaments/3487"
       date: 2024-07-13
@@ -216,6 +226,8 @@ meta:
       url: "https://tournaments.nullsignal.games/tournaments/3500"
       date: 2024-07-20
       region: America
+      players:
+        "Brandon": 31796
     - name: "North Australian Nats"
       url: "https://www.aesopstables.net/558"
       date: 2024-07-20
