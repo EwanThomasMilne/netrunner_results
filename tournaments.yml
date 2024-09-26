@@ -5,6 +5,7 @@ meta:
       region: APAC
       online: True
       abr_id: 2809
+      level: 'continental championship'
 #    - url: ???
 #      region: EMEA
 #      online: True
@@ -13,9 +14,11 @@ meta:
       region: America
       online: True
       abr_id: 2811
+      level: 'continental championship'
   '20.09':
     - url: https://tournaments.nullsignal.games/tournaments/1851
       online: True
+      level: 'worlds championship'
     - url: https://tournaments.nullsignal.games/tournaments/1852
       online: True
   '21.04':
@@ -36,16 +39,20 @@ meta:
       region: EMEA
       online: True
       abr_id: 3014
+      level: 'continental championship'
     - url: https://tournaments.nullsignal.games/tournaments/2128
       region: America
       online: True
   '21.10':
     - url: https://tournaments.nullsignal.games/tournaments/2201
       online: True
+      level: 'worlds championship'
     - url: https://tournaments.nullsignal.games/tournaments/2207
       online: True
+      level: 'worlds championship'
     - url: https://tournaments.nullsignal.games/tournaments/2227
       online: True
+      level: 'worlds championship'
   '22.08':
     - url: https://tournaments.nullsignal.games/tournaments/2497
       region: APAC
@@ -57,6 +64,7 @@ meta:
       region: EMEA
       online: True
       abr_id: 3342
+      level: 'continental championship'
   '22.09':
     - url: https://tournaments.nullsignal.games/tournaments/2639
     - url: https://tournaments.nullsignal.games/tournaments/2718
@@ -85,10 +93,12 @@ meta:
     - url: https://www.aesopstables.net/114
       region: EMEA
       abr_id: 3772
+      level: 'national championship'
     - url: https://tournaments.nullsignal.games/tournaments/3102
       region: EMEA
       online: True
       abr_id: 3779
+      level: 'continental championship'
     - url: https://tournaments.nullsignal.games/tournaments/3109
       region: APAC
     - url: https://tournaments.nullsignal.games/tournaments/3135
@@ -96,9 +106,11 @@ meta:
     - url: https://tournaments.nullsignal.games/tournaments/3137
       region: APAC
       abr_id: 3807
+      level: 'national championship'
     - url: https://tournaments.nullsignal.games/tournaments/3138
       region: EMEA
       abr_id: 3829
+      level: 'national championship'
   '23.09':
     - url: https://www.aesopstables.net/118
       region: APAC
@@ -112,7 +124,7 @@ meta:
       online: True
     - url: https://tournaments.nullsignal.games/tournaments/3181
       abr_id: 3811
-      level: 'world championship'
+      level: 'worlds championship'
     - url: https://tournaments.nullsignal.games/tournaments/3197
       online: True
     - url: https://tournaments.nullsignal.games/tournaments/3209
@@ -125,6 +137,7 @@ meta:
     - url: https://tournaments.nullsignal.games/tournaments/3247
       region: EMEA
       abr_id: 3926
+      level: 'national championship'
     - url: https://tournaments.nullsignal.games/tournaments/3260
       region: America
     - url: https://tournaments.nullsignal.games/tournaments/3254
