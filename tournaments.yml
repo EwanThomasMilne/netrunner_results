@@ -237,7 +237,7 @@ meta:
     - name: "West Canadian Nats"
       url: "https://www.aesopstables.net/494"
       date: 2024-06-15
-      region: Amercia
+      region: America
     - name: "EMEA Continental Championship 2024"
       url: "https://tournaments.nullsignal.games/tournaments/3466"
       date: 2024-06-28
@@ -317,7 +317,7 @@ meta:
     - name: "NANPC Montréal"
       url: "https://www.aesopstables.net/608"
       date: 2024-08-24
-      region: Amercia
+      region: America
     - name: "UK Regionals Scotland"
       url: "https://tournaments.nullsignal.games/tournaments/3539"
       date: 2024-09-07
