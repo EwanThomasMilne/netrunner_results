@@ -369,7 +369,10 @@
     "aliases": [
       "Matuszczak"
     ],
-    "nrdb_name": "Matuszczak"
+    "nrdb_name": "Matuszczak",
+    "teams": [
+      "Unband (former)"
+    ]
   },
   "3809": {
     "nrdb_name": "Laury Plant"
@@ -445,7 +448,8 @@
     ],
     "nrdb_name": "koga",
     "teams": [
-      "TAI Breakers"
+      "TAI Breakers",
+      "Unband (former)"
     ]
   },
   "4419": {
@@ -1196,7 +1200,8 @@
     ],
     "nrdb_name": "Kikai",
     "teams": [
-      "EA Sports"
+      "EA Sports",
+      "Unband (former)"
     ]
   },
   "11493": {
@@ -1827,7 +1832,8 @@
     ],
     "nrdb_name": "ArminFirecracker",
     "teams": [
-      "TAI Breakers"
+      "TAI Breakers",
+      "Unband (former)"
     ]
   },
   "18861": {
@@ -1843,7 +1849,8 @@
     ],
     "nrdb_name": "Sokka",
     "teams": [
-      "The Future Perfect"
+      "The Future Perfect",
+      "Unband (former)"
     ]
   },
   "19010": {
@@ -2073,7 +2080,10 @@
     "nrdb_name": "Oatbergine"
   },
   "22666": {
-    "nrdb_name": "Odol"
+    "nrdb_name": "Odol",
+    "teams": [
+      "Unband (former)"
+    ]
   },
   "22669": {
     "aliases": [
@@ -2085,7 +2095,10 @@
     "aliases": [
       "Longi"
     ],
-    "nrdb_name": "Longi"
+    "nrdb_name": "Longi",
+    "teams": [
+      "Unband (former)"
+    ]
   },
   "22720": {
     "aliases": [
@@ -2157,7 +2170,10 @@
     "aliases": [
       "Bridgeman"
     ],
-    "nrdb_name": "Bridgeman"
+    "nrdb_name": "Bridgeman",
+    "teams": [
+      "Unband (former)"
+    ]
   },
   "23770": {
     "nrdb_name": "Espatier"
@@ -2189,7 +2205,8 @@
     ],
     "nrdb_name": "xiaat",
     "teams": [
-      "TAI Breakers"
+      "TAI Breakers",
+      "Unband (former)"
     ]
   },
   "23999": {
@@ -2469,7 +2486,10 @@
     "nrdb_name": "groenkaaf"
   },
   "27971": {
-    "nrdb_name": "iceprisma"
+    "nrdb_name": "iceprisma",
+    "teams": [
+      "Unband (former)"
+    ]
   },
   "28050": {
     "aliases": [
@@ -2494,7 +2514,10 @@
     "nrdb_name": "Dan (grombatmole)"
   },
   "28321": {
-    "nrdb_name": "rustryder"
+    "nrdb_name": "rustryder",
+    "teams": [
+      "Unband (former)"
+    ]
   },
   "28366": {
     "nrdb_name": "jonkey bong"
@@ -2505,7 +2528,10 @@
       "tempest",
       "Jinsei"
     ],
-    "nrdb_name": "Council"
+    "nrdb_name": "Council",
+    "teams": [
+      "Unband (former)"
+    ]
   },
   "28445": {
     "aliases": [
@@ -2609,7 +2635,8 @@
     ],
     "nrdb_name": "sebastiank",
     "teams": [
-      "TAI Breakers"
+      "TAI Breakers",
+      "Unband (former)"
     ]
   },
   "29837": {
@@ -2709,7 +2736,10 @@
     "aliases": [
       "AxWill"
     ],
-    "nrdb_name": "AxWill"
+    "nrdb_name": "AxWill",
+    "teams": [
+      "Unband (former)"
+    ]
   },
   "30931": {
     "nrdb_name": "somefish"
@@ -2811,7 +2841,8 @@
   "31796": {
     "nrdb_name": "bking",
     "teams": [
-      "TAI Breakers"
+      "TAI Breakers",
+      "Unband (former)"
     ],
     "aliases": [
       "The King",
