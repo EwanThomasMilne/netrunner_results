@@ -1,4 +1,10 @@
 ---
+"NBN: Making News":
+  faction: NBN
+  short_name: 'Making News'
+'New Angeles Sol: Your News':
+  faction: NBN
+  short_name: Sol
 "Harishchandra Ent.: Where You're the Star":
   faction: NBN
   short_name: Harishchandra
@@ -35,6 +41,21 @@
 'GameNET: Where Dreams are Real':
   faction: NBN
   short_name: GameNET
+'NEXT Design: Guarding the Net':
+  faction: NBN
+  short_name: NEXT
+'Haas-Bioroid: Engineering the Future':
+  faction: HB
+  short_name: EtF
+'Custom Biotics: Engineered for Success':
+  faction: HB
+  short_name: 'Custom Biotics'
+'Cerebral Imaging: Infinite Frontiers':
+  faction: HB
+  short_name: CI
+'Cybernetics Division: Humanity Upgraded':
+  faction: HB
+  short_name: 'Cybernetics Division'
 'Sportsmetal: Go Big or Go Home':
   faction: HB
   short_name: Sports
@@ -56,6 +77,18 @@
 'MirrorMorph: Endless Iteration':
   faction: HB
   short_name: MirrorMorph
+'Jinteki: Potential Unleashed':
+  faction: Jinteki
+  short_name: PU
+'Mti Mwekundu: Life Improved':
+  faction: Jinteki
+  short_name: Mti
+'Industrial Genomics: Growing Solutions':
+  faction: Jinteki
+  short_name: IG
+'Harmony Medtech: Biomedical Pioneer':
+  faction: Jinteki
+  short_name: 'Harmony Medtech'
 'Jinteki Biotech: Life Imagined':
   faction: Jinteki
   short_name: Biotech
@@ -94,6 +127,12 @@
 'Saraswati Mnemonics: Endless Exploration':
   faction: Jinteki
   short_name: Saraswati
+'GRNDL: Power Unleashed':
+  faction: Weyland
+  short_name: GRNDL
+'Skorpios Defense Systems: Persuasive Power':
+  faction: Weyland
+  short_name: Skorpios
 'Titan Transnational: Investing In Your Future':
   faction: Weyland
   short_name: Titan
@@ -138,6 +177,9 @@
   short_name: 'Ampère'
   alt_names:
     - 'Ampere: Cybernetics For Anyone'
+'Whizzard: Master Gamer':
+  faction: Anarch
+  short_name: Whizzard
 'Nathaniel "Gnat" Hall: One-of-a-Kind':
   faction: Anarch
   short_name: Gnat
@@ -187,6 +229,15 @@
 'Quetzal: Free Spirit':
   faction: Anarch
   short_name: Quetzal
+'Silhouette: Stealth Operative':
+  faction: Criminal
+  short_name: Silhouette
+'Andromeda: Dispossessed Ristie':
+  faction: Criminal
+  short_name: Andy
+'Liza Talking Thunder: Prominent Legislator':
+  faction: Criminal
+  short_name: Liza
 'Iain Stirling: Retired Spook':
   faction: Criminal
   short_name: 'Iain Stirling'
@@ -219,6 +270,8 @@
 'Los: Data Hijacker':
   faction: Criminal
   short_name: Los
+  alt_names:
+    - 'LOS: Data Hijacker'
 'Az McCaffrey: Mechanical Prodigy':
   faction: Criminal
   short_name: Az
@@ -230,6 +283,15 @@
 'Mercury: Chrome Libertador':
   faction: Criminal
   short_name: Mecury
+'Exile: Streethawk':
+  faction: Shaper
+  short_name: Exile
+'Nasir Meidan: Cyber Explorer':
+  faction: Shaper
+  short_name: Nasir
+'Kate "Mac" McCaffrey: Digital Tinker':
+  faction: Shaper
+  short_name: Kate
 'Jesminder Sareen: Girl Behind the Curtain':
   faction: Shaper
   short_name: Jesminder
