@@ -1,15 +1,31 @@
 ---
 meta:
+  'FFG':
+    - url: https://alwaysberunning.net/tournaments/19/world-championship-2016
+      date: 2016-11-03
+      level: 'worlds championship'
+    - url: https://alwaysberunning.net/tournaments/861/2017-worlds-championship
+      date: 2017-11-04
+      level: 'worlds championship'
+    - url: https://alwaysberunning.net/tournaments/1528/magnum-opus-worlds-2018
+      date: 2018-09-07
+      level: 'worlds championship'
+  'MWL-3.4':
+    - url: https://alwaysberunning.net/tournaments/2242/world-championship-2019
+      date: 2019-10-04
+      level: 'worlds championship'
   '20.06':
     - url: https://tournaments.nullsignal.games/tournaments/1807
       region: APAC
       online: True
       abr_id: 2809
       level: 'continental championship'
-#    - url: ???
-#      region: EMEA
-#      online: True
-#      abr_id: 2810
+    - url: https://alwaysberunning.net/tournaments/2810/nisei-europe-and-africa-continental-championship
+      region: EMEA
+      online: True
+      abr_id: 2810
+      date: 2020-07-25
+      level: 'continental championship'
     - url: https://tournaments.nullsignal.games/tournaments/1820
       region: America
       online: True
@@ -21,8 +37,15 @@ meta:
     - url: https://tournaments.nullsignal.games/tournaments/1851
       online: True
       level: 'worlds championship'
+      date: 2020-10-09
     - url: https://tournaments.nullsignal.games/tournaments/1852
       online: True
+      level: 'worlds championship'
+      date: 2020-10-10
+    - url: https://alwaysberunning.net/tournaments/2850/nisei-world-championship-2020
+      online: True
+      level: 'worlds championship'
+      date: 2020-10-11
   '21.04':
     - url: https://tournaments.nullsignal.games/tournaments/1998
       online: True
@@ -49,12 +72,19 @@ meta:
     - url: https://tournaments.nullsignal.games/tournaments/2201
       online: True
       level: 'worlds championship'
+      date: 2021-11-19
     - url: https://tournaments.nullsignal.games/tournaments/2207
       online: True
       level: 'worlds championship'
+      date: 2021-11-20
     - url: https://tournaments.nullsignal.games/tournaments/2227
       online: True
       level: 'worlds championship'
+      date: 2021-11-21
+    - url: https://alwaysberunning.net/tournaments/3082/nisei-world-championship-2021
+      online: True
+      level: 'worlds championship'
+      date: 2021-11-21
   '22.08':
     - url: https://tournaments.nullsignal.games/tournaments/2497
       region: APAC

@@ -4,7 +4,8 @@ import requests
 import json
 import datetime
 from pathlib import Path
-from netrunner.tournament import AesopsTournament,CobraTournament
+from urllib.parse import urlparse
+from netrunner.tournament import AesopsTournament,CobraTournament,ABRTournament
 from netrunner.player import TournamentPlayer,Player
 
 def get_json(url: str, force: bool = False) -> dict:
@@ -49,8 +50,8 @@ def find_abr_tournament(date: datetime.date, name: str, size: int, force: bool =
     # or give up
     return {}
 
-def get_abr_player_mappings(abr_id: int, force: bool = False) -> dict:
-    """ use abr claims to match registration name to nrdb_id """
+def get_abr_tournament_json(abr_id: int, force: bool = False) -> dict:
+    """ get abr tournament json """
     json_filepath = Path('JSON/alwaysberunning.net/api/entries/' + str(abr_id) + '.json')
     if force or not json_filepath.is_file():
         api_url = "https://alwaysberunning.net/api/entries"
@@ -63,7 +64,10 @@ def get_abr_player_mappings(abr_id: int, force: bool = False) -> dict:
             json.dump(resp.json(), json_file)
     with json_filepath.open(mode='r') as json_file:
         json_data = json.load(json_file)
+    return json_data
 
+def get_abr_player_mappings(json_data: dict) -> dict:
+    """ use abr claims to match registration name to nrdb_id """
     player_map = {}
     json_filepath=Path('players.json')
     with json_filepath.open(mode='r') as players_file:
@@ -125,41 +129,57 @@ with open('tournaments.yml', 'r') as tournaments_file:
             if not tournaments:
                 continue
             for tournament in tournaments:
-                tournament_json = get_json(tournament['url'])
-                tournament_name = tournament.get('name',tournament_json['name'])
-                tournament_date = tournament.get('date',datetime.date.fromisoformat(tournament_json['date']))
-                tournament_size = len(tournament_json['players'])
-                print('['+meta+'] ' + tournament_name + ' [' + tournament['url'] + ']' )
-                # try and get some details from abr
-                tournament_abr = find_abr_tournament(date=tournament_date, name=tournament_name, size=tournament_size)
-                tournament_abr_id = tournament.get('abr_id', tournament_abr.get('id',None))
-                if not tournament_abr_id:
-                    print("could not find tournament in abr (consider adding the abr_id to tournaments.yml)")
-                tournament_level = tournament.get('level', tournament_abr.get('type',None))
-                tournament_online = False
-                if tournament.get('online',False) or (tournament_abr.get('location',None) == 'online'):
-                    tournament_online = True
-                # build a mapping of registration names to nrbd ids if possible
-                tournament_player_map = {}
-                if tournament_abr_id:
-                    tournament_player_map.update(get_abr_player_mappings(tournament_abr_id))
-                tournament_player_map.update(tournament.get('players',{}))
-
-                if 'aesop' in tournament['url']:
-                    software = 'aesop'
-                    t = AesopsTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),online=tournament_online,player_mappings=tournament_player_map,abr_id=tournament_abr_id)
+                if 'alwaysberunning' in tournament['url']:
+                    tournament_abr_id = tournament['url'].split('/')[4] # https://alwaysberunning.net/tournaments/4241/uk-regionals-2024-east-anglia -> 4241
+                    tournament_name = tournament['url'].split('/')[5] # https://alwaysberunning.net/tournaments/4241/uk-regionals-2024-east-anglia -> uk-regional-2024-east-anglia
+                    print('['+meta+'] ' + tournament_name + ' [' + tournament['url'] + ']' )
+                    tournament_json = get_abr_tournament_json(tournament_abr_id)
+                    tournament_date = tournament.get('date',None)
+                    tournament_size = len(tournament_json)
+                    tournament_level = tournament.get('level',None)
+                    tournament_online = tournament.get('online',False)
+                    tournament_region = tournament.get('region',None)
+                    tournament_player_map = tournament.get('players',{})
+                    get_abr_player_mappings(tournament_json) # using this method just to add any new players to players.json
+                    
+                    t = ABRTournament(name=tournament_name,json=tournament_json,date=tournament_date,region=tournament_region,online=tournament_online,player_mappings=tournament_player_map,abr_id=tournament_abr_id)
+                    tournament_id = "abr-" + tournament_abr_id
                 else:
-                    software = 'cobra'
-                    t = CobraTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),online=tournament_online,player_mappings=tournament_player_map, abr_id=tournament_abr_id)
+                    tournament_json = get_json(tournament['url'])
+                    tournament_name = tournament.get('name',tournament_json['name'])
+                    tournament_date = tournament.get('date',datetime.date.fromisoformat(tournament_json['date']))
+                    tournament_size = len(tournament_json['players'])
+                    print('['+meta+'] ' + tournament_name + ' [' + tournament['url'] + ']' )
+                    # try and get some details from abr
+                    tournament_abr = find_abr_tournament(date=tournament_date, name=tournament_name, size=tournament_size)
+                    tournament_abr_id = tournament.get('abr_id', tournament_abr.get('id',None))
+                    if not tournament_abr_id:
+                        print("could not find tournament in abr (consider adding the abr_id to tournaments.yml)")
+                    tournament_level = tournament.get('level', tournament_abr.get('type',None))
+                    tournament_online = False
+                    if tournament.get('online',False) or (tournament_abr.get('location',None) == 'online'):
+                        tournament_online = True
+                    # build a mapping of registration names to nrdb ids if possible
+                    tournament_player_map = {}
+                    if tournament_abr_id:
+                        abr_tournament_json = get_abr_tournament_json(tournament_abr_id)
+                        tournament_player_map.update(get_abr_player_mappings(abr_tournament_json))
+                    tournament_player_map.update(tournament.get('players',{}))
+                    if 'aesop' in tournament['url']:
+                        software = 'aesop'
+                        t = AesopsTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),online=tournament_online,player_mappings=tournament_player_map,abr_id=tournament_abr_id)
+                    else:
+                        software = 'cobra'
+                        t = CobraTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),online=tournament_online,player_mappings=tournament_player_map, abr_id=tournament_abr_id)
+                    tournament_number = tournament['url'].rsplit('/', 1)[-1]
+                    tournament_id = software + '-' + tournament_number
                 
                 # useful variables
                 if t.online is True:
                     online = "netspace"
                 else:
                     online = "meatspace"
-                tournament_number = tournament['url'].rsplit('/', 1)[-1]
-                tournament_id = software + '-' + tournament_number
-
+                
                 # standings
                 standings = t.standings
                 for row in standings:

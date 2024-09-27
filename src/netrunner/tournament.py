@@ -33,9 +33,9 @@ class Tournament:
         self.json = json
 
         if self.date is None:
-            self.date = self.json['date']
+            self.date = self.json.get('date',None)
         if self.name is None:
-            self.name = self.json['name']
+            self.name = self.json.get('name',None)
         
         # build player objects
         self.players = {}
@@ -181,3 +181,35 @@ class CobraTournament(Tournament):
         self.results.append(game_data)
         runner_player.record_runner_result(game_data)
         corp_player.record_corp_result(game_data)
+
+class ABRTournament(Tournament):
+    def __init__(self, json: dict, name: str = None, date: str = None, region: str = None, online: bool = False, player_mappings: dict = {}, abr_id: int = None):
+        self.name = name
+        self.date = date
+        self.region = region
+        self.online = online
+        self.abr_id = abr_id
+        self.json = json
+
+        # build player objects
+        self.players = {}
+        for player in self.json:
+            corp_id = Identity(player['corp_deck_identity_title'])
+            runner_id = Identity(player['runner_deck_identity_title'])
+            swiss_rank = player['rank_swiss']
+            top_cut_rank = player['rank_top']
+            player_name = player['user_import_name']
+            nrdb_id = player_mappings.get(player['user_import_name'], player['user_id'])
+            self.players[swiss_rank] = TournamentPlayer(tournament_player_id=swiss_rank, name=player_name, corp_id=corp_id, runner_id=runner_id, swiss_rank=swiss_rank, cut_rank=top_cut_rank, nrdb_id=nrdb_id, match_points=None, SoS=None, xSoS=None)
+
+        # no tables to process
+        self.results = []
+
+        # build standings array
+        self.standings = []
+        for id, player in self.players.items():
+            team1 = player.teams[0] if 0 < len(player.teams) else ''
+            team2 = player.teams[1] if 1 < len(player.teams) else ''
+            team3 = player.teams[2] if 2 < len(player.teams) else ''
+            standing = [player.cut_rank, player.swiss_rank, player.name, team1, team2, team3, player.corp_id.short_name, str(player.corp_wins), str(player.corp_losses), str(player.corp_draws), player.runner_id.short_name, str(player.runner_wins), str(player.runner_losses), str(player.runner_draws), player.match_points, player.SoS, player.xSoS, player.corp_id.name, player.corp_id.faction, player.runner_id.name, player.runner_id.faction, player.nrdb_id]
+            self.standings.append(standing)
