@@ -4,7 +4,7 @@ import requests
 import json
 import datetime
 from pathlib import Path
-from urllib.parse import urlparse
+import argparse
 from netrunner.tournament import AesopsTournament,CobraTournament,ABRTournament
 from netrunner.player import TournamentPlayer,Player
 
@@ -102,6 +102,12 @@ def write_player_json_to_file(player: Player, filepath: Path):
     with filepath.open(mode='w') as json_file:
         json.dump(json_data,json_file)
 
+parser = argparse.ArgumentParser(description='get netrunner results from cobra, aesops and abr')
+parser.add_argument('--cache-refresh', action=argparse.BooleanOptionalAction)
+parser.set_defaults(cache_refresh=False)
+parser.add_argument('--tournament', type=str)
+args=parser.parse_args()
+
 with open('tournaments.yml', 'r') as tournaments_file:
     config = yaml.safe_load(tournaments_file)
 
@@ -133,7 +139,7 @@ with open('tournaments.yml', 'r') as tournaments_file:
                     tournament_abr_id = tournament['url'].split('/')[4] # https://alwaysberunning.net/tournaments/4241/uk-regionals-2024-east-anglia -> 4241
                     tournament_name = tournament['url'].split('/')[5] # https://alwaysberunning.net/tournaments/4241/uk-regionals-2024-east-anglia -> uk-regional-2024-east-anglia
                     print('['+meta+'] ' + tournament_name + ' [' + tournament['url'] + ']' )
-                    tournament_json = get_abr_tournament_json(tournament_abr_id)
+                    tournament_json = get_abr_tournament_json(tournament_abr_id, force=args.cache_refresh)
                     tournament_date = tournament.get('date',None)
                     tournament_size = len(tournament_json)
                     tournament_level = tournament.get('level',None)
@@ -145,7 +151,7 @@ with open('tournaments.yml', 'r') as tournaments_file:
                     t = ABRTournament(name=tournament_name,json=tournament_json,date=tournament_date,region=tournament_region,online=tournament_online,player_mappings=tournament_player_map,abr_id=tournament_abr_id)
                     tournament_id = "abr-" + tournament_abr_id
                 else:
-                    tournament_json = get_json(tournament['url'])
+                    tournament_json = get_json(tournament['url'], force=args.cache_refresh)
                     tournament_name = tournament.get('name',tournament_json['name'])
                     tournament_date = tournament.get('date',datetime.date.fromisoformat(tournament_json['date']))
                     tournament_size = len(tournament_json['players'])
@@ -162,7 +168,7 @@ with open('tournaments.yml', 'r') as tournaments_file:
                     # build a mapping of registration names to nrdb ids if possible
                     tournament_player_map = {}
                     if tournament_abr_id:
-                        abr_tournament_json = get_abr_tournament_json(tournament_abr_id)
+                        abr_tournament_json = get_abr_tournament_json(tournament_abr_id, force=args.cache_refresh)
                         tournament_player_map.update(get_abr_player_mappings(abr_tournament_json))
                     tournament_player_map.update(tournament.get('players',{}))
                     if 'aesop' in tournament['url']:

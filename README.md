@@ -21,6 +21,11 @@ outputs results in CSV format to `OUTPUT/results/DATE.NAME.results.csv`
 
 outputs player data in JSON format to `OUTPUT/players/NRDB_ID.json`
 
+### Arguments
+#### --- cache-refresh
+By default, `netrunner_results.py` will use cached JSON (if available)
+This argument overrides that default, and forces a refresh of any cached JSON
+
 ## tournaments.yml
 
 |parameter|required|type|description|default|
@@ -31,6 +36,8 @@ outputs player data in JSON format to `OUTPUT/players/NRDB_ID.json`
 |region|*optional*|string|EMEA/America/APAC||
 |online|*optional*|boolean|online or offline tournament?|False|
 |players|*optional*|dict|a dictionary of player to nrdb_id mappings for the tournament||
+|abr_id|*optional*|int|the abr_id of the tournament||
+|level|*optional*|string|worlds championship, continental championship, etc||
 
 
 ```yaml
@@ -49,28 +56,3 @@ meta:
       date: 2024-06-01
       region: America
 ```
-
-## players.yml
-```yaml
-11479:
-  aliases:
-  - Kikai
-  nrdb_name: Kikai
-  teams:
-  - EA Sports
-39463:
-  aliases:
-  - not_yeti
-  - Not Yeti
-  nrdb_name: not_yeti
-  teams:
-  - EA Sports
-```
-
-### harvester.py
-you can generate a new `players.yml` by using `src/harvestery.py` (this will overwrite any manual changes that have been made)
-
-```
-  python3 ./src/harvester.py
-```
-`harvester.py` uses nrdb to generate `OUTPUT/nrdb_ids.csv`, and also takes in team and alias data from `OUTPUT/sync_bre.csv`-- which is a export of the **DATA SHEET** page of the **SYNC BRE** google sheet
