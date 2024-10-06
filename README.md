@@ -26,6 +26,9 @@ outputs player data in JSON format to `OUTPUT/players/NRDB_ID.json`
 By default, `netrunner_results.py` will use cached JSON (if available)
 This argument overrides that default, and forces a refresh of any cached JSON
 
+#### --- tournaments-file
+defaults to `tournaments.yml`, but you can specify a different file if you just want to collect results for a smaller set of tournaments
+
 ## tournaments.yml
 
 |parameter|required|type|description|default|
