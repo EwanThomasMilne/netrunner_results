@@ -335,3 +335,9 @@ meta:
       region: APAC
     - url: 'https://www.aesopstables.net/1116'
       online: True
+    - url: https://www.aesopstables.net/1380
+      region: EMEA
+      abr_id: 4363
+    - url: https://www.aesopstables.net/651
+      abr_id: 4364
+      online: True
