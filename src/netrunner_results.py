@@ -5,7 +5,7 @@ import json
 import datetime
 from pathlib import Path
 import argparse
-from netrunner.tournament import AesopsTournament,CobraTournament,ABRTournament
+from netrunner.tournament import Tournament,AesopsTournament,CobraTournament,ABRTournament
 from netrunner.player import TournamentPlayer,Player
 
 def get_json(url: str, force: bool = False) -> dict:
@@ -95,6 +95,16 @@ def write_standings_to_csv(standings: list, standings_filepath: Path):
         sw = csv.writer(sf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
         sw.writerow(standings_header)
         sw.writerows(standings)
+
+def write_tournament_results_to_csv(t: Tournament, results_filepath: Path):
+    """ write tournament results to a CSV file """
+    results_filepath.parent.mkdir(exist_ok=True, parents=True)
+    with results_filepath.open(mode='w',newline='') as rf:
+        rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
+        rw.writerow(results_header)
+        for r in t.results:
+            row = [ t.date, meta, t.region, online, tournament_id, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
+            rw.writerow(row)                
     
 def write_player_json_to_file(player: Player, filepath: Path):
     json_data = {'nrdb_id': player.nrdb_id, 'nrdb_name': player.nrdb_name, 'aliases': player.aliases, 'teams': player.teams, 'tournaments': player.tournaments}
@@ -185,16 +195,11 @@ with open('tournaments.yml', 'r') as tournaments_file:
                 row.insert(4,t.name)
             standings_filepath = Path(standings_dir + str(t.date) + '.' + tournament_id + '.standings.csv')
             write_standings_to_csv(standings=t.standings, standings_filepath=standings_filepath)
-         # results
-            results = t.results
-            results_filename = results_dir + str(t.date) + '.' + tournament_id + '.results.csv'
-            with open(results_filename,'w',newline='') as rf:
-                rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-                rw.writerow(results_header)
-                for r in results:
-                    row = [ t.date, meta, t.region, online, tournament_id, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
-                    rw.writerow(row)
-         # players
+            
+            results_filepath = Path(standings_dir + str(t.date) + '.' + tournament_id + '.results.csv')
+            write_tournament_results_to_csv(t, results_filepath)
+            
+            # players
             for id,t_player in t.players.items():
                 if t_player.nrdb_id:
                     if (type(t_player.nrdb_id)) != int:
