@@ -101,6 +101,7 @@ def write_tournament_results_to_csv(t: Tournament, results_filepath: Path):
     results_filepath.parent.mkdir(exist_ok=True, parents=True)
     with results_filepath.open(mode='w',newline='') as rf:
         rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
+        results_header = [ 'date','meta','region','online','tournament_id','tournament','phase','round','table','corp_player','corp_id','result','runner_player','runner_id']
         rw.writerow(results_header)
         for r in t.results:
             row = [ t.date, meta, t.region, online, tournament_id, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
@@ -125,8 +126,6 @@ with open('tournaments.yml', 'r') as tournaments_file:
     standings_header = ['date','region','online','tournament_id','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
 
     results_dir = 'OUTPUT/results/'
-    results_header = [ 'date','meta','region','online','tournament_id','tournament','phase','round','table','corp_player','corp_id','result','runner_player','runner_id']
-
     player_dir = 'OUTPUT/players/'
     players = {}
 
