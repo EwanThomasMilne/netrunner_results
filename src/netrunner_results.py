@@ -124,12 +124,12 @@ def write_player_json_to_file(player: Player, filepath: Path):
         json.dump(json_data,json_file)
 
 parser = argparse.ArgumentParser(description='get netrunner results from cobra, aesops and abr')
-parser.add_argument('--cache-refresh', action=argparse.BooleanOptionalAction)
+parser.add_argument('--cache-refresh', action=argparse.BooleanOptionalAction, help='force a refresh of all API retrieved JSON')
 parser.set_defaults(cache_refresh=False)
-parser.add_argument('--tournament', type=str)
+parser.add_argument('--tournaments-file', type=str, default='tournaments.yml', help='list of tournaments to get results for (defaults to tournaments.yml)')
 args=parser.parse_args()
 
-with open('tournaments.yml', 'r') as tournaments_file:
+with open(args.tournaments_file, 'r') as tournaments_file:
     config = yaml.safe_load(tournaments_file)
 
     standings_dir = 'OUTPUT/standings/'
