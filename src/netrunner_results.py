@@ -91,8 +91,18 @@ def add_to_players_json(nrdb_id: int, nrdb_name: str):
  
 def write_standings_to_csv(standings: list, standings_filepath: Path):
     standings_filepath.parent.mkdir(exist_ok=True, parents=True)
+
+    standings = t.standings
+    for row in standings:
+        row.insert(0,t.date)
+        row.insert(1,meta)
+        row.insert(2,t.region)
+        row.insert(3,online)
+        row.insert(4,tournament_id)
+        row.insert(5,t.name)
     with standings_filepath.open(mode='w',newline='') as sf:
         sw = csv.writer(sf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
+        standings_header = ['date','meta','region','online','tournament_id','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
         sw.writerow(standings_header)
         sw.writerows(standings)
 
@@ -101,10 +111,10 @@ def write_tournament_results_to_csv(t: Tournament, results_filepath: Path):
     results_filepath.parent.mkdir(exist_ok=True, parents=True)
     with results_filepath.open(mode='w',newline='') as rf:
         rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-        results_header = [ 'date','meta','region','online','tournament_id','tournament','phase','round','table','corp_player','corp_id','result','runner_player','runner_id']
+        results_header = [ 'date','meta','region','online','tournament_id','tournament','phase','round','table','corp_player','corp_id','corp_faction','result','runner_player','runner_id','runner_faction']
         rw.writerow(results_header)
         for r in t.results:
-            row = [ t.date, meta, t.region, online, tournament_id, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
+            row = [ t.date, meta, t.region, online, tournament_id, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['corp_faction'],r['result'], r['runner_player'], r['runner_id'], r['runner_faction'] ]
             rw.writerow(row)
 
 def load_player_json_from_file(player_dir: str, nrdb_id: int) -> Player:
@@ -131,10 +141,7 @@ args=parser.parse_args()
 
 with open(args.tournaments_file, 'r') as tournaments_file:
     config = yaml.safe_load(tournaments_file)
-
     standings_dir = 'OUTPUT/standings/'
-    standings_header = ['date','region','online','tournament_id','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
-
     results_dir = 'OUTPUT/results/'
     player_dir = 'OUTPUT/players/'
     players = {}
@@ -195,13 +202,6 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                 online = "meatspace"
             
             # standings
-            standings = t.standings
-            for row in standings:
-                row.insert(0,t.date)
-                row.insert(1,t.region)
-                row.insert(2,online)
-                row.insert(3,tournament_id)
-                row.insert(4,t.name)
             standings_filepath = Path(standings_dir + str(t.date) + '.' + tournament_id + '.standings.csv')
             write_standings_to_csv(standings=t.standings, standings_filepath=standings_filepath)
             

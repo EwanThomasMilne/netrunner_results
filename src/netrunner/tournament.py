@@ -93,7 +93,7 @@ class AesopsTournament(Tournament):
                 result = 'draw'
             case '0':
                 result = 'corp'
-        game_data = { 'phase': phase, 'round': round_num, 'table': table['tableNumber'], 'corp_player': corp_player.name, 'corp_player_nrdb_id': corp_player.nrdb_id, 'corp_id': corp_player.corp_id.name, 'result': result, 'runner_player': runner_player.name, 'runner_player_nrdb_id': runner_player.nrdb_id, 'runner_id': runner_player.runner_id.name }
+        game_data = { 'phase': phase, 'round': round_num, 'table': table['tableNumber'], 'corp_player': corp_player.name, 'corp_player_nrdb_id': corp_player.nrdb_id, 'corp_id': corp_player.corp_id.name, 'corp_faction':corp_player.corp_id.faction, 'result': result, 'runner_player': runner_player.name, 'runner_player_nrdb_id': runner_player.nrdb_id, 'runner_id': runner_player.runner_id.name, 'runner_faction': runner_player.runner_id.faction }
         self.results.append(game_data)
         runner_player.record_runner_result(game_data)
         corp_player.record_corp_result(game_data)
@@ -137,7 +137,7 @@ class CobraTournament(Tournament):
             result = 'ID'
         if table['twoForOne']:
             result = '2-for-1'
-        game_data = { 'phase': phase, 'round': round_num, 'table': table['table'], 'corp_player': corp_player.name, 'corp_player_nrdb_id': corp_player.nrdb_id, 'corp_id': corp_player.corp_id.name, 'result': result, 'runner_player': runner_player.name, 'runner_player_nrdb_id': runner_player.nrdb_id, 'runner_id': runner_player.runner_id.name }
+        game_data = { 'phase': phase, 'round': round_num, 'table': table['table'], 'corp_player': corp_player.name, 'corp_player_nrdb_id': corp_player.nrdb_id, 'corp_id': corp_player.corp_id.name, 'corp_faction': corp_player.corp_id.faction, 'result': result, 'runner_player': runner_player.name, 'runner_player_nrdb_id': runner_player.nrdb_id, 'runner_id': runner_player.runner_id.name, 'runner_faction': runner_player.runner_id.faction }
         self.results.append(game_data)
         runner_player.record_runner_result(game_data)
         corp_player.record_corp_result(game_data)
@@ -159,7 +159,7 @@ class CobraTournament(Tournament):
             result = 'ID'
         if table['twoForOne']:
             result = '2-for-1'
-        game_data = { 'phase': phase, 'round': round_num, 'table': table['table'], 'corp_player': corp_player.name, 'corp_player_nrdb_id': corp_player.nrdb_id, 'corp_id': corp_player.corp_id.name, 'result': result, 'runner_player': runner_player.name, 'runner_player_nrdb_id': runner_player.nrdb_id, 'runner_id': runner_player.runner_id.name }
+        game_data = { 'phase': phase, 'round': round_num, 'table': table['table'], 'corp_player': corp_player.name, 'corp_player_nrdb_id': corp_player.nrdb_id, 'corp_id': corp_player.corp_id.name, 'corp_faction': corp_player.corp_id.faction,'result': result, 'runner_player': runner_player.name, 'runner_player_nrdb_id': runner_player.nrdb_id, 'runner_id': runner_player.runner_id.name, 'runner_faction': runner_player.runner_id.faction }
         self.results.append(game_data)
         runner_player.record_runner_result(game_data)
         corp_player.record_corp_result(game_data)
@@ -177,7 +177,7 @@ class CobraTournament(Tournament):
             result = table['player1']['role']
         else:
             result = table['player2']['role']
-        game_data = { 'phase': phase, 'round': round_num, 'table': table['table'], 'corp_player': corp_player.name, 'corp_player_nrdb_id': corp_player.nrdb_id, 'corp_id': corp_player.corp_id.name, 'result': result, 'runner_player': runner_player.name, 'runner_player_nrdb_id': runner_player.nrdb_id, 'runner_id': runner_player.runner_id.name }
+        game_data = { 'phase': phase, 'round': round_num, 'table': table['table'], 'corp_player': corp_player.name, 'corp_player_nrdb_id': corp_player.nrdb_id, 'corp_id': corp_player.corp_id.name, 'corp_faction': corp_player.corp_id.faction, 'result': result, 'runner_player': runner_player.name, 'runner_player_nrdb_id': runner_player.nrdb_id, 'runner_id': runner_player.runner_id.name, 'runner_faction': runner_player.runner_id.faction }
         self.results.append(game_data)
         runner_player.record_runner_result(game_data)
         corp_player.record_corp_result(game_data)
