@@ -196,7 +196,7 @@ with open('tournaments.yml', 'r') as tournaments_file:
             standings_filepath = Path(standings_dir + str(t.date) + '.' + tournament_id + '.standings.csv')
             write_standings_to_csv(standings=t.standings, standings_filepath=standings_filepath)
             
-            results_filepath = Path(standings_dir + str(t.date) + '.' + tournament_id + '.results.csv')
+            results_filepath = Path(results_dir + str(t.date) + '.' + tournament_id + '.results.csv')
             write_tournament_results_to_csv(t, results_filepath)
             
             # players
