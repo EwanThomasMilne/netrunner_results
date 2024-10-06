@@ -105,8 +105,18 @@ def write_tournament_results_to_csv(t: Tournament, results_filepath: Path):
         rw.writerow(results_header)
         for r in t.results:
             row = [ t.date, meta, t.region, online, tournament_id, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['result'], r['runner_player'], r['runner_id'] ]
-            rw.writerow(row)                
-    
+            rw.writerow(row)
+
+def load_player_json_from_file(player_dir: str, nrdb_id: int) -> Player:
+    """ load any existing player data from stored json files """
+    player_data = None
+    json_filepath = Path(player_dir + str(nrdb_id) + '.json')
+    if json_filepath.is_file():
+        with json_filepath.open(mode='r') as json_file:
+            player_data = json.load(json_file)
+    p = Player(nrdb_id=nrdb_id, player_data=player_data)
+    return p
+
 def write_player_json_to_file(player: Player, filepath: Path):
     json_data = {'nrdb_id': player.nrdb_id, 'nrdb_name': player.nrdb_name, 'aliases': player.aliases, 'teams': player.teams, 'tournaments': player.tournaments}
     filepath.parent.mkdir(exist_ok=True, parents=True)
@@ -204,7 +214,7 @@ with open('tournaments.yml', 'r') as tournaments_file:
                     if (type(t_player.nrdb_id)) != int:
                         print("WARNING! nrdb_id for "+t_player.name+"is "+type(t_player.nrdb_id)+" (expected int)")
                     if not players.get(t_player.nrdb_id):
-                        players[t_player.nrdb_id] = Player(nrdb_id=t_player.nrdb_id)
+                        players[t_player.nrdb_id] = load_player_json_from_file(player_dir=player_dir, nrdb_id=t_player.nrdb_id)
                     players[t_player.nrdb_id].add_tournament_results(tournament_id=tournament_id, t_player=t_player, date=str(t.date), region=t.region, online=online, tournament_name=t.name, tournament_url=tournament['url'], tournament_level=tournament_level, meta=meta, abr_id=t.abr_id, size=len(t.players))
                 else:
                     if t_player.cut_rank:

@@ -112,7 +112,7 @@ class Player:
         self.aliases = player_details.get('aliases',None)
         self.teams = player_details.get('teams',None)
         if player_data:
-            self.tournaments = player_data.tournaments
+            self.tournaments = player_data['tournaments']
         else:
             self.tournaments = {}
         
