@@ -338,6 +338,8 @@ meta:
     - url: https://www.aesopstables.net/1380
       region: EMEA
       abr_id: 4363
+      players:
+        "The Ghost of Kras Mazov": 28443
     - url: https://www.aesopstables.net/651
       abr_id: 4364
       online: True
