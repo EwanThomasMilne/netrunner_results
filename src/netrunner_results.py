@@ -207,7 +207,7 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                         print("WARNING! nrdb_id for "+t_player.name+"is "+type(t_player.nrdb_id)+" (expected int)")
                     if not players.get(t_player.nrdb_id):
                         players[t_player.nrdb_id] = load_player_json_from_file(player_dir=player_dir, nrdb_id=t_player.nrdb_id)
-                    players[t_player.nrdb_id].add_tournament_results(tournament_id=tournament_id, t_player=t_player, date=str(t.date), region=t.region, location=t.location, tournament_name=t.name, tournament_url=tournament['url'], tournament_level=tournament_level, meta=meta, abr_id=t.abr_id, size=len(t.players))
+                    players[t_player.nrdb_id].add_tournament_results(tournament_id=tournament_id, t_player=t_player, date=str(t.date), region=t.region, location=t.location, tournament_name=t.name, tournament_url=tournament['url'], tournament_level=tournament_level, meta=meta, abr_id=t.abr_id, size=len(t.players), force=True)
                 else:
                     if t_player.cut_rank:
                         print("nrdb_id not found for "+t_player.name+" ["+str(t_player.cut_rank)+"]")
