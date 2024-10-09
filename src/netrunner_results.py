@@ -172,7 +172,7 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                 tournament_size = len(tournament_json['players'])
                 print('['+meta+'] ' + tournament_name + ' [' + tournament['url'] + ']' )
                 # try and get some details from abr
-                tournament_abr = find_abr_tournament(date=tournament_date, name=tournament_name, size=tournament_size)
+                tournament_abr = find_abr_tournament(date=tournament_date, name=tournament_name, size=tournament_size, force=args.cache_refresh)
                 tournament_abr_id = tournament.get('abr_id', tournament_abr.get('id',None))
                 if not tournament_abr_id:
                     print("could not find tournament in abr (consider adding the abr_id to tournaments.yml)")
