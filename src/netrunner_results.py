@@ -97,12 +97,12 @@ def write_standings_to_csv(standings: list, standings_filepath: Path):
         row.insert(0,t.date)
         row.insert(1,meta)
         row.insert(2,t.region)
-        row.insert(3,online)
+        row.insert(3,t.location)
         row.insert(4,tournament_id)
         row.insert(5,t.name)
     with standings_filepath.open(mode='w',newline='') as sf:
         sw = csv.writer(sf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-        standings_header = ['date','meta','region','online','tournament_id','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
+        standings_header = ['date','meta','region','location','tournament_id','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
         sw.writerow(standings_header)
         sw.writerows(standings)
 
@@ -111,10 +111,10 @@ def write_tournament_results_to_csv(t: Tournament, results_filepath: Path):
     results_filepath.parent.mkdir(exist_ok=True, parents=True)
     with results_filepath.open(mode='w',newline='') as rf:
         rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-        results_header = [ 'date','meta','region','online','tournament_id','tournament','phase','round','table','corp_player','corp_id','corp_faction','result','runner_player','runner_id','runner_faction']
+        results_header = [ 'date','meta','region','location','tournament_id','tournament','phase','round','table','corp_player','corp_id','corp_faction','result','runner_player','runner_id','runner_faction']
         rw.writerow(results_header)
         for r in t.results:
-            row = [ t.date, meta, t.region, online, tournament_id, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['corp_faction'],r['result'], r['runner_player'], r['runner_id'], r['runner_faction'] ]
+            row = [ t.date, meta, t.region, t.location, tournament_id, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['corp_faction'],r['result'], r['runner_player'], r['runner_id'], r['runner_faction'] ]
             rw.writerow(row)
 
 def load_player_json_from_file(player_dir: str, nrdb_id: int) -> Player:
@@ -158,12 +158,12 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                 tournament_date = tournament.get('date',None)
                 tournament_size = len(tournament_json)
                 tournament_level = tournament.get('level',None)
-                tournament_online = tournament.get('online',False)
                 tournament_region = tournament.get('region',None)
+                tournament_location = tournament.get('location',None)
                 tournament_player_map = tournament.get('players',{})
                 get_abr_player_mappings(tournament_json) # using this method just to add any new players to players.json
                 
-                t = ABRTournament(name=tournament_name,json=tournament_json,date=tournament_date,region=tournament_region,online=tournament_online,player_mappings=tournament_player_map,abr_id=tournament_abr_id)
+                t = ABRTournament(name=tournament_name,json=tournament_json,date=tournament_date,region=tournament_region,location=tournament_location,player_mappings=tournament_player_map,abr_id=tournament_abr_id)
                 tournament_id = "abr-" + tournament_abr_id
             else:
                 tournament_json = get_json(tournament['url'], force=args.cache_refresh)
@@ -177,9 +177,7 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                 if not tournament_abr_id:
                     print("could not find tournament in abr (consider adding the abr_id to tournaments.yml)")
                 tournament_level = tournament.get('level', tournament_abr.get('type',None))
-                tournament_online = False
-                if tournament.get('online',False) or (tournament_abr.get('location',None) == 'online'):
-                    tournament_online = True
+                tournament_location = tournament.get('location',tournament_abr.get('location',None))
                 # build a mapping of registration names to nrdb ids if possible
                 tournament_player_map = {}
                 if tournament_abr_id:
@@ -188,18 +186,12 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                 tournament_player_map.update(tournament.get('players',{}))
                 if 'aesop' in tournament['url']:
                     software = 'aesop'
-                    t = AesopsTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),online=tournament_online,player_mappings=tournament_player_map,abr_id=tournament_abr_id)
+                    t = AesopsTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map,abr_id=tournament_abr_id)
                 else:
                     software = 'cobra'
-                    t = CobraTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),online=tournament_online,player_mappings=tournament_player_map, abr_id=tournament_abr_id)
+                    t = CobraTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map, abr_id=tournament_abr_id)
                 tournament_number = tournament['url'].rsplit('/', 1)[-1]
                 tournament_id = software + '-' + tournament_number
-            
-            # useful variables
-            if t.online is True:
-                online = "netspace"
-            else:
-                online = "meatspace"
             
             # standings
             standings_filepath = Path(standings_dir + str(t.date) + '.' + tournament_id + '.standings.csv')
@@ -215,7 +207,7 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                         print("WARNING! nrdb_id for "+t_player.name+"is "+type(t_player.nrdb_id)+" (expected int)")
                     if not players.get(t_player.nrdb_id):
                         players[t_player.nrdb_id] = load_player_json_from_file(player_dir=player_dir, nrdb_id=t_player.nrdb_id)
-                    players[t_player.nrdb_id].add_tournament_results(tournament_id=tournament_id, t_player=t_player, date=str(t.date), region=t.region, online=online, tournament_name=t.name, tournament_url=tournament['url'], tournament_level=tournament_level, meta=meta, abr_id=t.abr_id, size=len(t.players))
+                    players[t_player.nrdb_id].add_tournament_results(tournament_id=tournament_id, t_player=t_player, date=str(t.date), region=t.region, location=t.location, tournament_name=t.name, tournament_url=tournament['url'], tournament_level=tournament_level, meta=meta, abr_id=t.abr_id, size=len(t.players))
                 else:
                     if t_player.cut_rank:
                         print("nrdb_id not found for "+t_player.name+" ["+str(t_player.cut_rank)+"]")

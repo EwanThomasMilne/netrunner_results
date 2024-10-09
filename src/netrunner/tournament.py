@@ -17,18 +17,18 @@ class Tournament:
     Attributes:
         name (str): tournament name
         date (str): date of tournament
+        location (str): tournament location
         region (str): tournament region
-        online (bool): netspace or meatspace
         json (dict): raw tournament data
         players (dict): a dictionary of Player objects,  keyed by each players tournament_player_id
         results (list): a 2d array of game results
         standings (list): a 2d array of player standings
     """
-    def __init__(self, json: dict, name: str = None, date: str = None, region: str = None, online: bool = False, player_mappings: dict = {}, abr_id: int = None):
+    def __init__(self, json: dict, name: str = None, date: str = None, location: str = None, region: str = None, player_mappings: dict = {}, abr_id: int = None):
         self.name = name
         self.date = date
+        self.location = location
         self.region = region
-        self.online = online
         self.abr_id = abr_id
         self.json = json
 
@@ -195,11 +195,11 @@ class CobraTournament(Tournament):
         corp_player.record_corp_result(game_data)
 
 class ABRTournament(Tournament):
-    def __init__(self, json: dict, name: str = None, date: str = None, region: str = None, online: bool = False, player_mappings: dict = {}, abr_id: int = None):
+    def __init__(self, json: dict, name: str = None, date: str = None, region: str = None, location: str = None, player_mappings: dict = {}, abr_id: int = None):
         self.name = name
         self.date = date
         self.region = region
-        self.online = online
+        self.location = location
         self.abr_id = abr_id
         self.json = json
 

@@ -17,84 +17,84 @@ meta:
   '20.06':
     - url: https://tournaments.nullsignal.games/tournaments/1807
       region: APAC
-      online: True
+      location: online
       abr_id: 2809
       level: 'continental championship'
     - url: https://alwaysberunning.net/tournaments/2810/nisei-europe-and-africa-continental-championship
       region: EMEA
-      online: True
+      location: online
       abr_id: 2810
       date: 2020-07-25
       level: 'continental championship'
     - url: https://tournaments.nullsignal.games/tournaments/1820
       region: America
-      online: True
+      location: online
       abr_id: 2811
       level: 'continental championship'
       players:
         'Ysengin': 4859
   '20.09':
     - url: https://tournaments.nullsignal.games/tournaments/1851
-      online: True
+      location: online
       level: 'worlds championship'
       date: 2020-10-09
     - url: https://tournaments.nullsignal.games/tournaments/1852
-      online: True
+      location: online
       level: 'worlds championship'
       date: 2020-10-10
     - url: https://alwaysberunning.net/tournaments/2850/nisei-world-championship-2020
-      online: True
+      location: online
       level: 'worlds championship'
       date: 2020-10-11
   '21.04':
     - url: https://tournaments.nullsignal.games/tournaments/1998
-      online: True
+      location: online
       region: EMEA
     - url: https://tournaments.nullsignal.games/tournaments/2009
-      online: True
+      location: online
       region: EMEA
   '21.05':
     - url: https://tournaments.nullsignal.games/tournaments/2038
-      online: True
+      location: online
   '21.06':
     - url: https://tournaments.nullsignal.games/tournaments/2118
       region: APAC
-      online: True
+      location: online
     - url: https://tournaments.nullsignal.games/tournaments/2122
       region: EMEA
-      online: True
+      location: online
       abr_id: 3014
       level: 'continental championship'
     - url: https://tournaments.nullsignal.games/tournaments/2128
       region: America
-      online: True
+      location: online
   '21.10':
     - url: https://tournaments.nullsignal.games/tournaments/2201
-      online: True
+      location: online
       level: 'worlds championship'
       date: 2021-11-19
     - url: https://tournaments.nullsignal.games/tournaments/2207
-      online: True
+      location: online
       level: 'worlds championship'
       date: 2021-11-20
     - url: https://tournaments.nullsignal.games/tournaments/2227
-      online: True
+      location: online
       level: 'worlds championship'
       date: 2021-11-21
     - url: https://alwaysberunning.net/tournaments/3082/nisei-world-championship-2021
-      online: True
+      location: online
       level: 'worlds championship'
       date: 2021-11-21
   '22.08':
     - url: https://tournaments.nullsignal.games/tournaments/2497
       region: APAC
-      online: True
+      location: online
     - url: https://tournaments.nullsignal.games/tournaments/2498
       region: America
-      online: True
+      location: online
     - url: https://tournaments.nullsignal.games/tournaments/2499
       region: EMEA
-      online: True
+      location: online
       abr_id: 3342
       level: 'continental championship'
   '22.09':
@@ -104,21 +104,21 @@ meta:
       players:
         "Eric": 11664
     - url: https://tournaments.nullsignal.games/tournaments/2756
-      online: True
+      location: online
   '23.03':
     - url: https://www.aesopstables.net/53
       region: America
     - url: https://www.aesopstables.net/60
       region: America
     - url: https://tournaments.nullsignal.games/tournaments/3001
-      online: True
+      location: online
     - url: https://tournaments.nullsignal.games/tournaments/3012
       region: EMEA
     - url: https://tournaments.nullsignal.games/tournaments/3054
-      online: True
+      location: online
     - url: https://tournaments.nullsignal.games/tournaments/3080
       region: APAC
-      online: True
+      location: online
   '23.08':
     - url: https://www.aesopstables.net/64
       region: America
@@ -130,7 +130,7 @@ meta:
       level: 'national championship'
     - url: https://tournaments.nullsignal.games/tournaments/3102
       region: EMEA
-      online: True
+      location: online
       abr_id: 3779
       level: 'continental championship'
     - url: https://tournaments.nullsignal.games/tournaments/3109
@@ -155,18 +155,18 @@ meta:
     - url: https://tournaments.nullsignal.games/tournaments/3148
       region: EMEA
     - url: https://tournaments.nullsignal.games/tournaments/3157
-      online: True
+      location: online
     - url: https://tournaments.nullsignal.games/tournaments/3181
       abr_id: 3811
       level: 'worlds championship'
     - url: https://tournaments.nullsignal.games/tournaments/3197
-      online: True
+      location: online
     - url: https://tournaments.nullsignal.games/tournaments/3209
-      online: True
+      location: online
     - url: https://tournaments.nullsignal.games/tournaments/3222
       region: EMEA
     - url: https://tournaments.nullsignal.games/tournaments/3235
-      online: True
+      location: online
       region: APAC
     - url: https://tournaments.nullsignal.games/tournaments/3247
       region: EMEA
@@ -175,45 +175,45 @@ meta:
     - url: https://tournaments.nullsignal.games/tournaments/3260
       region: America
     - url: https://tournaments.nullsignal.games/tournaments/3254
-      online: True
+      location: online
     - url: https://www.aesopstables.net/231
-      online: True
+      location: online
     - url: https://www.aesopstables.net/245
-      online: True
+      location: online
       players:
         The King (utati oracling): 31796
     - url: https://www.aesopstables.net/360
       region: America
     - url: https://www.aesopstables.net/361
-      online: True
+      location: online
       players:
         "The King (kelly)": 31796
     - url: https://tournaments.nullsignal.games/tournaments/3207
-      online: True
+      location: online
   '24.03':
     - url: https://www.aesopstables.net/368
-      online: True
+      location: online
     - url: https://www.aesopstables.net/382
-      online: True
+      location: online
       name: 'AMT - April 6th'
     - url: https://www.aesopstables.net/393
       region: America
     - url: https://www.aesopstables.net/394
-      online: True
+      location: online
     - url: https://www.aesopstables.net/395
-      online: True
+      location: online
     - url: https://www.aesopstables.net/304
       region: America
       name: 'Emerald City Grid 2024-H1 CO'
     - url: https://www.aesopstables.net/440
-      online: True
+      location: online
     - url: https://tournaments.nullsignal.games/tournaments/3419
       region: EMEA
   '24.05':
     - name: "Fly to EMEA #3"
       url: "https://www.aesopstables.net/464"
       date: 2024-05-25
-      online: True
+      location: online
     - name: "NANPC Boston"
       url: "https://www.aesopstables.net/470"
       date: 2024-05-25
@@ -222,7 +222,7 @@ meta:
       url: "https://www.aesopstables.net/475"
       date: 2024-06-01
       region: America
-      online: True
+      location: online
     - name: "OTG Midwest"
       url: "https://www.aesopstables.net/483"
       date: 2024-06-08
@@ -233,7 +233,7 @@ meta:
       url: "https://www.aesopstables.net/489"
       date: 2024-06-15
       region: APAC
-      online: True
+      location: online
     - name: "West Canadian Nats"
       url: "https://www.aesopstables.net/494"
       date: 2024-06-15
@@ -247,7 +247,7 @@ meta:
     - name: "ICC"
       url: "https://tournaments.nullsignal.games/tournaments/3487"
       date: 2024-07-13
-      online: True
+      location: online
     - name: "NANPC Philadelphia"
       url: "https://www.aesopstables.net/550"
       date: 2024-07-13
@@ -269,7 +269,7 @@ meta:
     - name: "AMT - July 27th"
       url: "https://www.aesopstables.net/571"
       date: 2024-07-27
-      online: True
+      location: online
     - name: "US East Coast Nats"
       url: "https://www.aesopstables.net/572"
       date: 2024-07-27
@@ -297,7 +297,7 @@ meta:
     - name: "AMT - Aug 11th"
       url: "https://www.aesopstables.net/590"
       date: 2024-08-11
-      online: True
+      location: online
     - name: "Swiss Nats"
       url: "https://www.aesopstables.net/604"
       date: 2024-08-23
@@ -305,7 +305,7 @@ meta:
     - name: "AMT - Aug 24th"
       url: "https://www.aesopstables.net/606"
       date: 2024-08-24
-      online: True
+      location: online
     - name: "UK Regionals Aldershot"
       url: "https://tournaments.nullsignal.games/tournaments/3528"
       date: 2024-08-24
@@ -334,7 +334,7 @@ meta:
     - url: 'https://www.aesopstables.net/1050'
       region: APAC
     - url: 'https://www.aesopstables.net/1116'
-      online: True
+      location: online
     - url: https://www.aesopstables.net/1380
       region: EMEA
       abr_id: 4363
@@ -342,7 +342,8 @@ meta:
         "The Ghost of Kras Mazov": 28443
     - url: https://www.aesopstables.net/651
       abr_id: 4364
-      online: True
+      location: online
     - url: 'https://tournaments.nullsignal.games/tournaments/3553'
       abr_id: 4280
     - url: 'https://www.aesopstables.net/1347'
+      abr_id: 4320
