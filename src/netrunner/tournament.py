@@ -23,13 +23,15 @@ class Tournament:
         players (dict): a dictionary of Player objects,  keyed by each players tournament_player_id
         results (list): a 2d array of game results
         standings (list): a 2d array of player standings
+        format (str): either DSS or SSS
     """
-    def __init__(self, json: dict, name: str = None, date: str = None, location: str = None, region: str = None, player_mappings: dict = {}, abr_id: int = None):
+    def __init__(self, json: dict, name: str = None, date: str = None, location: str = None, region: str = None, player_mappings: dict = {}, abr_id: int = None, format: str = None):
         self.name = name
         self.date = date
         self.location = location
         self.region = region
         self.abr_id = abr_id
+        self.format = format
         self.json = json
 
         if self.date is None:
@@ -113,6 +115,26 @@ class AesopsTournament(Tournament):
         corp_player.record_corp_result(game_data)    
    
 class CobraTournament(Tournament):
+    def process_cut_table(self, round_num: int, table: dict):
+        phase = 'cut'
+        if table['player1']['role'] == 'runner':
+            runner_player = self.players[table['player1']['id']]
+            corp_player = self.players[table['player2']['id']]
+        else:
+            runner_player = self.players[table['player2']['id']]
+            corp_player = self.players[table['player1']['id']]
+        result = 'unknown'
+
+        if table['player1']['winner']:
+            result = table['player1']['role']
+        else:
+            result = table['player2']['role']
+        game_data = { 'phase': phase, 'round': round_num, 'table': table['table'], 'corp_player': corp_player.name, 'corp_player_nrdb_id': corp_player.nrdb_id, 'corp_id': corp_player.corp_id.name, 'corp_faction': corp_player.corp_id.faction, 'result': result, 'runner_player': runner_player.name, 'runner_player_nrdb_id': runner_player.nrdb_id, 'runner_id': runner_player.runner_id.name, 'runner_faction': runner_player.runner_id.faction }
+        self.results.append(game_data)
+        runner_player.record_runner_result(game_data)
+        corp_player.record_corp_result(game_data)
+
+class CobraDSSTournament(CobraTournament):
     def process_swiss_table(self, round_num: int, table: dict):
         phase = 'swiss'
 
@@ -176,19 +198,37 @@ class CobraTournament(Tournament):
         runner_player.record_runner_result(game_data)
         corp_player.record_corp_result(game_data)
 
-    def process_cut_table(self, round_num: int, table: dict):
-        phase = 'cut'
+class CobraSSSTournament(CobraTournament):
+    def process_swiss_table(self, round_num: int, table: dict):
+        phase = 'swiss'
+        
+        # if either player_id is null, assume this round was a Bye and do not record the results
+        if table['player1']['id'] is None or table['player2']['id'] is None:
+            return
+        
+        # figure out who is runner and who is corp
         if table['player1']['role'] == 'runner':
+            runner = 'player1'
             runner_player = self.players[table['player1']['id']]
             corp_player = self.players[table['player2']['id']]
         else:
+            runner = 'player2'
             runner_player = self.players[table['player2']['id']]
             corp_player = self.players[table['player1']['id']]
+
+        # figure out the result
         result = 'unknown'
-        if table['player1']['winner']:
-            result = table['player1']['role']
-        else:
-            result = table['player2']['role']
+        match table[runner]['runnerScore']:
+            case 3:
+                result = 'runner'
+            case 1:
+                result = 'draw'
+            case 0:
+                result = 'corp'
+        if table['intentionalDraw']:
+            result = 'ID'
+
+        # record the result
         game_data = { 'phase': phase, 'round': round_num, 'table': table['table'], 'corp_player': corp_player.name, 'corp_player_nrdb_id': corp_player.nrdb_id, 'corp_id': corp_player.corp_id.name, 'corp_faction': corp_player.corp_id.faction, 'result': result, 'runner_player': runner_player.name, 'runner_player_nrdb_id': runner_player.nrdb_id, 'runner_id': runner_player.runner_id.name, 'runner_faction': runner_player.runner_id.faction }
         self.results.append(game_data)
         runner_player.record_runner_result(game_data)

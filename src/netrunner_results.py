@@ -5,7 +5,7 @@ import json
 import datetime
 from pathlib import Path
 import argparse
-from netrunner.tournament import Tournament,AesopsTournament,CobraTournament,ABRTournament
+from netrunner.tournament import Tournament,AesopsTournament,CobraDSSTournament,CobraSSSTournament,ABRTournament
 from netrunner.player import TournamentPlayer,Player
 
 def get_json(url: str, force: bool = False) -> dict:
@@ -99,10 +99,11 @@ def write_standings_to_csv(standings: list, standings_filepath: Path):
         row.insert(2,t.region)
         row.insert(3,t.location)
         row.insert(4,tournament_id)
-        row.insert(5,t.name)
+        row.insert(5,t.format)
+        row.insert(6,t.name)
     with standings_filepath.open(mode='w',newline='') as sf:
         sw = csv.writer(sf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-        standings_header = ['date','meta','region','location','tournament_id','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
+        standings_header = ['date','meta','region','location','tournament_id','format','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
         sw.writerow(standings_header)
         sw.writerows(standings)
 
@@ -111,10 +112,10 @@ def write_tournament_results_to_csv(t: Tournament, results_filepath: Path):
     results_filepath.parent.mkdir(exist_ok=True, parents=True)
     with results_filepath.open(mode='w',newline='') as rf:
         rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-        results_header = [ 'date','meta','region','location','tournament_id','tournament','phase','round','table','corp_player','corp_id','corp_faction','result','runner_player','runner_id','runner_faction']
+        results_header = [ 'date','meta','region','location','tournament_id','format','tournament','phase','round','table','corp_player','corp_id','corp_faction','result','runner_player','runner_id','runner_faction']
         rw.writerow(results_header)
         for r in t.results:
-            row = [ t.date, meta, t.region, t.location, tournament_id, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['corp_faction'],r['result'], r['runner_player'], r['runner_id'], r['runner_faction'] ]
+            row = [ t.date, meta, t.region, t.location, tournament_id, t.format, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['corp_faction'],r['result'], r['runner_player'], r['runner_id'], r['runner_faction'] ]
             rw.writerow(row)
 
 def load_player_json_from_file(player_dir: str, nrdb_id: int) -> Player:
@@ -152,7 +153,7 @@ with open(args.tournaments_file, 'r') as tournaments_file:
         for tournament in tournaments:
             if 'alwaysberunning' in tournament['url']:
                 tournament_abr_id = tournament['url'].split('/')[4] # https://alwaysberunning.net/tournaments/4241/uk-regionals-2024-east-anglia -> 4241
-                tournament_name = tournament['url'].split('/')[5] # https://alwaysberunning.net/tournaments/4241/uk-regionals-2024-east-anglia -> uk-regional-2024-east-anglia
+                tournament_name = tournament['url'].split('/')[5] # https://alwaysberunning.net/tournaments/4241/uk-regionals-2024-east-anglia -> uk-regionals-2024-east-anglia
                 print('['+meta+'] ' + tournament_name + ' [' + tournament['url'] + ']' )
                 tournament_json = get_abr_tournament_json(tournament_abr_id, force=args.cache_refresh)
                 tournament_date = tournament.get('date',None)
@@ -186,10 +187,18 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                 tournament_player_map.update(tournament.get('players',{}))
                 if 'aesop' in tournament['url']:
                     software = 'aesop'
-                    t = AesopsTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map,abr_id=tournament_abr_id)
+                    tournament_format = 'SSS'
+                    t = AesopsTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map,abr_id=tournament_abr_id, format=tournament_format)
                 else:
                     software = 'cobra'
-                    t = CobraTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map, abr_id=tournament_abr_id)
+                    # determine SSS or DSS by checking if the first player on the first table of the first round has a role (runner/corp)
+                    # (I sort of wish there was a cleaner way of checking if a cobra tournament was SSS or DSS)
+                    if 'role' in tournament_json['rounds'][0][0]['player1']:
+                        tournament_format = 'SSS'
+                        t = CobraSSSTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map, abr_id=tournament_abr_id, format=tournament_format)
+                    else:
+                        tournament_format = 'DSS'
+                        t = CobraDSSTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map, abr_id=tournament_abr_id, format=tournament_format)
                 tournament_number = tournament['url'].rsplit('/', 1)[-1]
                 tournament_id = software + '-' + tournament_number
             
