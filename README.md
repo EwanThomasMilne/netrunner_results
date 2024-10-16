@@ -45,17 +45,17 @@ defaults to `tournaments.yml`, but you can specify a different file if you just 
 
 ```yaml
 ---
-meta:
-  24.03:
-    - url: https://www.aesopstables.net/440
-      online: True
-  24.05:
-    - name: "EMEA"
-      url: "https://tournaments.nullsignal.games/tournaments/3466"
-      region: EMEA
-    - name: "ACC"
-      url: "https://www.aesopstables.net/475"
-      online: True
-      date: 2024-06-01
-      region: America
+- url: https://www.aesopstables.net/440
+  online: True
+  meta: 24.03
+- name: "EMEA"
+  url: "https://tournaments.nullsignal.games/tournaments/3466"
+  region: EMEA
+  meta: 24.05
+- name: "ACC"
+  url: "https://www.aesopstables.net/475"
+  online: True
+  date: 2024-06-01
+  region: America
+  meta: 24.05
 ```
