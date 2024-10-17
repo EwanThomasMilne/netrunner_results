@@ -187,7 +187,10 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                 print('could not determine meta (SKIPPING)')
                 continue
             tournament_meta = meta.replace('Standard Ban List ','').replace('Standard Banlist ','').replace('Standard MWL ','MWL-').replace('NAPD MWL ','MWL-')
-            tournament_format = tournament.get('format', tournament_abr.get('format','standard')) 
+            tournament_format = tournament.get('format', tournament_abr.get('format','standard'))
+            if tournament_format != 'standard':
+                print('tournament format is: '+tournament_format+' (SKIPPING)')
+                continue
             tournament_level = tournament.get('level', tournament_abr.get('type',None))
             tournament_location = tournament.get('location',tournament_abr.get('location',None))
             # build a mapping of registration names to nrdb ids if possible
