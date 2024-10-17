@@ -187,7 +187,6 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                 print('could not determine meta (SKIPPING)')
                 continue
             tournament_meta = meta.replace('Standard Ban List ','').replace('Standard Banlist ','').replace('Standard MWL ','MWL-').replace('NAPD MWL ','MWL-')
-            print(tournament_meta)
             tournament_format = tournament.get('format', tournament_abr.get('format','standard')) 
             tournament_level = tournament.get('level', tournament_abr.get('type',None))
             tournament_location = tournament.get('location',tournament_abr.get('location',None))
