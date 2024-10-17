@@ -135,8 +135,14 @@ def write_player_json_to_file(player: Player, filepath: Path):
         json.dump(json_data,json_file)
 
 parser = argparse.ArgumentParser(description='get netrunner results from cobra, aesops and abr')
-parser.add_argument('--cache-refresh', action=argparse.BooleanOptionalAction, help='force a refresh of all API retrieved JSON')
+parser.add_argument('--cache-refresh', action=argparse.BooleanOptionalAction, help='force a refresh of all API retrieved JSON (defaults to FALSE)')
 parser.set_defaults(cache_refresh=False)
+parser.add_argument('--standings-csv', action=argparse.BooleanOptionalAction, help='create standings csv files (defaults to TRUE)')
+parser.set_defaults(standings_csv=True)
+parser.add_argument('--results-csv', action=argparse.BooleanOptionalAction, help='create results csv files (defaults to TRUE)')
+parser.set_defaults(results_csv=True)
+parser.add_argument('--update-player-json', action=argparse.BooleanOptionalAction, help='update player JSON data (defaults to TRUE)')
+parser.set_defaults(update_player_json=True)
 parser.add_argument('--tournaments-file', type=str, default='tournaments.yml', help='list of tournaments to get results for (defaults to tournaments.yml)')
 args=parser.parse_args()
 
@@ -169,7 +175,7 @@ with open(args.tournaments_file, 'r') as tournaments_file:
             tournament_name = tournament.get('name',tournament_json['name'])
             tournament_date = tournament.get('date',datetime.date.fromisoformat(tournament_json['date']))
             tournament_size = len(tournament_json['players'])
-            print('['+tournament_date+'] ' +tournament_name+ ' [' +tournament['url']+ ']' )
+            print('['+str(tournament_date)+'] ' +tournament_name+ ' [' +tournament['url']+ ']' )
             # try and get some details from abr
             tournament_abr = find_abr_tournament(date=tournament_date, name=tournament_name, size=tournament_size,force=args.cache_refresh)
             tournament_abr_id = tournament.get('abr_id', tournament_abr.get('id',None))
@@ -180,7 +186,8 @@ with open(args.tournaments_file, 'r') as tournaments_file:
             if not meta:
                 print('could not determine meta (SKIPPING)')
                 continue
-            tournament_meta = meta.replace('Standard Ban List ',).replace('Standard Banlist ').replace('Standard MWL ','MWL-').replace('NAPD MWL ','MWL-')
+            tournament_meta = meta.replace('Standard Ban List ','').replace('Standard Banlist ','').replace('Standard MWL ','MWL-').replace('NAPD MWL ','MWL-')
+            print(tournament_meta)
             tournament_format = tournament.get('format', tournament_abr.get('format','standard')) 
             tournament_level = tournament.get('level', tournament_abr.get('type',None))
             tournament_location = tournament.get('location',tournament_abr.get('location',None))
@@ -208,11 +215,14 @@ with open(args.tournaments_file, 'r') as tournaments_file:
             tournament_id = software + '-' + tournament_number
         
         # standings
-        standings_filepath = Path(standings_dir + str(t.date) + '.' + tournament_id + '.standings.csv')
-        write_standings_to_csv(standings=t.standings, standings_filepath=standings_filepath)
+        if args.standings_csv:
+            standings_filepath = Path(standings_dir + str(t.date) + '.' + tournament_id + '.standings.csv')
+            write_standings_to_csv(standings=t.standings, standings_filepath=standings_filepath)
         
-        results_filepath = Path(results_dir + str(t.date) + '.' + tournament_id + '.results.csv')
-        write_tournament_results_to_csv(t, results_filepath)
+        # results
+        if args.results_csv:
+            results_filepath = Path(results_dir + str(t.date) + '.' + tournament_id + '.results.csv')
+            write_tournament_results_to_csv(t, results_filepath)
         
         # players
         for id,t_player in t.players.items():
@@ -226,5 +236,6 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                 if t_player.cut_rank:
                     print("nrdb_id not found for "+t_player.name+" ["+str(t_player.cut_rank)+"]")
 
-    for id,player in players.items():
-        write_player_json_to_file(player=player, filepath=Path('OUTPUT/players/' + str(id) + '.json'))
+    if args.update_player_json:
+        for id,player in players.items():
+            write_player_json_to_file(player=player, filepath=Path('OUTPUT/players/' + str(id) + '.json'))
