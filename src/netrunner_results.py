@@ -99,11 +99,11 @@ def write_standings_to_csv(standings: list, standings_filepath: Path):
         row.insert(2,t.region)
         row.insert(3,t.location)
         row.insert(4,tournament_id)
-        row.insert(5,t.format)
+        row.insert(5,t.style)
         row.insert(6,t.name)
     with standings_filepath.open(mode='w',newline='') as sf:
         sw = csv.writer(sf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-        standings_header = ['date','meta','region','location','tournament_id','format','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
+        standings_header = ['date','meta','region','location','tournament_id','style','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
         sw.writerow(standings_header)
         sw.writerows(standings)
 
@@ -112,10 +112,10 @@ def write_tournament_results_to_csv(t: Tournament, results_filepath: Path):
     results_filepath.parent.mkdir(exist_ok=True, parents=True)
     with results_filepath.open(mode='w',newline='') as rf:
         rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-        results_header = [ 'date','meta','region','location','tournament_id','format','tournament','phase','round','table','corp_player','corp_id','corp_faction','result','runner_player','runner_id','runner_faction']
+        results_header = [ 'date','meta','region','location','tournament_id','style','tournament','phase','round','table','corp_player','corp_id','corp_faction','result','runner_player','runner_id','runner_faction']
         rw.writerow(results_header)
         for r in t.results:
-            row = [ t.date, t.meta, t.region, t.location, tournament_id, t.format, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['corp_faction'],r['result'], r['runner_player'], r['runner_id'], r['runner_faction'] ]
+            row = [ t.date, t.meta, t.region, t.location, tournament_id, t.style, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['corp_faction'],r['result'], r['runner_player'], r['runner_id'], r['runner_faction'] ]
             rw.writerow(row)
 
 def load_player_json_from_file(player_dir: str, nrdb_id: int) -> Player:
@@ -169,13 +169,19 @@ with open(args.tournaments_file, 'r') as tournaments_file:
             tournament_name = tournament.get('name',tournament_json['name'])
             tournament_date = tournament.get('date',datetime.date.fromisoformat(tournament_json['date']))
             tournament_size = len(tournament_json['players'])
-            tournament_meta = tournament.get('meta',None)
-            print('['+tournament_meta+'] ' + tournament_name + ' [' + tournament['url'] + ']' )
+            print('['+tournament_date+'] ' +tournament_name+ ' [' +tournament['url']+ ']' )
             # try and get some details from abr
             tournament_abr = find_abr_tournament(date=tournament_date, name=tournament_name, size=tournament_size,force=args.cache_refresh)
             tournament_abr_id = tournament.get('abr_id', tournament_abr.get('id',None))
             if not tournament_abr_id:
                 print("could not find tournament in abr (consider adding the abr_id to tournaments.yml)")
+            # if meta is not defined in tournaments.yml, and we can't find the abr page for this tournament, then skip this tournament
+            meta = tournament.get('meta', tournament_abr.get('mwl',None))
+            if not meta:
+                print('could not determine meta (SKIPPING)')
+                continue
+            tournament_meta = meta.replace('Standard Ban List ',).replace('Standard Banlist ').replace('Standard MWL ','MWL-').replace('NAPD MWL ','MWL-')
+            tournament_format = tournament.get('format', tournament_abr.get('format','standard')) 
             tournament_level = tournament.get('level', tournament_abr.get('type',None))
             tournament_location = tournament.get('location',tournament_abr.get('location',None))
             # build a mapping of registration names to nrdb ids if possible
@@ -186,18 +192,18 @@ with open(args.tournaments_file, 'r') as tournaments_file:
             tournament_player_map.update(tournament.get('players',{}))
             if 'aesop' in tournament['url']:
                 software = 'aesop'
-                tournament_format = 'SSS'
-                t = AesopsTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map,abr_id=tournament_abr_id, format=tournament_format, meta=tournament_meta)
+                tournament_style = 'SSS'
+                t = AesopsTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map,abr_id=tournament_abr_id, style=tournament_style, meta=tournament_meta)
             else:
                 software = 'cobra'
                 # determine SSS or DSS by checking if the first player on the first table of the first round has a role (runner/corp)
                 # (I sort of wish there was a cleaner way of checking if a cobra tournament was SSS or DSS)
                 if 'role' in tournament_json['rounds'][0][0]['player1']:
-                    tournament_format = 'SSS'
-                    t = CobraSSSTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map, abr_id=tournament_abr_id, format=tournament_format, meta=tournament_meta)
+                    tournament_style = 'SSS'
+                    t = CobraSSSTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map, abr_id=tournament_abr_id, style=tournament_style, meta=tournament_meta)
                 else:
-                    tournament_format = 'DSS'
-                    t = CobraDSSTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map, abr_id=tournament_abr_id, format=tournament_format, meta=tournament_meta)
+                    tournament_style = 'DSS'
+                    t = CobraDSSTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map, abr_id=tournament_abr_id, style=tournament_style, meta=tournament_meta)
             tournament_number = tournament['url'].rsplit('/', 1)[-1]
             tournament_id = software + '-' + tournament_number
         
