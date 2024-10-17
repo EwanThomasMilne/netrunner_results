@@ -41,6 +41,8 @@ defaults to `tournaments.yml`, but you can specify a different file if you just 
 |players|*optional*|dict|a dictionary of player to nrdb_id mappings for the tournament||
 |abr_id|*optional*|int|the abr_id of the tournament||
 |level|*optional*|string|worlds championship, continental championship, etc||
+|meta|*optional*|string|banlist identifier||
+|format|*optional*|string|standard, startup, cache refresh, etc|standard|
 
 
 ```yaml
