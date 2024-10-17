@@ -229,6 +229,9 @@
 'Quetzal: Free Spirit':
   faction: Anarch
   short_name: Quetzal
+'Khan: Savvy Skiptracer':
+  faction: Criminal
+  short_name: Khan
 'Silhouette: Stealth Operative':
   faction: Criminal
   short_name: Silhouette
