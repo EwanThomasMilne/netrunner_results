@@ -207,11 +207,16 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                 software = 'cobra'
                 # determine SSS or DSS by checking if the first player on the first table of the first round has a role (runner/corp)
                 # (I sort of wish there was a cleaner way of checking if a cobra tournament was SSS or DSS)
-                if 'role' in tournament_json['rounds'][0][0]['player1']:
+                if tournament['style']:
+                    tournament_style = tournament['style']
+                elif 'role' in tournament_json['rounds'][0][0]['player1']:
                     tournament_style = 'SSS'
-                    t = CobraSSSTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map, abr_id=tournament_abr_id, style=tournament_style, meta=tournament_meta)
                 else:
                     tournament_style = 'DSS'
+                    
+                if tournament_style == 'SSS':
+                    t = CobraSSSTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map, abr_id=tournament_abr_id, style=tournament_style, meta=tournament_meta)
+                else:
                     t = CobraDSSTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map, abr_id=tournament_abr_id, style=tournament_style, meta=tournament_meta)
             tournament_number = tournament['url'].rsplit('/', 1)[-1]
             tournament_id = software + '-' + tournament_number
