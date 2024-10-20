@@ -2655,7 +2655,10 @@
     "aliases": [
       "Tamijo"
     ],
-    "nrdb_name": "Tamijo"
+    "nrdb_name": "Tamijo",
+    "teams": [
+      "QtM"
+    ]
   },
   "30031": {
     "aliases": [
@@ -7843,7 +7846,10 @@
     "nrdb_name": "FreeRice"
   },
   "33289": {
-    "nrdb_name": "GermApple"
+    "nrdb_name": "GermApple",
+    "teams": [
+      "QtM"
+    ]
   },
   "10689": {
     "nrdb_name": "nixxus"
