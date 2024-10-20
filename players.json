@@ -976,7 +976,10 @@
     "aliases": [
       "tzeentchling"
     ],
-    "nrdb_name": "tzeentchling"
+    "nrdb_name": "tzeentchling",
+    "teams": [
+      "unnamed west coast testing group"
+    ]
   },
   "8717": {
     "aliases": [
@@ -4132,7 +4135,10 @@
     "aliases": [
       "Nykride"
     ],
-    "nrdb_name": "Nykride"
+    "nrdb_name": "Nykride",
+    "teams": [
+      "unnamed west coast testing group"
+    ]
   },
   "40515": {
     "aliases": [
@@ -4785,7 +4791,10 @@
     "aliases": [
       "Tak"
     ],
-    "nrdb_name": "Tak"
+    "nrdb_name": "Tak",
+    "teams": [
+      "unnamed west coast testing team"
+    ]
   },
   "43033": {
     "aliases": [
