@@ -978,7 +978,16 @@
     ],
     "nrdb_name": "tzeentchling",
     "teams": [
-      "unnamed west coast testing group"
+      "Logic Bomb"
+    ]
+  },
+  "220": {
+    "aliases": [
+      "Timmy Wong"
+    ],
+    "nrdb_name": "tmoiynmwg",
+    "teams": [
+      "Logic Bomb"
     ]
   },
   "8717": {
@@ -2511,7 +2520,10 @@
       "Aruzan",
       "Alex Boyd"
     ],
-    "nrdb_name": "aruzan"
+    "nrdb_name": "aruzan",
+    "teams": [
+      "House Hippos"
+    ]
   },
   "28308": {
     "nrdb_name": "Dan (grombatmole)"
@@ -4137,7 +4149,7 @@
     ],
     "nrdb_name": "Nykride",
     "teams": [
-      "unnamed west coast testing group"
+      "Logic Bomb"
     ]
   },
   "40515": {
@@ -4793,7 +4805,7 @@
     ],
     "nrdb_name": "Tak",
     "teams": [
-      "unnamed west coast testing team"
+      "Logic Bomb"
     ]
   },
   "43033": {
