@@ -12,7 +12,13 @@
     "nrdb_name": "tberton"
   },
   "220": {
-    "nrdb_name": "Timmy"
+    "aliases": [
+      "Timmy Wong"
+    ],
+    "nrdb_name": "tmoiynmwg",
+    "teams": [
+      "Logic Bomb"
+    ]
   },
   "281": {
     "aliases": [
@@ -977,15 +983,6 @@
       "tzeentchling"
     ],
     "nrdb_name": "tzeentchling",
-    "teams": [
-      "Logic Bomb"
-    ]
-  },
-  "220": {
-    "aliases": [
-      "Timmy Wong"
-    ],
-    "nrdb_name": "tmoiynmwg",
     "teams": [
       "Logic Bomb"
     ]
@@ -8273,5 +8270,8 @@
   },
   "44691": {
     "nrdb_name": "TeaLeaf15"
+  },
+  "42093": {
+    "nrdb_name": "Chem_Collapse"
   }
 }
