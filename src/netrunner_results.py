@@ -207,7 +207,7 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                 software = 'cobra'
                 # determine SSS or DSS by checking if the first player on the first table of the first round has a role (runner/corp)
                 # (I sort of wish there was a cleaner way of checking if a cobra tournament was SSS or DSS)
-                if tournament['style']:
+                if 'style' in tournament:
                     tournament_style = tournament['style']
                 elif 'role' in tournament_json['rounds'][0][0]['player1']:
                     tournament_style = 'SSS'
