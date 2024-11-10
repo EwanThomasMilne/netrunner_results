@@ -429,3 +429,15 @@
 - abr_id: 4320
   meta: '24.09'
   url: https://www.aesopstables.net/1347
+- abr_id: 4331
+  url: https://www.aesopstables.net/2042
+  date: 2024-10-19
+  meta: '24.09'
+  level: worlds championship
+- abr_id: 4459
+  meta: '24.09'
+  url: https://tournaments.nullsignal.games/tournaments/3613
+  region: EMEA
+- abr_id: 4521
+  meta: '24.09'
+  url: https://www.aesopstables.net/2403
