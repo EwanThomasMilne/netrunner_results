@@ -1594,7 +1594,10 @@
     ]
   },
   "15179": {
-    "nrdb_name": "simili"
+    "nrdb_name": "simili",
+    "teams": [
+      "NWE"
+    ]
   },
   "15281": {
     "aliases": [
@@ -4550,7 +4553,10 @@
     "aliases": [
       "Tanzzen"
     ],
-    "nrdb_name": "Tanzzen"
+    "nrdb_name": "Tanzzen",
+    "teams": [
+      "EA Sports"
+    ]
   },
   "41955": {
     "aliases": [
@@ -5974,7 +5980,10 @@
     "aliases": [
       "ChonkySeal"
     ],
-    "nrdb_name": "ChonkySeal"
+    "nrdb_name": "ChonkySeal",
+    "teams": [
+      "SCRUBS"
+    ]
   },
   "45857": {
     "aliases": [
