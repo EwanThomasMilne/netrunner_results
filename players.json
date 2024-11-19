@@ -342,6 +342,9 @@
     "nrdb_name": "thearete"
   },
   "3182": {
+    "teams": [
+      "SCG"
+    ],
     "nrdb_name": "saurian"
   },
   "3266": {
@@ -1955,6 +1958,9 @@
       "znsolomon",
       "King Solomon"
     ],
+    "teams": [
+      "QEH"
+    ],
     "nrdb_name": "znsolomon"
   },
   "20247": {
@@ -3173,6 +3179,9 @@
   "34662": {
     "aliases": [
       "lif3line"
+    ],
+    "teams": [
+      "SCG"
     ],
     "nrdb_name": "lif3line"
   },
@@ -5233,6 +5242,9 @@
     "nrdb_name": "moleor74"
   },
   "44465": {
+    "teams": [
+      "SCG"
+    ],
     "nrdb_name": "Palmtree"
   },
   "44471": {
