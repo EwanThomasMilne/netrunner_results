@@ -5101,13 +5101,19 @@
     "aliases": [
       "MrVellis"
     ],
-    "nrdb_name": "MrVellis"
+    "nrdb_name": "MrVellis",
+    "teams": [
+      "SCRUBS"
+    ]
   },
   "44071": {
     "aliases": [
       "snoobz"
     ],
-    "nrdb_name": "snoobz"
+    "nrdb_name": "snoobz",
+    "teams": [
+      "SCRUBS"
+    ]
   },
   "44099": {
     "aliases": [
@@ -6361,7 +6367,10 @@
     "aliases": [
       "nervousnightjar"
     ],
-    "nrdb_name": "nervousnightjar"
+    "nrdb_name": "nervousnightjar",
+    "teams": [
+      "EA Sports"
+    ]
   },
   "46495": {
     "aliases": [
@@ -6397,7 +6406,10 @@
     "nrdb_name": "blueberrydetect"
   },
   "46592": {
-    "nrdb_name": "Baserton"
+    "nrdb_name": "Baserton",
+    "teams": [
+      "SCRUBS"
+    ]
   },
   "46594": {
     "aliases": [
@@ -7732,7 +7744,10 @@
     "nrdb_name": "Seabeast"
   },
   "41539": {
-    "nrdb_name": "Cornelius"
+    "nrdb_name": "Cornelius",
+    "teams": [
+      "EA Sports"
+    ]
   },
   "48581": {
     "nrdb_name": "LesserScarlet"
