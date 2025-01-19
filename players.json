@@ -528,7 +528,8 @@
   },
   "4886": {
     "aliases": [
-      "bblum"
+      "bblum",
+      "benvelopment"
     ],
     "nrdb_name": "bblum"
   },
@@ -8327,5 +8328,35 @@
   },
   "10377": {
     "nrdb_name": "iherdn3rfz"
+  },
+  "48051": {
+    "nrdb_name": "Sl33p3r"
+  },
+  "49077": {
+    "nrdb_name": "Buachu"
+  },
+  "46013": {
+    "nrdb_name": "rwg_15"
+  },
+  "49350": {
+    "nrdb_name": "uberlegen"
+  },
+  "49615": {
+    "nrdb_name": "hidodey"
+  },
+  "49479": {
+    "nrdb_name": "diogenes"
+  },
+  "17321": {
+    "nrdb_name": "lunari"
+  },
+  "49403": {
+    "nrdb_name": "metrixgo"
+  },
+  "43563": {
+    "nrdb_name": "Sumpurnis"
+  },
+  "41905": {
+    "nrdb_name": "imjorman"
   }
 }
