@@ -531,7 +531,10 @@
       "bblum",
       "benvelopment"
     ],
-    "nrdb_name": "bblum"
+    "nrdb_name": "bblum",
+    "teams": [
+      "Steel City Grid"
+    ]
   },
   "4916": {
     "aliases": [
