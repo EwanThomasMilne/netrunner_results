@@ -231,7 +231,7 @@
   url: https://www.aesopstables.net/361
 - location: online
   meta: '23.09'
-  url: https://tournaments.nullsignal.games/tournaments/3207
+  url: https://www.aesopstables.net/214
 - location: online
   meta: '24.03'
   url: https://www.aesopstables.net/368
@@ -429,3 +429,43 @@
 - abr_id: 4320
   meta: '24.09'
   url: https://www.aesopstables.net/1347
+- abr_id: 4331
+  url: https://www.aesopstables.net/2042
+  date: 2024-10-19
+  meta: '24.09'
+  level: worlds championship
+- abr_id: 4459
+  meta: '24.09'
+  url: https://tournaments.nullsignal.games/tournaments/3613
+  region: EMEA
+- abr_id: 4521
+  meta: '24.09'
+  url: https://www.aesopstables.net/2403
+- name: 'UK Nationals 2024'
+  abr_id: '4402'
+  meta: '24.09'
+  url: https://tournaments.nullsignal.games/tournaments/3636
+- name: 'New Years Showdown'
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3697
+  abr_id: '4541'
+- name: 'CBI - APAC Pod'
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3733
+  date: 2025-01-18
+  location: online
+  level: CBI
+- name: 'CBI - Americas Pod'
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3734
+  date: 2025-01-18
+  location: online
+  level: CBI
+  players:
+    dranked: 40924
+- name: 'CBI - EMEA Pod'
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3736
+  date: 2025-01-19
+  location: online
+  level: CBI

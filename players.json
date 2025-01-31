@@ -342,6 +342,9 @@
     "nrdb_name": "thearete"
   },
   "3182": {
+    "teams": [
+      "SCG"
+    ],
     "nrdb_name": "saurian"
   },
   "3266": {
@@ -525,9 +528,13 @@
   },
   "4886": {
     "aliases": [
-      "bblum"
+      "bblum",
+      "benvelopment"
     ],
-    "nrdb_name": "bblum"
+    "nrdb_name": "bblum",
+    "teams": [
+      "Steel City Grid"
+    ]
   },
   "4916": {
     "aliases": [
@@ -1594,7 +1601,10 @@
     ]
   },
   "15179": {
-    "nrdb_name": "simili"
+    "nrdb_name": "simili",
+    "teams": [
+      "NWE"
+    ]
   },
   "15281": {
     "aliases": [
@@ -1951,6 +1961,9 @@
     "aliases": [
       "znsolomon",
       "King Solomon"
+    ],
+    "teams": [
+      "QEH"
     ],
     "nrdb_name": "znsolomon"
   },
@@ -3170,6 +3183,9 @@
   "34662": {
     "aliases": [
       "lif3line"
+    ],
+    "teams": [
+      "SCG"
     ],
     "nrdb_name": "lif3line"
   },
@@ -4550,7 +4566,10 @@
     "aliases": [
       "Tanzzen"
     ],
-    "nrdb_name": "Tanzzen"
+    "nrdb_name": "Tanzzen",
+    "teams": [
+      "EA Sports"
+    ]
   },
   "41955": {
     "aliases": [
@@ -5101,13 +5120,19 @@
     "aliases": [
       "MrVellis"
     ],
-    "nrdb_name": "MrVellis"
+    "nrdb_name": "MrVellis",
+    "teams": [
+      "SCRUBS"
+    ]
   },
   "44071": {
     "aliases": [
       "snoobz"
     ],
-    "nrdb_name": "snoobz"
+    "nrdb_name": "snoobz",
+    "teams": [
+      "SCRUBS"
+    ]
   },
   "44099": {
     "aliases": [
@@ -5221,6 +5246,9 @@
     "nrdb_name": "moleor74"
   },
   "44465": {
+    "teams": [
+      "SCG"
+    ],
     "nrdb_name": "Palmtree"
   },
   "44471": {
@@ -5968,7 +5996,10 @@
     "aliases": [
       "ChonkySeal"
     ],
-    "nrdb_name": "ChonkySeal"
+    "nrdb_name": "ChonkySeal",
+    "teams": [
+      "SCRUBS"
+    ]
   },
   "45857": {
     "aliases": [
@@ -6361,7 +6392,10 @@
     "aliases": [
       "nervousnightjar"
     ],
-    "nrdb_name": "nervousnightjar"
+    "nrdb_name": "nervousnightjar",
+    "teams": [
+      "EA Sports"
+    ]
   },
   "46495": {
     "aliases": [
@@ -6397,7 +6431,10 @@
     "nrdb_name": "blueberrydetect"
   },
   "46592": {
-    "nrdb_name": "Baserton"
+    "nrdb_name": "Baserton",
+    "teams": [
+      "SCRUBS"
+    ]
   },
   "46594": {
     "aliases": [
@@ -7153,7 +7190,13 @@
     "nrdb_name": "jessicamarbles"
   },
   "14942": {
-    "nrdb_name": "Theo Clifford"
+    "nrdb_name": "Dapperatchik",
+    "aliases": [
+      "Theo Clifford"
+    ],
+    "teams": [
+      "The Process"
+    ]
   },
   "36281": {
     "nrdb_name": "nimzowitsch"
@@ -7726,7 +7769,10 @@
     "nrdb_name": "Seabeast"
   },
   "41539": {
-    "nrdb_name": "Cornelius"
+    "nrdb_name": "Cornelius",
+    "teams": [
+      "EA Sports"
+    ]
   },
   "48581": {
     "nrdb_name": "LesserScarlet"
@@ -8271,7 +8317,58 @@
   "44691": {
     "nrdb_name": "TeaLeaf15"
   },
-  "42093": {
-    "nrdb_name": "Chem_Collapse"
+  "47616": {
+    "nrdb_name": "Jasper Higgins"
+  },
+  "47881": {
+    "nrdb_name": "passive_mult"
+  },
+  "1633": {
+    "nrdb_name": "chih"
+  },
+  "2487": {
+    "nrdb_name": "Myriad"
+  },
+  "10377": {
+    "nrdb_name": "iherdn3rfz"
+  },
+  "48051": {
+    "nrdb_name": "Sl33p3r"
+  },
+  "49077": {
+    "nrdb_name": "Buachu"
+  },
+  "46013": {
+    "nrdb_name": "rwg_15"
+  },
+  "49350": {
+    "nrdb_name": "uberlegen"
+  },
+  "49615": {
+    "nrdb_name": "hidodey"
+  },
+  "49479": {
+    "nrdb_name": "diogenes"
+  },
+  "17321": {
+    "nrdb_name": "lunari"
+  },
+  "49403": {
+    "nrdb_name": "metrixgo"
+  },
+  "43563": {
+    "nrdb_name": "Sumpurnis"
+  },
+  "41905": {
+    "nrdb_name": "imjorman"
+  },
+  "45883": {
+    "nrdb_name": "VirtualAnalogue",
+    "aliases": [
+      "pouchoflavendar"
+    ],
+    "teams": [
+      "ESA"
+    ]
   }
 }
