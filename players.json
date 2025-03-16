@@ -6044,10 +6044,13 @@
     "nrdb_name": "Sultan Of Spin"
   },
   "45883": {
+    "nrdb_name": "VirtualAnalogue",
     "aliases": [
-      "VirtualAnalogue"
+      "pouchoflavendar"
     ],
-    "nrdb_name": "VirtualAnalogue"
+    "teams": [
+      "ESA"
+    ]
   },
   "45886": {
     "aliases": [
@@ -8362,13 +8365,16 @@
   "41905": {
     "nrdb_name": "imjorman"
   },
-  "45883": {
-    "nrdb_name": "VirtualAnalogue",
-    "aliases": [
-      "pouchoflavendar"
-    ],
-    "teams": [
-      "ESA"
-    ]
+  "47610": {
+    "nrdb_name": "eden_online"
+  },
+  "50065": {
+    "nrdb_name": "froo"
+  },
+  "1032": {
+    "nrdb_name": "TheRyanBurke"
+  },
+  "49633": {
+    "nrdb_name": "c4554ndr4"
   }
 }
