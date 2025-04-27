@@ -1960,7 +1960,8 @@
   "20238": {
     "aliases": [
       "znsolomon",
-      "King Solomon"
+      "King Solomon",
+      "KingSolomon"
     ],
     "teams": [
       "QEH"
@@ -4046,7 +4047,11 @@
     "aliases": [
       "l0velace"
     ],
-    "nrdb_name": "l0velace"
+    "nrdb_name": "l0velace",
+    "teams": [
+      "QEH",
+      "QtM"
+    ]
   },
   "39974": {
     "aliases": [
@@ -4366,7 +4371,8 @@
   "41362": {
     "aliases": [
       "j0nald",
-      "J0N4LD"
+      "J0N4LD",
+      "Jon4ld"
     ],
     "nrdb_name": "J0N4LD",
     "teams": [
@@ -4440,7 +4446,10 @@
     "aliases": [
       "Cobalt"
     ],
-    "nrdb_name": "Cobalt"
+    "nrdb_name": "Cobalt",
+    "teams": [
+      "QtM"
+    ]
   },
   "41544": {
     "aliases": [
@@ -8376,5 +8385,116 @@
   },
   "49633": {
     "nrdb_name": "c4554ndr4"
+  },
+  "51280": {
+    "nrdb_name": "Barbagianni"
+  },
+  "49697": {
+    "nrdb_name": "ZelteHonor"
+  },
+  "49440": {
+    "nrdb_name": "asakyun"
+  },
+  "42999": {
+    "nrdb_name": "CatWithAn@"
+  },
+  "44901": {
+    "nrdb_name": "morganfay"
+  },
+  "49779": {
+    "nrdb_name": "tjaketheman"
+  },
+  "49256": {
+    "nrdb_name": "Ketzol"
+  },
+  "44792": {
+    "nrdb_name": "Dull_Bulb"
+  },
+  "47333": {
+    "nrdb_name": "Meathir"
+  },
+  "38377": {
+    "nrdb_name": "mezzie"
+  },
+  "44025": {
+    "nrdb_name": "JessieBee"
+  },
+  "46414": {
+    "nrdb_name": "Pricey"
+  },
+  "3455": {
+    "nrdb_name": "bdorf"
+  },
+  "18128": {
+    "nrdb_name": "Zieg"
+  },
+  "51184": {
+    "nrdb_name": "tom3k"
+  },
+  "40097": {
+    "nrdb_name": "Vallarr"
+  },
+  "14996": {
+    "nrdb_name": "PowerlessCube"
+  },
+  "8604": {
+    "nrdb_name": "CyberShark"
+  },
+  "24940": {
+    "nrdb_name": "MShiggy"
+  },
+  "50762": {
+    "nrdb_name": "ChaoticSilo"
+  },
+  "50345": {
+    "nrdb_name": "i am the gull"
+  },
+  "6484": {
+    "nrdb_name": "OdsyWrenn"
+  },
+  "41110": {
+    "nrdb_name": "lintyjosh"
+  },
+  "24308": {
+    "nrdb_name": "Spookie"
+  },
+  "12816": {
+    "nrdb_name": "Dracon_ian"
+  },
+  "48713": {
+    "nrdb_name": "Kann"
+  },
+  "51422": {
+    "nrdb_name": "laxellis"
+  },
+  "49267": {
+    "nrdb_name": "Quarkinator"
+  },
+  "47481": {
+    "nrdb_name": "allieflx"
+  },
+  "49436": {
+    "nrdb_name": "BucketHatBen"
+  },
+  "49523": {
+    "nrdb_name": "anotherbruce"
+  },
+  "48699": {
+    "nrdb_name": "floatingFast"
+  },
+  "49932": {
+    "nrdb_name": "arandall"
+  },
+  "45756": {
+    "nrdb_name": "fernanae"
+  },
+  "51328": {
+    "nrdb_name": "Exojay"
+  },
+  "50049": {
+    "nrdb_name": "Wynaut"
+  },
+  "35431": {
+    "nrdb_name": "The Observer"
   }
 }
