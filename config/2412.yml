@@ -1,0 +1,108 @@
+- name: 'CBI - APAC Pod'
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3733
+  date: 2025-01-18
+  location: online
+  level: CBI
+- name: 'CBI - Americas Pod'
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3734
+  date: 2025-01-18
+  location: online
+  level: CBI
+  players:
+    dranked: 40924
+- name: 'CBI - EMEA Pod'
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3736
+  date: 2025-01-19
+  location: online
+  level: CBI
+- meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3770
+- meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3768
+  location: online
+- meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3789
+- meta: '24.12'
+  url: https://www.aesopstables.net/4086
+- meta: '24.12'
+  name: 'EMEA Online District'
+  location: online
+  url: https://tournaments.nullsignal.games/tournaments/3800
+  region: EMEA
+- meta: '24.12'
+  name: 'Austin District'
+  url: https://www.aesopstables.net/4350
+  region: Americas
+- meta: '24.12'
+  name: 'Reading District'
+  url: https://www.aesopstables.net/4383
+  region: EMEA
+- meta: '24.12'
+  name: 'Northern California District'
+  region: Americas
+  url: https://tournaments.nullsignal.games/tournaments/3818
+- meta: '24.12'
+  name: 'Warsaw District'
+  region: EMEA
+  url: https://tournaments.nullsignal.games/tournaments/3823
+- meta: '24.12'
+  name: 'Pittsburgh District'
+  region: Americas
+  url: https://tournaments.nullsignal.games/tournaments/3732
+- meta: '24.12'
+  name: 'Geelong District'
+  url: https://www.aesopstables.net/4152
+  region: APAC
+- meta: '24.12'
+  name: 'Boulder District'
+  url: https://www.aesopstables.net/4120
+  region: Americas
+- meta: '24.12'
+  name: 'Milano District'
+  url: https://www.aesopstables.net/4482
+  region: EMEA
+- meta: '24.12'
+  name: 'Notts District'
+  url: https://tournaments.nullsignal.games/tournaments/3830
+  region: EMEA
+- meta: '24.12'
+  name: 'Americas Online District'
+  url: https://tournaments.nullsignal.games/tournaments/3829
+  region: Americas
+  location: Online
+- name: "Sheffield District"
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3834
+  region: EMEA
+- name: "Toulouse District"
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3836
+  region: EMEA
+- name: "Seattle District"
+  meta: '24.12'
+  url: https://www.aesopstables.net/4946
+  region: Americas
+- name: "APAC Online District"
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3857
+  region: APAC
+  location: online
+- name: "East Anglian District"
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3875
+  region: EMEA
+- name: "NYC District"
+  meta: '24.12'
+  url: https://www.aesopstables.net/5076
+  region: Americas
+- name: "Birkenhead District"
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3893
+  region: EMEA
+- name: "Torino District"
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3867
+  region: EMEA

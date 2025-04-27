@@ -1,0 +1,234 @@
+- date: 2016-11-03
+  level: worlds championship
+  meta: FFG
+  url: https://alwaysberunning.net/tournaments/19/world-championship-2016
+- date: 2017-11-04
+  level: worlds championship
+  meta: FFG
+  url: https://alwaysberunning.net/tournaments/861/2017-worlds-championship
+- date: 2018-09-07
+  level: worlds championship
+  meta: FFG
+  url: https://alwaysberunning.net/tournaments/1528/magnum-opus-worlds-2018
+- date: 2019-10-04
+  level: worlds championship
+  meta: MWL-3.4
+  url: https://alwaysberunning.net/tournaments/2242/world-championship-2019
+- abr_id: 2809
+  level: continental championship
+  location: online
+  meta: '20.06'
+  region: APAC
+  url: https://tournaments.nullsignal.games/tournaments/1807
+- abr_id: 2810
+  date: 2020-07-25
+  level: continental championship
+  location: online
+  meta: '20.06'
+  region: EMEA
+  url: https://alwaysberunning.net/tournaments/2810/nisei-europe-and-africa-continental-championship
+- abr_id: 2811
+  level: continental championship
+  location: online
+  meta: '20.06'
+  players:
+    Ysengin: 4859
+  region: America
+  url: https://tournaments.nullsignal.games/tournaments/1820
+- date: 2020-10-09
+  level: worlds championship
+  location: online
+  meta: '20.09'
+  url: https://tournaments.nullsignal.games/tournaments/1851
+- date: 2020-10-10
+  level: worlds championship
+  location: online
+  meta: '20.09'
+  url: https://tournaments.nullsignal.games/tournaments/1852
+- date: 2020-10-11
+  level: worlds championship
+  location: online
+  meta: '20.09'
+  url: https://alwaysberunning.net/tournaments/2850/nisei-world-championship-2020
+- location: online
+  meta: '21.04'
+  region: EMEA
+  url: https://tournaments.nullsignal.games/tournaments/1998
+- location: online
+  meta: '21.04'
+  region: EMEA
+  url: https://tournaments.nullsignal.games/tournaments/2009
+- location: online
+  meta: '21.05'
+  url: https://tournaments.nullsignal.games/tournaments/2038
+- location: online
+  meta: '21.06'
+  region: APAC
+  url: https://tournaments.nullsignal.games/tournaments/2118
+- abr_id: 3014
+  level: continental championship
+  location: online
+  meta: '21.06'
+  region: EMEA
+  url: https://tournaments.nullsignal.games/tournaments/2122
+- location: online
+  meta: '21.06'
+  region: America
+  url: https://tournaments.nullsignal.games/tournaments/2128
+- date: 2021-11-19
+  level: worlds championship
+  location: online
+  meta: '21.10'
+  url: https://tournaments.nullsignal.games/tournaments/2201
+- date: 2021-11-20
+  level: worlds championship
+  location: online
+  meta: '21.10'
+  url: https://tournaments.nullsignal.games/tournaments/2207
+- date: 2021-11-21
+  level: worlds championship
+  location: online
+  meta: '21.10'
+  url: https://tournaments.nullsignal.games/tournaments/2227
+- date: 2021-11-21
+  level: worlds championship
+  location: online
+  meta: '21.10'
+  url: https://alwaysberunning.net/tournaments/3082/nisei-world-championship-2021
+- location: online
+  meta: '22.08'
+  region: APAC
+  url: https://tournaments.nullsignal.games/tournaments/2497
+- location: online
+  meta: '22.08'
+  region: America
+  url: https://tournaments.nullsignal.games/tournaments/2498
+- abr_id: 3342
+  level: continental championship
+  location: online
+  meta: '22.08'
+  region: EMEA
+  url: https://tournaments.nullsignal.games/tournaments/2499
+- meta: '22.09'
+  url: https://tournaments.nullsignal.games/tournaments/2639
+- meta: '22.09'
+  players:
+    Eric: 11664
+  region: EMEA
+  url: https://tournaments.nullsignal.games/tournaments/2718
+- location: online
+  meta: '22.09'
+  url: https://tournaments.nullsignal.games/tournaments/2756
+- meta: '23.03'
+  region: America
+  url: https://www.aesopstables.net/53
+- meta: '23.03'
+  region: America
+  url: https://www.aesopstables.net/60
+- location: online
+  meta: '23.03'
+  url: https://tournaments.nullsignal.games/tournaments/3001
+- meta: '23.03'
+  region: EMEA
+  url: https://tournaments.nullsignal.games/tournaments/3012
+- location: online
+  meta: '23.03'
+  url: https://tournaments.nullsignal.games/tournaments/3054
+- location: online
+  meta: '23.03'
+  region: APAC
+  url: https://tournaments.nullsignal.games/tournaments/3080
+- meta: '23.08'
+  region: America
+  url: https://www.aesopstables.net/64
+- meta: '23.08'
+  region: America
+  url: https://www.aesopstables.net/104
+- abr_id: 3772
+  level: national championship
+  meta: '23.08'
+  region: EMEA
+  url: https://www.aesopstables.net/114
+- abr_id: 3779
+  level: continental championship
+  location: online
+  meta: '23.08'
+  region: EMEA
+  url: https://tournaments.nullsignal.games/tournaments/3102
+- meta: '23.08'
+  region: APAC
+  url: https://tournaments.nullsignal.games/tournaments/3109
+- meta: '23.08'
+  region: America
+  url: https://tournaments.nullsignal.games/tournaments/3135
+- abr_id: 3807
+  level: national championship
+  meta: '23.08'
+  region: APAC
+  url: https://tournaments.nullsignal.games/tournaments/3137
+- abr_id: 3829
+  level: national championship
+  meta: '23.08'
+  region: EMEA
+  url: https://tournaments.nullsignal.games/tournaments/3138
+- meta: '23.09'
+  region: APAC
+  url: https://www.aesopstables.net/118
+- abr_id: 3704
+  level: national championship
+  meta: '23.09'
+  region: EMEA
+  url: https://tournaments.nullsignal.games/tournaments/3132
+- meta: '23.09'
+  region: EMEA
+  url: https://tournaments.nullsignal.games/tournaments/3148
+- location: online
+  meta: '23.09'
+  url: https://tournaments.nullsignal.games/tournaments/3157
+- abr_id: 3811
+  level: worlds championship
+  meta: '23.09'
+  url: https://tournaments.nullsignal.games/tournaments/3181
+- location: online
+  meta: '23.09'
+  url: https://tournaments.nullsignal.games/tournaments/3197
+- location: online
+  meta: '23.09'
+  url: https://tournaments.nullsignal.games/tournaments/3209
+- meta: '23.09'
+  region: EMEA
+  url: https://tournaments.nullsignal.games/tournaments/3222
+- location: online
+  meta: '23.09'
+  region: APAC
+  url: https://tournaments.nullsignal.games/tournaments/3235
+- abr_id: 3926
+  level: national championship
+  meta: '23.09'
+  region: EMEA
+  url: https://tournaments.nullsignal.games/tournaments/3247
+- meta: '23.09'
+  region: America
+  url: https://tournaments.nullsignal.games/tournaments/3260
+- location: online
+  meta: '23.09'
+  url: https://tournaments.nullsignal.games/tournaments/3254
+- location: online
+  meta: '23.09'
+  url: https://www.aesopstables.net/231
+- location: online
+  meta: '23.09'
+  players:
+    The King (utati oracling): 31796
+  url: https://www.aesopstables.net/245
+- meta: '23.09'
+  region: America
+  url: https://www.aesopstables.net/360
+- location: online
+  meta: '23.09'
+  players:
+    The King (kelly): 31796
+  url: https://www.aesopstables.net/361
+- location: online
+  meta: '23.09'
+  url: https://www.aesopstables.net/214

@@ -1,0 +1,48 @@
+- meta: '24.09'
+  region: APAC
+  url: https://www.aesopstables.net/885
+- meta: '24.09'
+  region: EMEA
+  url: https://www.aesopstables.net/1117
+- meta: '24.09'
+  region: APAC
+  url: https://www.aesopstables.net/1050
+- location: online
+  meta: '24.09'
+  url: https://www.aesopstables.net/1116
+- abr_id: 4363
+  meta: '24.09'
+  players:
+    The Ghost of Kras Mazov: 28443
+  region: EMEA
+  url: https://www.aesopstables.net/1380
+- abr_id: 4364
+  location: online
+  meta: '24.09'
+  url: https://www.aesopstables.net/651
+- abr_id: 4280
+  meta: '24.09'
+  url: https://tournaments.nullsignal.games/tournaments/3553
+- abr_id: 4320
+  meta: '24.09'
+  url: https://www.aesopstables.net/1347
+- abr_id: 4331
+  url: https://www.aesopstables.net/2042
+  date: 2024-10-19
+  meta: '24.09'
+  level: worlds championship
+- abr_id: 4459
+  meta: '24.09'
+  url: https://tournaments.nullsignal.games/tournaments/3613
+  region: EMEA
+- abr_id: 4521
+  meta: '24.09'
+  url: https://www.aesopstables.net/2403
+- name: 'UK Nationals 2024'
+  abr_id: '4402'
+  meta: '24.09'
+  url: https://tournaments.nullsignal.games/tournaments/3636
+- name: 'New Years Showdown'
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3697
+  abr_id: '4541'
