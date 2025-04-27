@@ -41,8 +41,14 @@
 'GameNET: Where Dreams are Real':
   faction: NBN
   short_name: GameNET
-'NEXT Design: Guarding the Net':
+'Nebula Talent Management: Making Stars':
   faction: NBN
+  short_name: Nebula
+'Synapse Global: Faster than Thought':
+  faction: NBN
+  short_name: Synapse
+'NEXT Design: Guarding the Net':
+  faction: HB
   short_name: NEXT
 'Haas-Bioroid: Engineering the Future':
   faction: HB
@@ -77,6 +83,12 @@
 'MirrorMorph: Endless Iteration':
   faction: HB
   short_name: MirrorMorph
+'Poétrï Luxury Brands: All the Rage':
+  faction: HB
+  short_name: Poétrï
+'LEO Construction: Labor Solutions':
+  faction: HB
+  short_name: LEO
 'Jinteki: Potential Unleashed':
   faction: Jinteki
   short_name: PU
@@ -127,6 +139,12 @@
 'Saraswati Mnemonics: Endless Exploration':
   faction: Jinteki
   short_name: Saraswati
+"PT Untaian: Life's Building Blocks":
+  faction: Jinteki
+  short_name: PT
+'AU Co.: The Gold Standard in Clones':
+  faction: Jinteki
+  short_name: 'AU Co.'
 'GRNDL: Power Unleashed':
   faction: Weyland
   short_name: GRNDL
@@ -172,6 +190,12 @@
 'Jemison Astronautics: Sacrifice. Audacity. Success.':
   faction: Weyland
   short_name: Jemison
+'The Zwicky Group: Invisible Hands':
+  faction: Weyland
+  short_name: Zwicky
+'BANGUN: When Disaster Strikes':
+  faction: Weyland
+  short_name: BANGUN
 'Ampère: Cybernetics For Anyone':
   faction: 'Neutral Corp'
   short_name: 'Ampère'
@@ -229,6 +253,12 @@
 'Quetzal: Free Spirit':
   faction: Anarch
   short_name: Quetzal
+'Ryō "Phoenix" Ōno: Out of the Ashes':
+  faction: Anarch
+  short_name: Phoenix
+'Topan: Ormas Leader':
+  faction: Anarch
+  short_name: Topan
 'Khan: Savvy Skiptracer':
   faction: Criminal
   short_name: Khan
@@ -286,6 +316,12 @@
 'Mercury: Chrome Libertador':
   faction: Criminal
   short_name: Mercury
+'Barry "Baz" Wong: Tri-Maf Veteran':
+  faction: Criminal
+  short_name: Barry
+'MuslihaT: Multifarious Marketeer':
+  faction: Criminal
+  short_name: MuslihaT
 'Exile: Streethawk':
   faction: Shaper
   short_name: Exile
@@ -337,6 +373,12 @@
 'Captain Padma Isbister: Intrepid Explorer':
   faction: Shaper
   short_name: Padma
+'Magdalene Keino-Chemutai: Cryptarchitect':
+  faction: Shaper
+  short_name: Magdalene
+'Dewi Subrotoputri: Pedagogical Dhalang':
+  faction: Shaper
+  short_name: Dewi
 'Nova Initiumia: Catalyst & Impetus':
   faction: 'Neutral Runner'
   short_name: Nova
