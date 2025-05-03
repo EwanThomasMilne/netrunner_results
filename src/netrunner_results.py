@@ -98,12 +98,13 @@ def write_standings_to_csv(standings: list, standings_filepath: Path):
         row.insert(1,t.meta)
         row.insert(2,t.region)
         row.insert(3,t.location)
-        row.insert(4,tournament_id)
-        row.insert(5,t.style)
-        row.insert(6,t.name)
+        row.insert(4,tournament_level)
+        row.insert(5,tournament_id)
+        row.insert(6,t.style)
+        row.insert(7,t.name)
     with standings_filepath.open(mode='w',newline='') as sf:
         sw = csv.writer(sf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-        standings_header = ['date','meta','region','location','tournament_id','style','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
+        standings_header = ['date','meta','region','location','level','tournament_id','style','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
         sw.writerow(standings_header)
         sw.writerows(standings)
 
@@ -112,10 +113,10 @@ def write_tournament_results_to_csv(t: Tournament, results_filepath: Path):
     results_filepath.parent.mkdir(exist_ok=True, parents=True)
     with results_filepath.open(mode='w',newline='') as rf:
         rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-        results_header = [ 'date','meta','region','location','tournament_id','style','tournament','phase','round','table','corp_player','corp_id','corp_faction','result','runner_player','runner_id','runner_faction']
+        results_header = [ 'date','meta','region','location','level','tournament_id','style','tournament','phase','round','table','corp_player','corp_id','corp_faction','result','runner_player','runner_id','runner_faction']
         rw.writerow(results_header)
         for r in t.results:
-            row = [ t.date, t.meta, t.region, t.location, tournament_id, t.style, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['corp_faction'],r['result'], r['runner_player'], r['runner_id'], r['runner_faction'] ]
+            row = [ t.date, t.meta, t.region, t.location, tournament_level, tournament_id, t.style, t.name, r['phase'], r['round'], r['table'], r['corp_player'], r['corp_id'], r['corp_faction'],r['result'], r['runner_player'], r['runner_id'], r['runner_faction'] ]
             rw.writerow(row)
 
 def load_player_json_from_file(player_dir: str, nrdb_id: int) -> Player:
@@ -144,6 +145,8 @@ parser.set_defaults(results_csv=True)
 parser.add_argument('--update-player-json', action=argparse.BooleanOptionalAction, help='update player JSON data (defaults to TRUE)')
 parser.set_defaults(update_player_json=True)
 parser.add_argument('--tournaments-file', type=str, default='tournaments.yml', help='list of tournaments to get results for (defaults to tournaments.yml)')
+parser.add_argument('--filter-meta', type=str, help='only process tournaments from this meta')
+parser.add_argument('--filter-format', type=str, default='standard', help='only process tournaments of this format')
 args=parser.parse_args()
 
 with open(args.tournaments_file, 'r') as tournaments_file:
@@ -166,8 +169,11 @@ with open(args.tournaments_file, 'r') as tournaments_file:
             tournament_region = tournament.get('region',None)
             tournament_location = tournament.get('location',None)
             tournament_player_map = tournament.get('players',{})
+            if args.filter_meta is not None:
+                if tournament_meta != args.filter_meta:
+                    print("tournament meta is: " + tournament_meta + " (SKIPPING)")
+                    continue
             get_abr_player_mappings(tournament_json) # using this method just to add any new players to players.json
-            
             t = ABRTournament(name=tournament_name,json=tournament_json,date=tournament_date,region=tournament_region,location=tournament_location,player_mappings=tournament_player_map,abr_id=tournament_abr_id,meta=tournament_meta)
             tournament_id = "abr-" + tournament_abr_id
         else:
@@ -187,8 +193,12 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                 print('could not determine meta (SKIPPING)')
                 continue
             tournament_meta = meta.replace('Standard Ban List ','').replace('Standard Banlist ','').replace('Standard MWL ','MWL-').replace('NAPD MWL ','MWL-')
+            if args.filter_meta is not None:
+                if tournament_meta != args.filter_meta:
+                    print("tournament meta is: " + tournament_meta + " (SKIPPING)")
+                    continue
             tournament_format = tournament.get('format', tournament_abr.get('format','standard'))
-            if tournament_format != 'standard':
+            if tournament_format != args.filter_format:
                 print('tournament format is: '+tournament_format+' (SKIPPING)')
                 continue
             tournament_level = tournament.get('level', tournament_abr.get('type',None))
@@ -220,15 +230,17 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                     t = CobraDSSTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map, abr_id=tournament_abr_id, style=tournament_style, meta=tournament_meta)
             tournament_number = tournament['url'].rsplit('/', 1)[-1]
             tournament_id = software + '-' + tournament_number
-        
+
         # standings
         if args.standings_csv:
-            standings_filepath = Path(standings_dir + str(t.date) + '.' + tournament_id + '.standings.csv')
+            output_dir = standings_dir + tournament_meta + '/'
+            standings_filepath = Path(output_dir + str(t.date) + '.' + tournament_id + '.standings.csv')
             write_standings_to_csv(standings=t.standings, standings_filepath=standings_filepath)
         
         # results
         if args.results_csv:
-            results_filepath = Path(results_dir + str(t.date) + '.' + tournament_id + '.results.csv')
+            output_dir = results_dir + tournament_meta + '/'
+            results_filepath = Path(output_dir + str(t.date) + '.' + tournament_id + '.results.csv')
             write_tournament_results_to_csv(t, results_filepath)
         
         # players
