@@ -157,7 +157,7 @@ class CobraDSSTournament(CobraTournament):
                 result = 'draw'
             case 0:
                 result = 'corp'
-        if table['player1']['runnerScore'] + table['player2']['corpScore'] == 0:
+        if (table['player1']['runnerScore'] is None) or (table['player1']['runnerScore'] + table['player2']['corpScore'] == 0):
             result = 'unknown'
         if table['intentionalDraw']:
             result = 'ID'
@@ -185,7 +185,7 @@ class CobraDSSTournament(CobraTournament):
                 result = 'draw'
             case 0:
                 result = 'runner'
-        if table['player2']['runnerScore'] + table['player1']['corpScore'] == 0:
+        if (table['player2']['runnerScore'] is None) or (table['player2']['runnerScore'] + table['player1']['corpScore'] == 0):
             result = 'unknown'
         if table['intentionalDraw']:
             result = 'ID'
