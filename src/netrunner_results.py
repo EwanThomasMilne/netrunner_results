@@ -135,6 +135,21 @@ def write_player_json_to_file(player: Player, filepath: Path):
     with filepath.open(mode='w') as json_file:
         json.dump(json_data,json_file)
 
+def decide_region(location: str) -> str:
+    """ determine region from location if possible """
+    if location is None:
+        return None
+    country = location.split(", ")[0]
+    match country:
+        case ["Australia","China","Hong Kong","New Zealand","Philippines","Singapore"]:
+            return "APAC"
+        case ["Austria","Czhecia","Finland","France","Germany","Italy","Netherlands","Poland","Russia","Spain","Sweden","Switzerland","United Kingdom"]:
+            return "EMEA"
+        case ["Canada","United States"]:
+            return "Americas"
+        case _:
+            return None
+
 parser = argparse.ArgumentParser(description='get netrunner results from cobra, aesops and abr')
 parser.add_argument('--cache-refresh', action=argparse.BooleanOptionalAction, help='force a refresh of all API retrieved JSON (defaults to FALSE)')
 parser.set_defaults(cache_refresh=False)
@@ -166,8 +181,8 @@ with open(args.tournaments_file, 'r') as tournaments_file:
             tournament_date = tournament.get('date',None)
             tournament_size = len(tournament_json)
             tournament_level = tournament.get('level',None)
-            tournament_region = tournament.get('region',None)
             tournament_location = tournament.get('location',None)
+            tournament_region = tournament.get('region',decide_region(tournament_location))
             tournament_player_map = tournament.get('players',{})
             if args.filter_meta is not None:
                 if tournament_meta != args.filter_meta:
@@ -203,6 +218,7 @@ with open(args.tournaments_file, 'r') as tournaments_file:
                 continue
             tournament_level = tournament.get('level', tournament_abr.get('type',None))
             tournament_location = tournament.get('location',tournament_abr.get('location',None))
+            tournament_region = tournament.get('region',decide_region(tournament_location))
             # build a mapping of registration names to nrdb ids if possible
             tournament_player_map = {}
             if tournament_abr_id:
@@ -212,13 +228,15 @@ with open(args.tournaments_file, 'r') as tournaments_file:
             if 'aesop' in tournament['url']:
                 software = 'aesop'
                 tournament_style = 'SSS'
-                t = AesopsTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament.get('region',None),location=tournament_location,player_mappings=tournament_player_map,abr_id=tournament_abr_id, style=tournament_style, meta=tournament_meta)
+                t = AesopsTournament(name=tournament_name,json=tournament_json,date=tournament_date.isoformat(),region=tournament_region,location=tournament_location,player_mappings=tournament_player_map,abr_id=tournament_abr_id, style=tournament_style, meta=tournament_meta)
             else:
                 software = 'cobra'
                 # determine SSS or DSS by checking if the first player on the first table of the first round has a role (runner/corp)
                 # (I sort of wish there was a cleaner way of checking if a cobra tournament was SSS or DSS)
                 if 'style' in tournament:
                     tournament_style = tournament['style']
+                elif len(tournament_json['rounds'])==0:
+                    tournament_style = 'unknown'
                 elif 'role' in tournament_json['rounds'][0][0]['player1']:
                     tournament_style = 'SSS'
                 else:
