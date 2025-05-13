@@ -86,6 +86,8 @@
 'Poétrï Luxury Brands: All the Rage':
   faction: HB
   short_name: Poétrï
+  alt_names:
+    - 'Poetri Luxury Brands: All the Rage'
 'LEO Construction: Labor Solutions':
   faction: HB
   short_name: LEO
@@ -256,6 +258,8 @@
 'Ryō "Phoenix" Ōno: Out of the Ashes':
   faction: Anarch
   short_name: Phoenix
+  alt_names:
+    - 'Ryo \"Phoenix\" Ono: Out of the Ashes'
 'Topan: Ormas Leader':
   faction: Anarch
   short_name: Topan
