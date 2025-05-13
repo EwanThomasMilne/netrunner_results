@@ -141,11 +141,11 @@ def decide_region(location: str) -> str:
         return None
     country = location.split(", ")[0]
     match country:
-        case ["Australia","China","Hong Kong","New Zealand","Philippines","Singapore"]:
+        case "Australia"|"China"|"Hong Kong"|"New Zealand"|"Philippines"|"Singapore":
             return "APAC"
-        case ["Austria","Czhecia","Finland","France","Germany","Italy","Netherlands","Poland","Russia","Spain","Sweden","Switzerland","United Kingdom"]:
+        case "Austria"|"Czhecia"|"Finland"|"France"|"Germany"|"Italy"|"Netherlands"|"Poland"|"Russia"|"Spain"|"Sweden"|"Switzerland"|"United Kingdom":
             return "EMEA"
-        case ["Canada","United States"]:
+        case "Canada"|"United States":
             return "Americas"
         case _:
             return None
