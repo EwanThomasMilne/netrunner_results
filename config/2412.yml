@@ -106,3 +106,17 @@
   meta: '24.12'
   url: https://tournaments.nullsignal.games/tournaments/3867
   region: EMEA
+- name: "Brighton District"
+  meta: '24.12'
+  url: 
+  region: EMEA
+- name: "Paris District"
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3891
+  region: EMEA
+  date: 2025-04-12
+- name: "Warsaw District"
+  meta: '24.12'
+  url: https://tournaments.nullsignal.games/tournaments/3894
+  region: EMEA
+  date: 2025-04-12

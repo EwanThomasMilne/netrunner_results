@@ -39,11 +39,11 @@
     'Bridgeman ': 23764
   region: EMEA
   url: https://tournaments.nullsignal.games/tournaments/3466
-- date: 2024-07-13
-  location: online
-  meta: '24.05'
-  name: ICC
-  url: https://tournaments.nullsignal.games/tournaments/3487
+#- date: 2024-07-13
+#  location: online
+#  meta: '24.05'
+#  name: ICC
+#  url: https://tournaments.nullsignal.games/tournaments/3487
 - date: 2024-07-13
   meta: '24.05'
   name: NANPC Philadelphia
