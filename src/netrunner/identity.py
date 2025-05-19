@@ -22,7 +22,7 @@ class Identity:
 
         p = Path(__file__).with_name('identities.yml')
         with p.open('r') as identities_file:
-            identities = yaml.load(identities_file, Loader=yaml.CBaseLoader)
+            identities = yaml.safe_load(identities_file)
 
         if reference in identities.keys():
             self.name = reference
