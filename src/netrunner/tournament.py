@@ -87,20 +87,28 @@ class Tournament(ABC):
 class AesopsTournament(Tournament):
     def process_swiss_table(self, round_num: int, table: dict):
         phase = 'swiss'
-        # if either player_id is '(BYE)', assume this round was a Bye and do not record the results
-        if table['runnerPlayer'] == '(BYE)' or table['corpPlayer'] == '(BYE)':
+        # if either player_id is null, assume this round was a Bye and do not record the results
+        if table['player1']['id'] is None or table['player2']['id'] is None:
             return
+        
+        if table['player1']['role'] == 'runner':
+            runner_player = self.players[table['player1']['id']]
+            corp_player = self.players[table['player2']['id']]
+        else:
+            runner_player = self.players[table['player2']['id']]
+            corp_player = self.players[table['player1']['id']]
 
-        runner_player = self.players[table['runnerPlayer']]
-        corp_player = self.players[table['corpPlayer']]
         result = 'unknown'
-        match table['runnerScore']:
-            case '3':
-                result = 'runner'
-            case '1':
-                result = 'draw'
-            case '0':
-                result = 'corp'
+        corp_score = table['player1']['corpScore']
+        runner_score = table['player1']['runnerScore']
+        if corp_score == 1 :
+            result = 'draw'
+        if corp_score == 3 or runner_score == 0:
+            result = 'corp'
+        else:
+            result = 'runner'
+
+        
         game_data = { 'phase': phase, 'round': round_num, 'table': table['tableNumber'], 'corp_player': corp_player.name, 'corp_player_nrdb_id': corp_player.nrdb_id, 'corp_id': corp_player.corp_id.name, 'corp_faction':corp_player.corp_id.faction, 'result': result, 'runner_player': runner_player.name, 'runner_player_nrdb_id': runner_player.nrdb_id, 'runner_id': runner_player.runner_id.name, 'runner_faction': runner_player.runner_id.faction }
         self.results.append(game_data)
         runner_player.record_runner_result(game_data)
@@ -108,10 +116,17 @@ class AesopsTournament(Tournament):
 
     def process_cut_table(self, round_num: int, table: dict):
         phase = 'cut'
-        runner_player = self.players[table['runnerPlayer']]
-        corp_player = self.players[table['corpPlayer']]
+        if table['player1']['role'] == 'runner':
+            runner_player = self.players[table['player1']['id']]
+            corp_player = self.players[table['player2']['id']]
+        else:
+            runner_player = self.players[table['player2']['id']]
+            corp_player = self.players[table['player1']['id']]
+
         result = 'unknown'
-        if table['winner_id'] == table['runnerPlayer']:
+        corp_score = table['player1']['corpScore']
+        runner_score = table['player1']['runnerScore']
+        if corp_score == 0 or runner_score == 3:
             result = 'runner'
         else:
             result = 'corp'
