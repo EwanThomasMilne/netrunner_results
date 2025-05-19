@@ -1,5 +1,6 @@
 from netrunner.identity import Identity
 from netrunner.player import TournamentPlayer
+from abc import ABC, abstractmethod
 
 def is_player_in_top_cut(eliminationPlayers: list, player_id: str) -> bool:
   for topcutplayer in eliminationPlayers:
@@ -10,7 +11,7 @@ def is_player_in_top_cut(eliminationPlayers: list, player_id: str) -> bool:
 def find_player_in_top_cut(eliminationPlayers: list, player_id: str) -> dict:
     return next(topcutplayer for topcutplayer in eliminationPlayers if topcutplayer['id'] == player_id)
 
-class Tournament:
+class Tournament(ABC):
     """
     A class representing a netrunner tournament
 
@@ -74,13 +75,14 @@ class Tournament:
             team3 = player.teams[2] if 2 < len(player.teams) else ''
             standing = [player.cut_rank, player.swiss_rank, player.name, team1, team2, team3, player.corp_id.short_name, str(player.corp_wins), str(player.corp_losses), str(player.corp_draws), player.runner_id.short_name, str(player.runner_wins), str(player.runner_losses), str(player.runner_draws), player.match_points, player.SoS, player.xSoS, player.corp_id.name, player.corp_id.faction, player.runner_id.name, player.runner_id.faction, player.nrdb_id]
             self.standings.append(standing)
-
-    def process_swiss_table(self, table: dict):
-        # dummy method for inheritance
-        pass
-    def process_cut_table(self, table: dict):
-        # dummy method for inheritance
-        pass
+    
+    @abstractmethod
+    def process_swiss_table(self, round_num: int, table: dict):
+        ...
+    
+    @abstractmethod
+    def process_cut_table(self, round_num: int, table: dict):
+        ...
 
 class AesopsTournament(Tournament):
     def process_swiss_table(self, round_num: int, table: dict):
