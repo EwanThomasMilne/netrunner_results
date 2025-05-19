@@ -21,7 +21,7 @@ class Identity:
         self.id_data = {}
 
         p = Path(__file__).with_name('identities.yml')
-        with p.open('r') as identities_file:
+        with p.open('r', encoding='utf-8') as identities_file:
             identities = yaml.safe_load(identities_file)
 
         if reference in identities.keys():
