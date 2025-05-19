@@ -1,0 +1,22 @@
+
+- name: "Sunrise CTK"
+  meta: '25.04'
+  url: https://tournaments.nullsignal.games/tournaments/3876
+  location: Online
+  level: CTK
+- name: "Reading CTK"
+  meta: '25.04'
+  url: https://tournaments.nullsignal.games/tournaments/3948
+  level: CTK
+  region: EMEA
+- name: "Bristol Regionals"
+  meta: '25.04'
+  url: https://tournaments.nullsignal.games/tournaments/3968
+  region: EMEA
+- name: "Megacity Łódź"
+  meta: '25.04'
+  region: EMEA
+  url: https://www.aesopstables.net/6132
+- name: "May AMT"
+  meta: '25.04'
+  url: https://tournaments.nullsignal.games/tournaments/3969
