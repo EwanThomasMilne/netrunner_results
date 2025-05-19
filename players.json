@@ -6402,7 +6402,8 @@
   },
   "46476": {
     "aliases": [
-      "nervousnightjar"
+      "nervousnightjar",
+      "oko"
     ],
     "nrdb_name": "nervousnightjar",
     "teams": [
@@ -8850,5 +8851,20 @@
   },
   "44964": {
     "nrdb_name": "JS19"
+  },
+  "51551": {
+    "nrdb_name": "Smolgrump"
+  },
+  "50277": {
+    "nrdb_name": "Malicemoder"
+  },
+  "51917": {
+    "nrdb_name": "-Lazy-"
+  },
+  "37472": {
+    "nrdb_name": "Astrobaek"
+  },
+  "5461": {
+    "nrdb_name": "spiralshadow"
   }
 }
