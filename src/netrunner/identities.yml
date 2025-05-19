@@ -53,6 +53,9 @@
 'Haas-Bioroid: Engineering the Future':
   faction: HB
   short_name: EtF
+'Haas-Bioroid: Stronger Together':
+  faction: HB
+  short_name: 'Stronger Together'
 'Custom Biotics: Engineered for Success':
   faction: HB
   short_name: 'Custom Biotics'
