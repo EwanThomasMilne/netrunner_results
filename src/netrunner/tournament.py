@@ -1,5 +1,6 @@
 from netrunner.identity import Identity
 from netrunner.player import TournamentPlayer
+from abc import ABC, abstractmethod
 
 def is_player_in_top_cut(eliminationPlayers: list, player_id: str) -> bool:
   for topcutplayer in eliminationPlayers:
@@ -10,7 +11,7 @@ def is_player_in_top_cut(eliminationPlayers: list, player_id: str) -> bool:
 def find_player_in_top_cut(eliminationPlayers: list, player_id: str) -> dict:
     return next(topcutplayer for topcutplayer in eliminationPlayers if topcutplayer['id'] == player_id)
 
-class Tournament:
+class Tournament(ABC):
     """
     A class representing a netrunner tournament
 
@@ -74,31 +75,45 @@ class Tournament:
             team3 = player.teams[2] if 2 < len(player.teams) else ''
             standing = [player.cut_rank, player.swiss_rank, player.name, team1, team2, team3, player.corp_id.short_name, str(player.corp_wins), str(player.corp_losses), str(player.corp_draws), player.runner_id.short_name, str(player.runner_wins), str(player.runner_losses), str(player.runner_draws), player.match_points, player.SoS, player.xSoS, player.corp_id.name, player.corp_id.faction, player.runner_id.name, player.runner_id.faction, player.nrdb_id]
             self.standings.append(standing)
+    
+    @abstractmethod
+    def process_swiss_table(self, round_num: int, table: dict):
+        ...
+    
+    @abstractmethod
+    def process_cut_table(self, round_num: int, table: dict):
+        ...
 
-    def process_swiss_table(self, table: dict):
-        # dummy method for inheritance
-        pass
-    def process_cut_table(self, table: dict):
-        # dummy method for inheritance
-        pass
+    def determine_runner_and_corp_players(self, table: dict) -> tuple[str]:
+        if table['player1']['role'] == 'runner':
+            runner_player = self.players[table['player1']['id']]
+            corp_player = self.players[table['player2']['id']]
+        else:
+            runner_player = self.players[table['player2']['id']]
+            corp_player = self.players[table['player1']['id']]
+        
+        return runner_player, corp_player
+        
 
 class AesopsTournament(Tournament):
     def process_swiss_table(self, round_num: int, table: dict):
         phase = 'swiss'
-        # if either player_id is '(BYE)', assume this round was a Bye and do not record the results
-        if table['runnerPlayer'] == '(BYE)' or table['corpPlayer'] == '(BYE)':
+        # if either player_id is null, assume this round was a Bye and do not record the results
+        if table['player1']['id'] is None or table['player2']['id'] is None:
             return
-
-        runner_player = self.players[table['runnerPlayer']]
-        corp_player = self.players[table['corpPlayer']]
+        
+        runner_player, corp_player = self.determine_runner_and_corp_players(table)
         result = 'unknown'
-        match table['runnerScore']:
-            case '3':
-                result = 'runner'
-            case '1':
-                result = 'draw'
-            case '0':
-                result = 'corp'
+        corp_score = table['player1']['corpScore']
+        runner_score = table['player1']['runnerScore']
+        if corp_score == 1 :
+            result = 'draw'
+        if corp_score == 3 or runner_score == 0:
+            result = 'corp'
+        else:
+            result = 'runner'
+
+        
         game_data = { 'phase': phase, 'round': round_num, 'table': table['tableNumber'], 'corp_player': corp_player.name, 'corp_player_nrdb_id': corp_player.nrdb_id, 'corp_id': corp_player.corp_id.name, 'corp_faction':corp_player.corp_id.faction, 'result': result, 'runner_player': runner_player.name, 'runner_player_nrdb_id': runner_player.nrdb_id, 'runner_id': runner_player.runner_id.name, 'runner_faction': runner_player.runner_id.faction }
         self.results.append(game_data)
         runner_player.record_runner_result(game_data)
@@ -106,10 +121,11 @@ class AesopsTournament(Tournament):
 
     def process_cut_table(self, round_num: int, table: dict):
         phase = 'cut'
-        runner_player = self.players[table['runnerPlayer']]
-        corp_player = self.players[table['corpPlayer']]
+        runner_player, corp_player = self.determine_runner_and_corp_players(table)
         result = 'unknown'
-        if table['winner_id'] == table['runnerPlayer']:
+        corp_score = table['player1']['corpScore']
+        runner_score = table['player1']['runnerScore']
+        if corp_score == 0 or runner_score == 3:
             result = 'runner'
         else:
             result = 'corp'
@@ -121,12 +137,7 @@ class AesopsTournament(Tournament):
 class CobraTournament(Tournament):
     def process_cut_table(self, round_num: int, table: dict):
         phase = 'cut'
-        if table['player1']['role'] == 'runner':
-            runner_player = self.players[table['player1']['id']]
-            corp_player = self.players[table['player2']['id']]
-        else:
-            runner_player = self.players[table['player2']['id']]
-            corp_player = self.players[table['player1']['id']]
+        runner_player, corp_player = self.determine_runner_and_corp_players(table)
         result = 'unknown'
 
         if table['player1']['winner']:
