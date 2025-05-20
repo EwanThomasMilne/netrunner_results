@@ -102,7 +102,7 @@ def write_standings_to_csv(standings: list, standings_filepath: Path):
         row.insert(5,tournament_id)
         row.insert(6,t.style)
         row.insert(7,t.name)
-    with standings_filepath.open(mode='w',newline='') as sf:
+    with standings_filepath.open(mode='w',newline='', encoding="utf-8") as sf:
         sw = csv.writer(sf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
         standings_header = ['date','meta','region','location','level','tournament_id','style','tournament','top_cut_rank','swiss_rank','name','team 1','team 2','team 3','corp_name','corp_wins','corp_losses','corp_draws','runner_name','runner_wins','runner_losses','runner_draws','matchPoints','SoS','xSoS','corp_ID','corp_faction','runner_ID','runner_faction','nrdb_id']
         sw.writerow(standings_header)
@@ -111,7 +111,7 @@ def write_standings_to_csv(standings: list, standings_filepath: Path):
 def write_tournament_results_to_csv(t: Tournament, results_filepath: Path):
     """ write tournament results to a CSV file """
     results_filepath.parent.mkdir(exist_ok=True, parents=True)
-    with results_filepath.open(mode='w',newline='') as rf:
+    with results_filepath.open(mode='w',newline='', encoding="utf-8") as rf:
         rw = csv.writer(rf, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
         results_header = [ 'date','meta','region','location','level','tournament_id','style','tournament','phase','round','table','corp_player','corp_id','corp_faction','result','runner_player','runner_id','runner_faction']
         rw.writerow(results_header)
