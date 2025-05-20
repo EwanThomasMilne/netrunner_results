@@ -1,7 +1,7 @@
 import requests
 import datetime
 import csv
-import yaml
+import json
 from pathlib import Path
 
 def get_decklists_by_date(date: datetime.date):
@@ -39,9 +39,16 @@ def load_bre_csv()->dict:
                 pass
     return players
 
+def load_json()->dict:
+    json_filepath=Path('players.json')
+    with json_filepath.open(mode='r') as json_file:
+        players = json.load(json_file)
+    return players
+
 start_date = datetime.date(2024,1,1)
 end_date = datetime.date(2024,9,12)
-players = load_bre_csv()
+#players = load_bre_csv()
+players = load_json()
 nrdb_ids = {}
 
 for date in daterange(start_date, end_date):
@@ -57,13 +64,13 @@ for date in daterange(start_date, end_date):
             players[userid]={}
         players[userid].update({'nrdb_name': username})
 
-csv_filepath = Path('OUTPUT/nrdb_ids.csv')
-csv_filepath.parent.mkdir(exist_ok=True, parents=True)
-with csv_filepath.open(mode='w') as csv_file:
-    csv_writer = csv.writer(csv_file, quotechar='"', quoting=csv.QUOTE_ALL, escapechar='\\')
-    for name, id in nrdb_ids.items():
-        csv_writer.writerow([name,id])
+print("checking for missing nrdb names...")
+for nrdb_id,player_info in players.items():
+    if 'nrdb_name' not in player_info:
+        print(nrdb_id)
+        print(player_info)
 
-yaml_filepath=Path('players.yml')
-with yaml_filepath.open(mode='w') as players_file:
-    yaml.dump(players, players_file)
+print("dumping to json...")
+json_filepath=Path('players.json')
+with json_filepath.open(mode='w') as json_file:
+    json.dump(players,json_file)
