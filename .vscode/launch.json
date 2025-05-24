@@ -5,24 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python Debugger: unified reports",
+            "name": "Python Debugger: generate reports",
             "type": "debugpy",
             "request": "launch",
-            "program": "winrate/generate_report.py",
-            "console": "integratedTerminal"
-        },
-        {
-            "name": "Python Debugger: individual reports",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "winrate/generate_individual_reports.py",
-            "console": "integratedTerminal"
-        },
-        {
-            "name": "Python Debugger: match reports",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "matches/generate_match_report.py",
+            "program": "src/netrunner_results.py",
             "console": "integratedTerminal"
         },
     ]
