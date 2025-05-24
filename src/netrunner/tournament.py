@@ -106,13 +106,14 @@ class AesopsTournament(Tournament):
         result = 'unknown'
         corp_score = table['player1']['corpScore']
         runner_score = table['player1']['runnerScore']
-        if corp_score == 1 :
+        if corp_score == 1 or runner_score == 1:
             result = 'draw'
-        if corp_score == 3 or runner_score == 0:
+        elif corp_score == 3 or runner_score == 0:
             result = 'corp'
         else:
             result = 'runner'
-
+        if table['intentionalDraw']:
+            result = 'ID'
         
         game_data = { 'phase': phase, 'round': round_num, 'table': table['tableNumber'], 'corp_player': corp_player.name, 'corp_player_nrdb_id': corp_player.nrdb_id, 'corp_id': corp_player.corp_id.name, 'corp_faction':corp_player.corp_id.faction, 'result': result, 'runner_player': runner_player.name, 'runner_player_nrdb_id': runner_player.nrdb_id, 'runner_id': runner_player.runner_id.name, 'runner_faction': runner_player.runner_id.faction }
         self.results.append(game_data)
