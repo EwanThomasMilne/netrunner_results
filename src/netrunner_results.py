@@ -32,7 +32,11 @@ def find_abr_tournament(date: datetime.date, name: str, size: int, force: bool =
             'start':date_string,
             'end':date_string
         }
-        resp = requests.get(url=api_url, params=api_params)
+        try:
+            resp = requests.get(url=api_url, params=api_params)
+        except requests.exceptions.RequestException as e:
+            print("Encountered an error while searching for the tournament abr_id\n",e)
+            return {}
         json_filepath.parent.mkdir(exist_ok=True, parents=True)
         with json_filepath.open(mode='w') as json_file:
             json.dump(resp.json(), json_file)
