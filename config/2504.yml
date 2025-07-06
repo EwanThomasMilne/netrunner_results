@@ -20,3 +20,55 @@
 - name: "May AMT"
   meta: '25.04'
   url: https://tournaments.nullsignal.games/tournaments/3969
+- name: "Summer Showdown 2025"
+  meta: '25.04'
+  url: https://www.aesopstables.net/5175
+  level: CTK
+- name: "Megacity Brescia"
+  meta: '25.04'
+  url: https://www.aesopstables.net/6264
+- name: "Toronto NANPC"
+  meta: '25.04'
+  url: https://tournaments.nullsignal.games/tournaments/3985
+- name: "Megacity Canberra"
+  meta: '25.04'
+  url: https://www.aesopstables.net/6462
+- name: "Megacity Denver"
+  meta: '25.04'
+  url: 'https://www.aesopstables.net/6594'
+- name: "Off the Grid Midwest"
+  meta: '25.04'
+  url: 'https://tournaments.nullsignal.games/tournaments/4009'
+- name: "Cambridge CTK"
+  meta: '25.04'
+  url: 'https://tournaments.nullsignal.games/tournaments/4007'
+- name: 'Megacity Pittsburgh'
+  meta: '25.04'
+  url: 'https://www.aesopstables.net/6231'
+- name: 'Americas Online Megacity'
+  meta: '25.04'
+  url: 'https://www.aesopstables.net/6958'
+- name: 'Megacity Vancouver'
+  meta: '25.04'
+  url: 'https://www.aesopstables.net/7222'
+- name: 'APAC Online Megacity'
+  meta: '25.04'
+  url: 'https://www.aesopstables.net/7156'
+- name: 'EMEA Online Megacity'
+  meta: '25.04'
+  url: 'https://www.aesopstables.net/7419'
+- name: 'Megacity Brno'
+  meta: '25.04'
+  url: 'https://www.aesopstables.net/7386'
+- name: 'Megacity Milwaukee'
+  meta: '25.04'
+  url: 'https://tournaments.nullsignal.games/tournaments/3801'
+- name: 'Megacity Basel'
+  meta: '25.04'
+  url: 'https://tournaments.nullsignal.games/tournaments/4047'
+- name: 'Megacity Philippines'
+  meta: '25.04'
+  url: 'https://tournaments.nullsignal.games/tournaments/4043'
+- name: 'Megacity Sheffield'
+  meta: '25.04'
+  url: 'https://tournaments.nullsignal.games/tournaments/4042'
