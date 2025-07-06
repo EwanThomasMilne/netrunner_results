@@ -1555,7 +1555,13 @@
     "nrdb_name": "morita-san"
   },
   "14584": {
-    "nrdb_name": "just_rob"
+    "nrdb_name": "just_rob",
+    "aliases": [
+      "Just Rob"
+    ],
+    "teams": [
+      "The Process"
+    ]
   },
   "14781": {
     "nrdb_name": "chordgang",
@@ -4045,7 +4051,8 @@
   },
   "39952": {
     "aliases": [
-      "l0velace"
+      "l0velace",
+      "mallory l0velace"
     ],
     "nrdb_name": "l0velace",
     "teams": [
