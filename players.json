@@ -444,7 +444,8 @@
   "4142": {
     "aliases": [
       "jan tuno",
-      "kakurenby"
+      "kakurenby",
+      "tuno"
     ],
     "nrdb_name": "jan tuno",
     "teams": [
@@ -4052,7 +4053,8 @@
   "39952": {
     "aliases": [
       "l0velace",
-      "mallory l0velace"
+      "mallory l0velace",
+      "mallory (l0velace)"
     ],
     "nrdb_name": "l0velace",
     "teams": [
@@ -8924,5 +8926,20 @@
   },
   "48800": {
     "nrdb_name": "graveyardfrog"
+  },
+  "3512": {
+    "nrdb_name": "simen"
+  },
+  "42899": {
+    "nrdb_name": "Bram"
+  },
+  "39650": {
+    "nrdb_name": "derNikita"
+  },
+  "50002": {
+    "nrdb_name": "Alicecell"
+  },
+  "31178": {
+    "nrdb_name": "Human_Kirby"
   }
 }
