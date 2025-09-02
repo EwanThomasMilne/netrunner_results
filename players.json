@@ -2800,6 +2800,9 @@
     "aliases": [
       "TorpedoTyrus"
     ],
+    "teams": [
+      "EA Sports"
+    ],
     "nrdb_name": "TorpedoTyrus"
   },
   "31204": {
@@ -8945,5 +8948,32 @@
   },
   "31178": {
     "nrdb_name": "Human_Kirby"
+  },
+  "51963": {
+    "nrdb_name": "Garlic"
+  },
+  "21667": {
+    "nrdb_name": "Gizmaluke"
+  },
+  "53081": {
+    "nrdb_name": "backtrackjack"
+  },
+  "46567": {
+    "nrdb_name": "liadahlia"
+  },
+  "49079": {
+    "nrdb_name": "ExperimentalDataCore"
+  },
+  "53754": {
+    "nrdb_name": "karllsy"
+  },
+  "44009": {
+    "nrdb_name": "emaaaly"
+  },
+  "51582": {
+    "nrdb_name": "pokeking"
+  },
+  "51173": {
+    "nrdb_name": "MillieLily"
   }
 }
