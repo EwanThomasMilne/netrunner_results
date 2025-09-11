@@ -3384,6 +3384,9 @@
     "aliases": [
       "Sauc3"
     ],
+    "teams": [
+      "SCRUBS"
+    ],
     "nrdb_name": "Sauc3"
   },
   "36400": {
@@ -8491,7 +8494,10 @@
     "nrdb_name": "allieflx"
   },
   "49436": {
-    "nrdb_name": "BucketHatBen"
+    "nrdb_name": "BucketHatBen",
+    "teams": [
+      "SCRUBS"
+    ]
   },
   "49523": {
     "nrdb_name": "anotherbruce"
