@@ -242,7 +242,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 from bokeh.io import output_file, output_notebook, save
-from bokeh.layouts import column
+from bokeh.layouts import column, row
 from bokeh.models import (
     ColumnDataSource,
     CustomJS,
@@ -276,7 +276,7 @@ def _abbrev_list(items, max_items=7, max_chars=400):
         truncated = True
     more = max(0, len(uniq) - len(shown))
     if more or truncated:
-        s += f"<br><em>+{more} more…</em>" if more else "<br><em>…</em>"
+        s += f"<br><em>+{more} more..</em>" if more else "<br><em>..</em>"
     return s
 
 
@@ -309,14 +309,12 @@ def _agg_identity_winrate(df: pd.DataFrame, who: str) -> pd.DataFrame:
 
 
 def _top_n(df: pd.DataFrame, n: int = 30) -> pd.DataFrame:
-    if df.empty:
-        return df
     top_by_games = df.sort_values(["games", "winrate"], ascending=[False, False]).head(n).copy()
     top_by_games.sort_values(["winrate", "games", "identity"], ascending=[False, False, True], inplace=True)
     return top_by_games
 
 
-def _build_flags_for_split(split_key: str) -> tuple[pd.DataFrame, list[Any]]:
+def _build_flags_for_split(split_key: str) -> tuple[pd.DataFrame, list[Any], list[str]]:
     cutters = standings.copy()
     cutters["top_cut_rank_num"] = pd.to_numeric(cutters["top_cut_rank"], errors="coerce")
     cutters = cutters[cutters["top_cut_rank_num"].notna()]
@@ -333,7 +331,8 @@ def _build_flags_for_split(split_key: str) -> tuple[pd.DataFrame, list[Any]]:
         out["corp_is_tracked"] = corp_idx.isin(cut_idx)
         out["runner_is_tracked"] = runner_idx.isin(cut_idx)
         eligible_names = sorted(cut_player_tournament["player"].unique().tolist())
-        return out, eligible_names
+        tournaments = sorted(out["tournament"].dropna().unique().tolist())
+        return out, eligible_names, tournaments
 
     if split_key == "any-cutter":
         cut_idx = cut_player_tournament["player"]
@@ -342,7 +341,8 @@ def _build_flags_for_split(split_key: str) -> tuple[pd.DataFrame, list[Any]]:
         out["corp_is_tracked"] = out["corp_player"].isin(cut_idx)
         out["runner_is_tracked"] = out["runner_player"].isin(cut_idx)
         eligible_names = sorted(cut_player_tournament["player"].unique().tolist())
-        return out, eligible_names
+        tournaments = sorted(out["tournament"].dropna().unique().tolist())
+        return out, eligible_names, tournaments
 
     m = re.match(r"any-swiss-top(\d+)", split_key)
     if m:
@@ -356,13 +356,103 @@ def _build_flags_for_split(split_key: str) -> tuple[pd.DataFrame, list[Any]]:
         out["corp_is_tracked"] = out["corp_player"].isin(idx)
         out["runner_is_tracked"] = out["runner_player"].isin(idx)
         eligible_names = sorted(swiss["name"].dropna().unique().tolist())
-        return out, eligible_names
+        tournaments = sorted(out["tournament"].dropna().unique().tolist())
+        return out, eligible_names, tournaments
+
+    m = re.match(r"tournament-swiss-top(\d+)", split_key)
+    if m:
+        N = int(m.group(1))
+        swiss = standings.copy()
+        swiss["swiss_rank_num"] = pd.to_numeric(swiss["swiss_rank"], errors="coerce")
+        swiss = swiss[swiss["swiss_rank_num"].notna() & (swiss["swiss_rank_num"] <= N)]
+
+        # (tournament_id, player) pairs who were top-N in swiss for a specific tournament
+        swiss_top_player_tourn = swiss[["tournament_id", "name"]].drop_duplicates().rename(columns={"name": "player"})
+        top_idx = pd.MultiIndex.from_frame(swiss_top_player_tourn)
+
+        corp_match = results.set_index(["tournament_id", "corp_player"]).index.isin(top_idx)
+        runner_match = results.set_index(["tournament_id", "runner_player"]).index.isin(top_idx)
+        mask = corp_match | runner_match
+        out = results.loc[mask].copy()
+
+        corp_idx = pd.MultiIndex.from_arrays([out["tournament_id"], out["corp_player"]])
+        runner_idx = pd.MultiIndex.from_arrays([out["tournament_id"], out["runner_player"]])
+        out["corp_is_tracked"] = corp_idx.isin(top_idx)
+        out["runner_is_tracked"] = runner_idx.isin(top_idx)
+
+        eligible_names = sorted(swiss_top_player_tourn["player"].dropna().unique().tolist())
+        tournaments = sorted(out["tournament"].dropna().unique().tolist())
+        return out, eligible_names, tournaments
 
     raise ValueError(f"Unknown split_key: {split_key}")
 
 
-# Make JS payload to hack the bokeh server
-def _df_to_payload(df: pd.DataFrame, eligible_names: list[Any], low_p: float, top_n: int, split_label: str) -> dict:
+def _corp_vs_runner_matrix(df: pd.DataFrame) -> dict:
+    d = df.copy()
+    d["result"] = d["result"].astype(str).str.lower()
+    d = d[d["result"] != "bye"]
+
+    grp = (
+        d.groupby(["corp_id", "runner_id", "runner_faction"], dropna=False)
+        .agg(games=("result", "size"), corp_wins=("result", lambda s: (s == "corp").sum()))
+        .reset_index()
+    )
+    grp["winrate"] = grp["corp_wins"] / grp["games"]
+    grp.rename(columns={"runner_id": "identity", "runner_faction": "faction"}, inplace=True)
+
+    out = {}
+    for corp_name, sub in grp.groupby("corp_id"):
+        # sort by games (desc), then winrate (desc), then name
+        sub = sub.sort_values(["games", "winrate", "identity"], ascending=[False, False, True]).reset_index(drop=True)
+        sub["color"] = sub["faction"].map(faction_colors).fillna("#cccccc")
+        sub["alpha"] = 1.0
+        sub["winrate_pct"] = (sub["winrate"] * 100).round(2)
+        payload = {}
+        for col in ["identity", "faction", "games", "corp_wins", "winrate", "winrate_pct", "color", "alpha"]:
+            vals = sub[col]
+            payload[col] = vals.astype(str).tolist() if col in ["identity", "faction", "color"] else vals.tolist()
+        payload["_y_factors"] = sub["identity"].astype(str).tolist()
+        out[str(corp_name)] = payload
+    return out
+
+
+def _runner_vs_corp_matrix(df: pd.DataFrame) -> dict:
+    d = df.copy()
+    d["result"] = d["result"].astype(str).str.lower()
+    d = d[d["result"] != "bye"]
+
+    grp = (
+        d.groupby(["runner_id", "corp_id", "corp_faction"], dropna=False)
+        .agg(games=("result", "size"), runner_wins=("result", lambda s: (s == "runner").sum()))
+        .reset_index()
+    )
+    grp["winrate"] = grp["runner_wins"] / grp["games"]
+    grp.rename(columns={"corp_id": "identity", "corp_faction": "faction"}, inplace=True)
+
+    out = {}
+    for runner_name, sub in grp.groupby("runner_id"):
+        # sort by games (desc), then winrate (desc), then name
+        sub = sub.sort_values(["games", "winrate", "identity"], ascending=[False, False, True]).reset_index(drop=True)
+        sub["color"] = sub["faction"].map(faction_colors).fillna("#cccccc")
+        sub["alpha"] = 1.0
+        sub["winrate_pct"] = (sub["winrate"] * 100).round(2)
+        payload = {}
+        for col in ["identity", "faction", "games", "runner_wins", "winrate", "winrate_pct", "color", "alpha"]:
+            vals = sub[col]
+            payload[col] = vals.astype(str).tolist() if col in ["identity", "faction", "color"] else vals.tolist()
+        payload["_y_factors"] = sub["identity"].astype(str).tolist()
+        out[str(runner_name)] = payload
+    return out
+
+
+def _df_to_payload(
+    df: pd.DataFrame,
+    eligible_names: list[Any],
+    tournaments: list[str],
+    low_p: float,
+    top_n: int,
+    split_label: str,
+) -> dict:
     low_cut = max(1, int(np.ceil(low_p * len(df)))) if len(df) else 1
     corp_stats = _top_n(_agg_identity_winrate(df, "corp"), top_n)
     runner_stats = _top_n(_agg_identity_winrate(df, "runner"), top_n)
@@ -399,41 +489,62 @@ def _df_to_payload(df: pd.DataFrame, eligible_names: list[Any], low_p: float, to
         payload["_y_factors"] = x["identity"].astype(str).tolist()
         return payload
 
+    try:
+        loser_line = f"<p>Games where loser winrate was below {LOSER_SIDE_MIN_WR*100:.1f}% excluded</p>"
+    except NameError:
+        loser_line = ""
+
     footer_html = (
         f"<h3>Notes!</h3>"
         f"<p>Split type: {split_label}</p>"
         f"<p>Following {len(eligible_names)} players</p>"
         f"<p>Low game cut off (transparent bars): {low_cut} games ({LOW_GAME_CUTOFF_P*100:.1f}% of {len(df)} total games)</p>"
         f"<p>Byes and IDs are excluded</p>"
-        f"<p>Games where loser winrate was below {LOSER_SIDE_MIN_WR*100:.1f}% excluded</p>"
-        f"<p>Tournaments ({len(tournaments)}):</p>"
-        + "".join(f"<p>&nbsp;&nbsp;- {t}</p>" for t in sorted(tournaments))
-        + f""
+        f"{loser_line}"
+        f"<p>Tournaments ({len(tournaments)}):</p>" + "".join(f"<p>&nbsp;&nbsp;- {t}</p>" for t in tournaments)
     )
 
-    return {"corp": _pack(corp_stats), "runner": _pack(runner_stats), "footer_html": footer_html}
+    corp_matchups = _corp_vs_runner_matrix(df)
+    runner_matchups = _runner_vs_corp_matrix(df)
+
+    return {
+        "corp": _pack(corp_stats),
+        "runner": _pack(runner_stats),
+        "footer_html": footer_html,
+        "corp_matchups": corp_matchups,
+        "runner_matchups": runner_matchups,
+    }
 
 
 split_keys = [
     "any-cutter",
-    "tournament-cutter",
-    "any-swiss-top8",
     "any-swiss-top16",
     "any-swiss-top24",
     "any-swiss-top32",
+    "tournament-cutter",
+    "tournament-swiss-top16",
+    "tournament-swiss-top24",
+    "tournament-swiss-top32",
 ]
 
 # Precompute
 TOP_N = 15
 payloads = {}
 for key in split_keys:
-    df_split, eligible_names = _build_flags_for_split(key)
-    payloads[key] = _df_to_payload(df_split, eligible_names, LOW_GAME_CUTOFF_P, TOP_N, split_label=key)
+    df_split, eligible_names, tourns = _build_flags_for_split(key)
+    payloads[key] = _df_to_payload(df_split, eligible_names, tourns, LOW_GAME_CUTOFF_P, TOP_N, split_label=key)
 
 # Default = first button
 default_key = split_keys[0]
 corp_src = ColumnDataSource(payloads[default_key]["corp"])
 runner_src = ColumnDataSource(payloads[default_key]["runner"])
+
+# Matchup sources start with the first item of each side
+first_corp = corp_src.data["identity"][0]
+first_runner = runner_src.data["identity"][0]
+
+corp_match_src = ColumnDataSource(payloads[default_key]["corp_matchups"].get(first_corp, {}))
+runner_match_src = ColumnDataSource(payloads[default_key]["runner_matchups"].get(first_runner, {}))
 
 
 def make_side_wr_chart(src: ColumnDataSource, title: str):
@@ -442,9 +553,10 @@ def make_side_wr_chart(src: ColumnDataSource, title: str):
         height=max(450, 30 * max(3, len(cats))),
         sizing_mode="stretch_width",
         y_range=cats,
-        x_range=(0, 1.05),
+        x_range=(0, 1),
         title=title,
         toolbar_location="above",
+        tools="tap,reset,save",
     )
     bars = p.hbar(y="identity", right="winrate", height=0.7, source=src, color="color", alpha="alpha")
 
@@ -469,48 +581,229 @@ def make_side_wr_chart(src: ColumnDataSource, title: str):
     return p
 
 
+def make_matchup_chart(src: ColumnDataSource, title: str, side: str):
+    cats = src.data.get("_y_factors", [])
+    p = figure(
+        height=max(450, 26 * max(3, len(cats))),
+        sizing_mode="stretch_width",
+        y_range=cats,
+        x_range=(0, 1),
+        title=title,
+        toolbar_location="above",
+        tools="reset,save",
+    )
+    bars = p.hbar(y="identity", right="winrate", height=0.7, source=src, color="color", alpha="alpha")
+
+    p.add_tools(
+        HoverTool(
+            renderers=[bars],
+            tooltips=f"""
+            <div style="font-size:12px; line-height:1.25;">
+              <div><b>@identity</b></div>
+              <div><b>Win Rate:</b> @winrate_pct%</div>
+              <div><b>Wins/Games:</b> @{side}_wins / @games</div>
+            </div>
+            """,
+        )
+    )
+    p.xaxis.axis_label = "Win Rate"
+    p.xaxis.formatter = NumeralTickFormatter(format="0%")
+    p.yaxis.axis_label = ""
+    p.x_range.start = 0
+    p.outline_line_color = None
+    return p
+
+
+# Figures
 p_corp = make_side_wr_chart(corp_src, "Corp")
 p_runner = make_side_wr_chart(runner_src, "Runner")
+
+p_corp_match = make_matchup_chart(corp_match_src, f"Matchups: {first_corp or '(none)'}", "corp")
+p_runner_match = make_matchup_chart(runner_match_src, f"Matchups: {first_runner or '(none)'}", "runner")
+
 footer = Div(text=payloads[default_key]["footer_html"], sizing_mode="stretch_width")
 
 buttons = RadioButtonGroup(labels=split_keys, active=0)
+
+### Hack panels to change data
+corp_select_cb = CustomJS(
+    args=dict(
+        corp_src=corp_src,
+        match_src=corp_match_src,
+        p_match=p_corp_match,
+        matchup_map=payloads[default_key]["corp_matchups"],  # Replaced on change
+    ),
+    code="""
+    const inds = corp_src.selected.indices;
+    if (!inds || inds.length === 0) return;
+    const i = inds[0];
+    const corp_name = corp_src.data['identity'][i];
+
+    const map = matchup_map;
+    const payload = map[corp_name] || {identity:[], faction:[], games:[], corp_wins:[], winrate:[], winrate_pct:[], color:[], alpha:[], _y_factors:[]};
+
+    match_src.data = payload;
+    p_match.y_range.factors = payload['_y_factors'] || [];
+    p_match.title.text = `Matchups: ${corp_name}`;
+    match_src.change.emit();
+    """,
+)
+corp_src.selected.js_on_change("indices", corp_select_cb)
+
+runner_select_cb = CustomJS(
+    args=dict(
+        runner_src=runner_src,
+        match_src=runner_match_src,
+        p_match=p_runner_match,
+        matchup_map=payloads[default_key]["runner_matchups"],  # Replaced on change
+    ),
+    code="""
+    const inds = runner_src.selected.indices;
+    if (!inds || inds.length === 0) return;
+    const i = inds[0];
+    const runner_name = runner_src.data['identity'][i];
+
+    const map = matchup_map;
+    const payload = map[runner_name] || {identity:[], faction:[], games:[], runner_wins:[], winrate:[], winrate_pct:[], color:[], alpha:[], _y_factors:[]};
+
+    match_src.data = payload;
+    p_match.y_range.factors = payload['_y_factors'] || [];
+    p_match.title.text = `Matchups: ${runner_name}`;
+    match_src.change.emit();
+    """,
+)
+runner_src.selected.js_on_change("indices", runner_select_cb)
 
 btn_callback = CustomJS(
     args=dict(
         corp_src=corp_src,
         runner_src=runner_src,
+        corp_match_src=corp_match_src,
+        runner_match_src=runner_match_src,
         p_corp=p_corp,
         p_runner=p_runner,
+        p_corp_match=p_corp_match,
+        p_runner_match=p_runner_match,
         footer=footer,
         data_map=payloads,
         buttons=buttons,
+        corp_select_cb=corp_select_cb,
+        runner_select_cb=runner_select_cb,
     ),
     code="""
     const key = buttons.labels[buttons.active];
 
+    // Remember current selections
+    let prev_corp_name = null;
+    if (corp_src.selected.indices && corp_src.selected.indices.length > 0) {
+      const i = corp_src.selected.indices[0];
+      prev_corp_name = corp_src.data['identity']?.[i] ?? null;
+    }
+    let prev_runner_name = null;
+    if (runner_src.selected.indices && runner_src.selected.indices.length > 0) {
+      const j = runner_src.selected.indices[0];
+      prev_runner_name = runner_src.data['identity']?.[j] ?? null;
+    }
+
+    // Pull new payloads
     const corp   = data_map[key]["corp"];
     const runner = data_map[key]["runner"];
+    const corp_map   = data_map[key]["corp_matchups"];
+    const runner_map = data_map[key]["runner_matchups"];
 
+    // Swap corp/runner data
     corp_src.data = corp;
     runner_src.data = runner;
 
+    // Try to re-select the same IDs in the new data
+    const corp_ids = corp_src.data['identity'] || [];
+    const runner_ids = runner_src.data['identity'] || [];
+
+    let corp_sel_idx = -1;
+    if (prev_corp_name) {
+      corp_sel_idx = corp_ids.indexOf(prev_corp_name);
+    }
+    let runner_sel_idx = -1;
+    if (prev_runner_name) {
+      runner_sel_idx = runner_ids.indexOf(prev_runner_name);
+    }
+
+    // Apply selections if found; otherwise keep charts un-tapped
+    corp_src.selected.indices = (corp_sel_idx >= 0) ? [corp_sel_idx] : [];
+    runner_src.selected.indices = (runner_sel_idx >= 0) ? [runner_sel_idx] : [];
+
+    // Update y-axis categories
     p_corp.y_range.factors = corp["_y_factors"] || [];
     p_runner.y_range.factors = runner["_y_factors"] || [];
 
+    // Update footer
     footer.text = data_map[key]["footer_html"];
 
+    // Populate matchup panels
+    // Corp matchup
+    let corp_name_for_panel = null;
+    if (corp_sel_idx >= 0) {
+      corp_name_for_panel = corp_ids[corp_sel_idx];
+    } else if (corp_ids.length > 0) {
+      corp_name_for_panel = corp_ids[0];
+    }
+
+    if (corp_name_for_panel) {
+      const payload_c = (corp_map[corp_name_for_panel]) || {identity:[], faction:[], games:[], corp_wins:[], winrate:[], winrate_pct:[], color:[], alpha:[], _y_factors:[]};
+      corp_match_src.data = payload_c;
+      p_corp_match.y_range.factors = payload_c['_y_factors'] || [];
+      p_corp_match.title.text = `Matchups: ${corp_name_for_panel}`;
+      corp_match_src.change.emit();
+    } else {
+      corp_match_src.data = {identity:[], faction:[], games:[], corp_wins:[], winrate:[], winrate_pct:[], color:[], alpha:[], _y_factors:[]};
+      p_corp_match.y_range.factors = [];
+      p_corp_match.title.text = "Matchups: unselected";
+      corp_match_src.change.emit();
+    }
+
+    // Runner matchup
+    let runner_name_for_panel = null;
+    if (runner_sel_idx >= 0) {
+      runner_name_for_panel = runner_ids[runner_sel_idx];
+    } else if (runner_ids.length > 0) {
+      runner_name_for_panel = runner_ids[0];
+    }
+
+    if (runner_name_for_panel) {
+      const payload_r = (runner_map[runner_name_for_panel]) || {identity:[], faction:[], games:[], runner_wins:[], winrate:[], winrate_pct:[], color:[], alpha:[], _y_factors:[]};
+      runner_match_src.data = payload_r;
+      p_runner_match.y_range.factors = payload_r['_y_factors'] || [];
+      p_runner_match.title.text = `Matchups: ${runner_name_for_panel}`;
+      runner_match_src.change.emit();
+    } else {
+      runner_match_src.data = {identity:[], faction:[], games:[], runner_wins:[], winrate:[], winrate_pct:[], color:[], alpha:[], _y_factors:[]};
+      p_runner_match.y_range.factors = [];
+      p_runner_match.title.text = "Matchups: unselected";
+      runner_match_src.change.emit();
+    }
+
+    // Final emit
     corp_src.change.emit();
     runner_src.change.emit();
+
+    //  Update maps for future calls
+    corp_select_cb.args['matchup_map'] = corp_map;
+    runner_select_cb.args['matchup_map'] = runner_map;
     """,
 )
-
 buttons.js_on_change("active", btn_callback)
 
-layout = column(buttons, p_corp, p_runner, footer, sizing_mode="stretch_width")
+layout = column(
+    buttons,
+    row(p_corp, p_corp_match, sizing_mode="stretch_width"),
+    row(p_runner, p_runner_match, sizing_mode="stretch_width"),
+    footer,
+    sizing_mode="stretch_width",
+)
 show(layout)
 
 # %%
-output_file("cutter_winrates.html", title="Side Performance")
+output_file("sides_and_matchups.html", title="Side Performance")
 save(layout)
 
 # %%
@@ -527,4 +820,11 @@ mask = (
     results_unfiltered["corp_player"].str.contains(player, case=False, na=False)
     | results_unfiltered["runner_player"].str.contains(player, case=False, na=False)
 ) & results_unfiltered["runner_id"].str.contains("Esâ Afontov: Eco-Insurrectionist", case=False, na=False)
+results_unfiltered.loc[mask]
+
+mask = (
+    results_unfiltered["corp_id"].str.contains("AU Co.: The Gold Standard in Clones", case=False, na=False)
+    & results_unfiltered["runner_id"].str.contains("Esâ Afontov: Eco-Insurrectionist", case=False, na=False)
+    & results_unfiltered["runner_player"].str.contains("hams", case=False, na=False)
+)
 results_unfiltered.loc[mask]
