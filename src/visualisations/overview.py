@@ -127,20 +127,71 @@ for fp in FILES:
 
 results = pd.concat(res_frames, ignore_index=True)
 
-# Label byes
+### Label byes
 mask_invalid = ~results["corp_id"].isin(valid_identities) | ~results["runner_id"].isin(valid_identities)
 results.loc[mask_invalid, "result"] = "bye"
 
-# Remove all byes and IDs
+### Remove all byes and IDs
 mask_byes_ids = results["result"].isin(["bye", "ID"])
 results = results[~mask_byes_ids]
 
-# Get player-tournament win rates
-phase_bucket = np.where(
-    results["phase"].str.contains("swiss", case=False, na=False),
-    "swiss",
-    np.where(results["phase"].str.contains("cut", case=False, na=False), "cut", "other"),
+### Get player-tournament win rates
+res_data_ext = results.copy()
+
+corp_rows = res_data_ext.rename(columns={"corp_player": "player"})[
+    ["player", "tournament", "tournament_id", "phase", "result"]
+].assign(side="corp", win=lambda x: x["result"].eq("corp"))
+
+runner_rows = res_data_ext.rename(columns={"runner_player": "player"})[
+    ["player", "tournament", "tournament_id", "phase", "result"]
+].assign(side="runner", win=lambda x: x["result"].eq("runner"))
+
+res_data_ext = pd.concat([corp_rows, runner_rows], ignore_index=True)
+res_data_ext = res_data_ext[res_data_ext["phase"].isin(["swiss", "cut"])]  # Just in case
+
+grp = (
+    res_data_ext.groupby(["player", "tournament", "side", "phase"], dropna=True)
+    .agg(games=("win", "size"), wins=("win", "sum"))
+    .reset_index()
 )
+grp["winrate"] = grp["wins"] / grp["games"]
+
+# pivot swiss/cut
+wide_sc = grp.pivot_table(index=["player", "tournament"], columns=["side", "phase"], values="winrate")
+
+grp_side_overall = (
+    res_data_ext.groupby(["player", "tournament", "side"], dropna=True)
+    .agg(games=("win", "size"), wins=("win", "sum"))
+    .reset_index()
+)
+grp_side_overall["winrate"] = grp_side_overall["wins"] / grp_side_overall["games"]
+
+wide_side_overall = grp_side_overall.pivot_table(index=["player", "tournament"], columns=["side"], values="winrate")
+wide_side_overall.columns = pd.MultiIndex.from_product([wide_side_overall.columns, ["overall"]])
+
+grp_all_overall = res_data_ext.groupby(["player", "tournament"], dropna=False).agg(
+    games=("win", "size"), wins=("win", "sum")
+)
+grp_all_overall["winrate"] = grp_all_overall["wins"] / grp_all_overall["games"]
+wide_all_overall = grp_all_overall[["winrate"]].rename(columns={"winrate": ("all", "overall")})
+wide_all_overall.columns = pd.MultiIndex.from_tuples(wide_all_overall.columns)
+
+player_wr_df = pd.concat([wide_sc, wide_side_overall, wide_all_overall], axis=1)
+
+desired_cols = [
+    ("corp", "swiss"),
+    ("corp", "cut"),
+    ("corp", "overall"),
+    ("runner", "swiss"),
+    ("runner", "cut"),
+    ("runner", "overall"),
+    ("all", "overall"),
+]
+existing = [c for c in desired_cols if c in player_wr_df.columns]
+rest = [c for c in player_wr_df.columns if c not in existing]
+player_wr_df = player_wr_df[existing + rest]
+
+player_wr_df.sort_index()
 
 ### Summarise
 # Get tournament names
@@ -152,6 +203,7 @@ for t in sorted(tournaments):
 print(f"Number of games: {len(results)}")
 print(f"  Removed {sum(mask_byes_ids)} byes and IDs")
 
+# player_wr_df.loc["lif3line"][("runner", "swiss")]
 # %% [markdown]
 # ## Follow Pro Players
 #
