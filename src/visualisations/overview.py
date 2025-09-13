@@ -127,6 +127,7 @@ for fp in FILES:
     res_frames.append(df)
 
 results = pd.concat(res_frames, ignore_index=True)
+results_unfiltered = results.copy()
 
 ### Label byes
 mask_invalid = ~results["corp_id"].isin(valid_identities) | ~results["runner_id"].isin(valid_identities)
@@ -194,8 +195,32 @@ player_wr_df = player_wr_df[existing + rest]
 
 player_wr_df.sort_index()
 
+LOSER_SIDE_MIN_WR = 0.1
+games = results.copy()
+corp_overall_wr = player_wr_df[("corp", "overall")].rename("corp_overall_wr")
+runner_overall_wr = player_wr_df[("runner", "overall")].rename("runner_overall_wr")
+games = games.merge(
+    corp_overall_wr.reset_index(),
+    left_on=["corp_player", "tournament"],
+    right_on=["player", "tournament"],
+    how="left",
+)
+games = games.drop(columns=["player"])
+games = games.merge(
+    runner_overall_wr.reset_index(),
+    left_on=["runner_player", "tournament"],
+    right_on=["player", "tournament"],
+    how="left",
+)
+games = games.drop(columns=["player"])
+
+loser_low_wr = ((games["result"] == "corp") & (games["runner_overall_wr"].fillna(0) < LOSER_SIDE_MIN_WR)) | (
+    (games["result"] == "runner") & (games["corp_overall_wr"].fillna(0) < LOSER_SIDE_MIN_WR)
+)
+
+results = games.loc[~loser_low_wr].copy()
+
 ### Summarise
-# Get tournament names
 tournaments = results["tournament"].dropna().unique()
 
 print(f"Number of tournaments: {len(FILES)}")
@@ -203,8 +228,7 @@ for t in sorted(tournaments):
     print(" -", t)
 print(f"Number of games: {len(results)}")
 print(f"  Removed {sum(mask_byes_ids)} byes and IDs")
-
-# player_wr_df.loc["lif3line"][("runner", "swiss")]
+print(f"  Removed {loser_low_wr.sum()} games where loser winrate was below {LOSER_SIDE_MIN_WR*100:.1f}%")
 
 # %% [markdown]
 # ## Follow Pro Players
@@ -213,6 +237,7 @@ print(f"  Removed {sum(mask_byes_ids)} byes and IDs")
 
 # %%
 import re
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -261,7 +286,7 @@ def _agg_identity_winrate(df: pd.DataFrame, who: str) -> pd.DataFrame:
 
     id_col = f"{who}_id"
     faction_col = f"{who}_faction"
-    flag_col = f"{who}_is_cutter"
+    flag_col = f"{who}_is_tracked"
     player_col = (
         f"{who}_player" if f"{who}_player" in d.columns else ("corp_player" if who == "corp" else "runner_player")
     )
@@ -291,7 +316,7 @@ def _top_n(df: pd.DataFrame, n: int = 30) -> pd.DataFrame:
     return top_by_games
 
 
-def _build_flags_for_split(split_key: str) -> pd.DataFrame:
+def _build_flags_for_split(split_key: str) -> tuple[pd.DataFrame, list[Any]]:
     cutters = standings.copy()
     cutters["top_cut_rank_num"] = pd.to_numeric(cutters["top_cut_rank"], errors="coerce")
     cutters = cutters[cutters["top_cut_rank_num"].notna()]
@@ -305,8 +330,8 @@ def _build_flags_for_split(split_key: str) -> pd.DataFrame:
         out = results.loc[mask].copy()
         corp_idx = pd.MultiIndex.from_arrays([out["tournament_id"], out["corp_player"]])
         runner_idx = pd.MultiIndex.from_arrays([out["tournament_id"], out["runner_player"]])
-        out["corp_is_cutter"] = corp_idx.isin(cut_idx)
-        out["runner_is_cutter"] = runner_idx.isin(cut_idx)
+        out["corp_is_tracked"] = corp_idx.isin(cut_idx)
+        out["runner_is_tracked"] = runner_idx.isin(cut_idx)
         eligible_names = sorted(cut_player_tournament["player"].unique().tolist())
         return out, eligible_names
 
@@ -314,8 +339,8 @@ def _build_flags_for_split(split_key: str) -> pd.DataFrame:
         cut_idx = cut_player_tournament["player"]
         mask = results["corp_player"].isin(cut_idx) | results["runner_player"].isin(cut_idx)
         out = results.loc[mask].copy()
-        out["corp_is_cutter"] = out["corp_player"].isin(cut_idx)
-        out["runner_is_cutter"] = out["runner_player"].isin(cut_idx)
+        out["corp_is_tracked"] = out["corp_player"].isin(cut_idx)
+        out["runner_is_tracked"] = out["runner_player"].isin(cut_idx)
         eligible_names = sorted(cut_player_tournament["player"].unique().tolist())
         return out, eligible_names
 
@@ -328,8 +353,8 @@ def _build_flags_for_split(split_key: str) -> pd.DataFrame:
         idx = swiss["name"].drop_duplicates()
         mask = results["corp_player"].isin(idx) | results["runner_player"].isin(idx)
         out = results.loc[mask].copy()
-        out["corp_is_cutter"] = out["corp_player"].isin(idx)
-        out["runner_is_cutter"] = out["runner_player"].isin(idx)
+        out["corp_is_tracked"] = out["corp_player"].isin(idx)
+        out["runner_is_tracked"] = out["runner_player"].isin(idx)
         eligible_names = sorted(swiss["name"].dropna().unique().tolist())
         return out, eligible_names
 
@@ -337,7 +362,7 @@ def _build_flags_for_split(split_key: str) -> pd.DataFrame:
 
 
 # Make JS payload to hack the bokeh server
-def _df_to_payload(df: pd.DataFrame, eligible_names, low_p: float, top_n: int, split_label: str) -> dict:
+def _df_to_payload(df: pd.DataFrame, eligible_names: list[Any], low_p: float, top_n: int, split_label: str) -> dict:
     low_cut = max(1, int(np.ceil(low_p * len(df)))) if len(df) else 1
     corp_stats = _top_n(_agg_identity_winrate(df, "corp"), top_n)
     runner_stats = _top_n(_agg_identity_winrate(df, "runner"), top_n)
@@ -379,7 +404,8 @@ def _df_to_payload(df: pd.DataFrame, eligible_names, low_p: float, top_n: int, s
         f"<p>Split type: {split_label}</p>"
         f"<p>Following {len(eligible_names)} players</p>"
         f"<p>Low game cut off (transparent bars): {low_cut} games ({LOW_GAME_CUTOFF_P*100:.1f}% of {len(df)} total games)</p>"
-        f"<p>Byes and IDs are excluded.</p>"
+        f"<p>Byes and IDs are excluded</p>"
+        f"<p>Games where loser winrate was below {LOSER_SIDE_MIN_WR*100:.1f}% excluded</p>"
         f"<p>Tournaments ({len(tournaments)}):</p>"
         + "".join(f"<p>&nbsp;&nbsp;- {t}</p>" for t in sorted(tournaments))
         + f""
@@ -410,7 +436,6 @@ corp_src = ColumnDataSource(payloads[default_key]["corp"])
 runner_src = ColumnDataSource(payloads[default_key]["runner"])
 
 
-# -------------------- plotting bound to sources --------------------
 def make_side_wr_chart(src: ColumnDataSource, title: str):
     cats = src.data.get("_y_factors", [])
     p = figure(
@@ -440,7 +465,6 @@ def make_side_wr_chart(src: ColumnDataSource, title: str):
     p.xaxis.axis_label = "Win rate"
     p.xaxis.formatter = NumeralTickFormatter(format="0%")
     p.yaxis.axis_label = ""
-    p.x_range.start = 0
     p.outline_line_color = None
     return p
 
@@ -490,10 +514,17 @@ output_file("cutter_winrates.html", title="Side Performance")
 save(layout)
 
 # %%
-# idx = (cutter_results["corp_id"] == "The Zwicky Group: Invisible Hands") & (cutter_results["corp_is_cutter"])
-idx = (cutter_results["corp_id"] == "Haas-Bioroid: Precision Design") & (cutter_results["corp_is_cutter"])
-
-cutter_results[idx]
+df_split
 
 # %%
 standings
+
+# player_wr_df.loc["pokeking"][("runner", "swiss")]
+player_wr_df.loc["pokeking"]
+
+player = "pokeking"
+mask = (
+    results_unfiltered["corp_player"].str.contains(player, case=False, na=False)
+    | results_unfiltered["runner_player"].str.contains(player, case=False, na=False)
+) & results_unfiltered["runner_id"].str.contains("Esâ Afontov: Eco-Insurrectionist", case=False, na=False)
+results_unfiltered.loc[mask]
