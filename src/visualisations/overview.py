@@ -80,6 +80,7 @@ RESULTS_DIR = Path(DATA_DIR, "results")
 STANDINGS_DIR = Path(DATA_DIR, "standings")
 
 
+### Identities
 with open(Path(BASE_DIR, "src", "netrunner", "identities.yml"), "r", encoding="utf-8") as f:
     identities = yaml.safe_load(f)
 
@@ -92,7 +93,24 @@ for name, data in identities.items():
 
 valid_identities = set(id_to_faction.keys())
 
+### Standings
+standing_frames = []
+FILES = sorted(STANDINGS_DIR.rglob("*.csv"))
+for fp in FILES:
+    df = pd.read_csv(
+        fp,
+        header=0,
+        parse_dates=["date"],
+        # keep_default_na=False,
+        encoding="utf-8",
+        engine="python",
+    )
 
+    standing_frames.append(df)
+
+standings = pd.concat(standing_frames, ignore_index=True)
+
+### Match results
 res_frames = []
 FILES = sorted(RESULTS_DIR.rglob("*.csv"))
 for fp in FILES:
@@ -117,22 +135,15 @@ results.loc[mask_invalid, "result"] = "bye"
 mask_byes_ids = results["result"].isin(["bye", "ID"])
 results = results[~mask_byes_ids]
 
-standing_frames = []
-FILES = sorted(STANDINGS_DIR.rglob("*.csv"))
-for fp in FILES:
-    df = pd.read_csv(
-        fp,
-        header=0,
-        parse_dates=["date"],
-        # keep_default_na=False,
-        encoding="utf-8",
-        engine="python",
-    )
+# Get player-tournament win rates
+phase_bucket = np.where(
+    results["phase"].str.contains("swiss", case=False, na=False),
+    "swiss",
+    np.where(results["phase"].str.contains("cut", case=False, na=False), "cut", "other"),
+)
 
-    standing_frames.append(df)
-
-standings = pd.concat(standing_frames, ignore_index=True)
-
+### Summarise
+# Get tournament names
 tournaments = results["tournament"].dropna().unique()
 
 print(f"Number of tournaments: {len(FILES)}")
@@ -410,7 +421,7 @@ layout = column(buttons, p_corp, p_runner, footer, sizing_mode="stretch_width")
 show(layout)
 
 # %%
-output_file("cutter_winrates.html", title="Cutter Winrates")
+output_file("cutter_winrates.html", title="Side Performance")
 save(layout)
 
 # %%
