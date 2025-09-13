@@ -54,10 +54,11 @@ finally:
 
 # %%
 # Data load and utilities
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import yaml
-from pathlib import Path
 
 faction_colors = {
     "Anarch": "#e21b3c",
@@ -204,18 +205,28 @@ print(f"Number of games: {len(results)}")
 print(f"  Removed {sum(mask_byes_ids)} byes and IDs")
 
 # player_wr_df.loc["lif3line"][("runner", "swiss")]
+
 # %% [markdown]
 # ## Follow Pro Players
 #
 # Cut data to follow only the best players for some definition of "best"
 
 # %%
-import re, numpy as np, pandas as pd
-from bokeh.plotting import figure, show
-from bokeh.models import ColumnDataSource, HoverTool, NumeralTickFormatter, Div
-from bokeh.models import RadioButtonGroup, CustomJS
+import re
+
+import numpy as np
+import pandas as pd
+from bokeh.io import output_file, output_notebook, save
 from bokeh.layouts import column
-from bokeh.io import output_notebook, output_file, save
+from bokeh.models import (
+    ColumnDataSource,
+    CustomJS,
+    Div,
+    HoverTool,
+    NumeralTickFormatter,
+    RadioButtonGroup,
+)
+from bokeh.plotting import figure, show
 
 output_notebook()
 
@@ -365,11 +376,13 @@ def _df_to_payload(df: pd.DataFrame, eligible_names, low_p: float, top_n: int, s
 
     footer_html = (
         f"<h3>Notes!</h3>"
-        f"<p>Following {len(eligible_names)} players</p>"
-        f"<p>Tournaments ({len(tournaments)}): {', '.join(tournaments)}</p>"
         f"<p>Split type: {split_label}</p>"
+        f"<p>Following {len(eligible_names)} players</p>"
         f"<p>Low game cut off (transparent bars): {low_cut} games ({LOW_GAME_CUTOFF_P*100:.1f}% of {len(df)} total games)</p>"
         f"<p>Byes and IDs are excluded.</p>"
+        f"<p>Tournaments ({len(tournaments)}):</p>"
+        + "".join(f"<p>&nbsp;&nbsp;- {t}</p>" for t in sorted(tournaments))
+        + f""
     )
 
     return {"corp": _pack(corp_stats), "runner": _pack(runner_stats), "footer_html": footer_html}
@@ -398,7 +411,7 @@ runner_src = ColumnDataSource(payloads[default_key]["runner"])
 
 
 # -------------------- plotting bound to sources --------------------
-def _make_chart(src: ColumnDataSource, title: str):
+def make_side_wr_chart(src: ColumnDataSource, title: str):
     cats = src.data.get("_y_factors", [])
     p = figure(
         height=max(450, 30 * max(3, len(cats))),
@@ -416,12 +429,12 @@ def _make_chart(src: ColumnDataSource, title: str):
             tooltips="""
             <div style="font-size: 12px; line-height: 1.25;">
               <div><b>@identity</b></div>
-              <div><b>Faction:</b> @faction</div>
               <div><b>Win rate:</b> @winrate_pct%</div>
               <div><b>Wins/Games:</b> @wins / @games @{low_label}{safe}</div>
               <div style="margin-top:4px;"><b>Examples:</b><br>@examples{safe}</div>
             </div>
             """,
+            # <div><b>Faction:</b> @faction</div>
         )
     )
     p.xaxis.axis_label = "Win rate"
@@ -432,13 +445,13 @@ def _make_chart(src: ColumnDataSource, title: str):
     return p
 
 
-p_corp = _make_chart(corp_src, "Corp")
-p_runner = _make_chart(runner_src, "Runner")
+p_corp = make_side_wr_chart(corp_src, "Corp")
+p_runner = make_side_wr_chart(runner_src, "Runner")
 footer = Div(text=payloads[default_key]["footer_html"], sizing_mode="stretch_width")
 
 buttons = RadioButtonGroup(labels=split_keys, active=0)
 
-callback = CustomJS(
+btn_callback = CustomJS(
     args=dict(
         corp_src=corp_src,
         runner_src=runner_src,
@@ -467,7 +480,7 @@ callback = CustomJS(
     """,
 )
 
-buttons.js_on_change("active", callback)
+buttons.js_on_change("active", btn_callback)
 
 layout = column(buttons, p_corp, p_runner, footer, sizing_mode="stretch_width")
 show(layout)
