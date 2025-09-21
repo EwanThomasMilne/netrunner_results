@@ -1,0 +1,24 @@
+- name: 'EMEA Continentals 2025'
+  meta: '25.08'
+  url: 'https://tournaments.nullsignal.games/tournaments/4110'
+  abr_id: 4829
+- name: 'APAC Continentals 2025'
+  meta: '25.08'
+  url: 'https://tournaments.nullsignal.games/tournaments/4118'
+  abr_id: 4832
+- name: 'APAC Online Continentals 2025'
+  meta: '25.08'
+  url: 'https://tournaments.nullsignal.games/tournaments/4134'
+  abr_id: 5002
+- name: 'America Continentals 2025'
+  meta: '25.08'
+  url: 'https://tournaments.nullsignal.games/tournaments/4129'
+  abr_id: 4858
+- name: 'EMEA Online Continentals 2025'
+  meta: '25.08'
+  url: 'https://tournaments.nullsignal.games/tournaments/4149'
+  abr_id: 5003
+- name: 'America Online Continentals 2025'
+  meta: '25.08'
+  url: 'https://tournaments.nullsignal.games/tournaments/4171'
+  abr_id: 5004
