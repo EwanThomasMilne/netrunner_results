@@ -4,3 +4,4 @@ src/*/__pycache__/*
 OUTPUT
 JSON
 .vscode
+.venv
