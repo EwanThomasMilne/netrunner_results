@@ -26,3 +26,8 @@
   meta: '25.10'
   url: 'https://tournaments.nullsignal.games/tournaments/4128'
   location: online
+  abr_id: 4857
+- name: '2025 World Championship'
+  meta: '25.10'
+  url: 'https://tournaments.nullsignal.games/tournaments/4255'
+  abr_id: 5084
