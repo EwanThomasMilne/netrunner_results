@@ -2,4 +2,19 @@
   meta: '25.12'
   url: 'https://tournaments.nullsignal.games/tournaments/4381'
   location: online
+  abr_id: 4856
+- name: '2026 CBI - APAC Pod'
+  meta: '25.12'
+  url: 'https://tournaments.nullsignal.games/tournaments/4441'
+  location: online
+#  abr_id: 4856
+- name: '2026 CBI - Americas Pod'
+  meta: '25.12'
+  url: 'https://tournaments.nullsignal.games/tournaments/4442'
+  location: online
+#  abr_id: 4856
+- name: '2026 CBI - EMEA Pod'
+  meta: '25.12'
+  url: 'https://tournaments.nullsignal.games/tournaments/4443'
+  location: online
 #  abr_id: 4856

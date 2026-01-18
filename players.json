@@ -8315,7 +8315,10 @@
     "nrdb_name": "DaveSea"
   },
   "7438": {
-    "nrdb_name": "Thomas Haas"
+    "nrdb_name": "Thomas Haas",
+    "teams": [
+      "Logic Bomb"
+    ]
   },
   "27078": {
     "nrdb_name": "Freywind"
@@ -9027,5 +9030,23 @@
   },
   "54212": {
     "nrdb_name": "RobberObber"
+  },
+  "27063": {
+    "nrdb_name": "relamer"
+  },
+  "54845": {
+    "nrdb_name": "MechantGreg"
+  },
+  "54019": {
+    "nrdb_name": "Kris_Casual"
+  },
+  "54337": {
+    "nrdb_name": "neror"
+  },
+  "46277": {
+    "nrdb_name": "Elessar_Ellie"
+  },
+  "53527": {
+    "nrdb_name": "Luna Rose Manor"
   }
 }
