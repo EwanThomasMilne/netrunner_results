@@ -955,7 +955,10 @@
     "aliases": [
       "RJorb"
     ],
-    "nrdb_name": "RJorb"
+    "nrdb_name": "RJorb",
+    "teams": [
+      "Hupe Machine"
+    ]
   },
   "8429": {
     "aliases": [
@@ -3776,7 +3779,10 @@
     "aliases": [
       "Minstrel"
     ],
-    "nrdb_name": "Minstrel"
+    "nrdb_name": "Minstrel",
+    "teams": [
+      "The Board"
+    ]
   },
   "38812": {
     "aliases": [
@@ -5921,7 +5927,8 @@
   },
   "45677": {
     "aliases": [
-      "gruntownie"
+      "gruntownie",
+      "Bullfinch"
     ],
     "nrdb_name": "gruntownie"
   },
@@ -8393,7 +8400,10 @@
     "nrdb_name": "metrixgo"
   },
   "43563": {
-    "nrdb_name": "Sumpurnis"
+    "nrdb_name": "Sumpurnis",
+    "teams": [
+      "The Board"
+    ]
   },
   "41905": {
     "nrdb_name": "imjorman"
@@ -8537,7 +8547,10 @@
     "nrdb_name": "simo96dal"
   },
   "8448": {
-    "nrdb_name": "viljums"
+    "nrdb_name": "viljums",
+    "teams": [
+      "SCRUBS"
+    ]
   },
   "34132": {
     "nrdb_name": "Cyrcle"
