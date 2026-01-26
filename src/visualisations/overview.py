@@ -8,7 +8,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.17.3
 #   kernelspec:
-#     display_name: .venv
+#     display_name: .venv (3.13.5)
 #     language: python
 #     name: python3
 # ---
@@ -320,6 +320,14 @@ def _build_flags_for_split(split_key: str) -> tuple[pd.DataFrame, list[Any], lis
     cutters = cutters[cutters["top_cut_rank_num"].notna()]
     cut_player_tournament = cutters[["tournament_id", "name"]].drop_duplicates().rename(columns={"name": "player"})
 
+    if split_key == "any":
+        out = results.copy()
+        out["corp_is_tracked"] = True
+        out["runner_is_tracked"] = True
+        eligible_names = sorted(cut_player_tournament["player"].unique().tolist())
+        tournaments = sorted(out["tournament"].dropna().unique().tolist())
+        return out, eligible_names, tournaments
+
     if split_key == "tournament-cutter":
         cut_idx = pd.MultiIndex.from_frame(cut_player_tournament)
         corp_match = results.set_index(["tournament_id", "corp_player"]).index.isin(cut_idx)
@@ -517,6 +525,7 @@ def _df_to_payload(
 
 
 split_keys = [
+    "any",
     "any-cutter",
     "any-swiss-top16",
     "any-swiss-top24",
