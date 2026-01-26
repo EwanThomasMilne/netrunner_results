@@ -1,24 +1,16 @@
-- name: 'EMEA Continentals 2025'
-  meta: '25.08'
-  url: 'https://tournaments.nullsignal.games/tournaments/4110'
-  abr_id: 4829
-- name: 'APAC Continentals 2025'
-  meta: '25.08'
-  url: 'https://tournaments.nullsignal.games/tournaments/4118'
-  abr_id: 4832
-- name: 'APAC Online Continentals 2025'
-  meta: '25.08'
-  url: 'https://tournaments.nullsignal.games/tournaments/4134'
-  abr_id: 5002
-- name: 'America Continentals 2025'
-  meta: '25.08'
-  url: 'https://tournaments.nullsignal.games/tournaments/4129'
-  abr_id: 4858
-- name: 'EMEA Online Continentals 2025'
-  meta: '25.08'
-  url: 'https://tournaments.nullsignal.games/tournaments/4149'
-  abr_id: 5003
-- name: 'America Online Continentals 2025'
-  meta: '25.08'
-  url: 'https://tournaments.nullsignal.games/tournaments/4171'
-  abr_id: 5004
+- name: 'Circuit Breaker Invitational - APAC Pod'
+  meta: '25.12'
+  url: 'https://tournaments.nullsignal.games/tournaments/4441'
+  abr_id: 5302
+- name: 'Circuit Breaker Invitational - Americas Pod'
+  meta: '25.12'
+  url: 'https://tournaments.nullsignal.games/tournaments/4442'
+  abr_id: 5303
+- name: 'Circuit Breaker Invitational - EMEA Pod'
+  meta: '25.12'
+  url: 'https://tournaments.nullsignal.games/tournaments/4443'
+  abr_id: 5304
+- name: 'CBI - Double Elimination Bracket'
+  meta: '25.12'
+  url: 'https://tournaments.nullsignal.games/tournaments/4470'
+  abr_id: 5301
