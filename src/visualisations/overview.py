@@ -320,11 +320,19 @@ def _build_flags_for_split(split_key: str) -> tuple[pd.DataFrame, list[Any], lis
     cutters = cutters[cutters["top_cut_rank_num"].notna()]
     cut_player_tournament = cutters[["tournament_id", "name"]].drop_duplicates().rename(columns={"name": "player"})
 
-    if split_key == "any":
+    if split_key == "unfiltered":
+        out = results_unfiltered.copy()
+        out["corp_is_tracked"] = True
+        out["runner_is_tracked"] = True
+        eligible_names = sorted(out["corp_player"].unique().tolist())
+        tournaments = sorted(out["tournament"].dropna().unique().tolist())
+        return out, eligible_names, tournaments
+
+    if split_key == "pre-filtered":
         out = results.copy()
         out["corp_is_tracked"] = True
         out["runner_is_tracked"] = True
-        eligible_names = sorted(cut_player_tournament["player"].unique().tolist())
+        eligible_names = sorted(out["corp_player"].unique().tolist())
         tournaments = sorted(out["tournament"].dropna().unique().tolist())
         return out, eligible_names, tournaments
 
@@ -398,7 +406,7 @@ def _build_flags_for_split(split_key: str) -> tuple[pd.DataFrame, list[Any], lis
 def _corp_vs_runner_matrix(df: pd.DataFrame) -> dict:
     d = df.copy()
     d["result"] = d["result"].astype(str).str.lower()
-    d = d[d["result"] != "bye"]
+    d = d[d["corp_is_tracked"]]
 
     grp = (
         d.groupby(["corp_id", "runner_id", "runner_faction"], dropna=False)
@@ -427,7 +435,7 @@ def _corp_vs_runner_matrix(df: pd.DataFrame) -> dict:
 def _runner_vs_corp_matrix(df: pd.DataFrame) -> dict:
     d = df.copy()
     d["result"] = d["result"].astype(str).str.lower()
-    d = d[d["result"] != "bye"]
+    d = d[d["runner_is_tracked"]]
 
     grp = (
         d.groupby(["runner_id", "corp_id", "corp_faction"], dropna=False)
@@ -502,15 +510,24 @@ def _df_to_payload(
     except NameError:
         loser_line = ""
 
-    footer_html = (
-        f"<h3>Notes!</h3>"
-        f"<p>Split type: {split_label}</p>"
-        f"<p>Following {len(eligible_names)} players</p>"
-        f"<p>Low game cut off (transparent bars): {low_cut} games ({LOW_GAME_CUTOFF_P*100:.1f}% of {len(df)} total games)</p>"
-        f"<p>Byes and IDs are excluded</p>"
-        f"{loser_line}"
-        f"<p>Tournaments ({len(tournaments)}):</p>" + "".join(f"<p>&nbsp;&nbsp;- {t}</p>" for t in tournaments)
-    )
+    if split_label == "unfiltered":
+        footer_html = (
+            f"<h3>Notes!</h3>"
+            f"<p>Split type: {split_label}</p>"
+            f"<p>Following {len(eligible_names)} players</p>"
+            f"<p>No filtering, seeing all games:D</p>"
+            f"<p>Tournaments ({len(tournaments)}):</p>" + "".join(f"<p>&nbsp;&nbsp;- {t}</p>" for t in tournaments)
+        )
+    else:
+        footer_html = (
+            f"<h3>Notes!</h3>"
+            f"<p>Split type: {split_label}</p>"
+            f"<p>Following {len(eligible_names)} players</p>"
+            f"<p>Low game cut off (transparent bars): {low_cut} games ({LOW_GAME_CUTOFF_P*100:.1f}% of {len(df)} total games)</p>"
+            f"<p>Byes and IDs are excluded</p>"
+            f"{loser_line}"
+            f"<p>Tournaments ({len(tournaments)}):</p>" + "".join(f"<p>&nbsp;&nbsp;- {t}</p>" for t in tournaments)
+        )
 
     corp_matchups = _corp_vs_runner_matrix(df)
     runner_matchups = _runner_vs_corp_matrix(df)
@@ -525,7 +542,8 @@ def _df_to_payload(
 
 
 split_keys = [
-    "any",
+    "unfiltered",
+    "pre-filtered",
     "any-cutter",
     "any-swiss-top16",
     "any-swiss-top24",
